@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sa12345
+      MYSQL_DATABASE: nextbean
+      MYSQL_USER: pardes
+      MYSQL_PASSWORD: pardes123
+    volumes:
+      - ./docker_mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+
+  hrm_nextbean_api:
+    build: ./hrm_nextbean_api
+    container_name: hrm_nextbean_api
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: pardes
+      DB_PASSWORD: pardes123
+      DB_NAME: nextbean

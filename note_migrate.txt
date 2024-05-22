@@ -1,0 +1,8 @@
+./migrate -path db/migrations -database "mysql://pardes:pardes123d@tcp(localhost:3306)/nextbean" up
+./migrate -path db/migrations -database "mysql://pardes:pardes123d@tcp(localhost:3306)/nextbean" down
+migrate create -ext sql -dir db/migrations -seq create_ojt_table
+
+
+-------------
+docker compose up --build
+docker compose down
