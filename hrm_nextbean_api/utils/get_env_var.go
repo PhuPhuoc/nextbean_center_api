@@ -20,12 +20,11 @@ func GetPort() string {
 	return port
 }
 
-func GetConnStr() string {
-	flag := false
+func GetConnStr(flag bool) string {
 	var conn_str string
 	if !flag {
 		loadenv()
-		conn_str = os.Getenv("DB_CONN_STR_DOCKER")
+		conn_str = os.Getenv("DB_CONN_STR")
 	} else {
 		dbHost := os.Getenv("DB_HOST")
 		dbPort := os.Getenv("DB_PORT")

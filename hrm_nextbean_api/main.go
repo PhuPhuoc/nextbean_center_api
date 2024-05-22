@@ -8,8 +8,14 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
+// @title						Intern Resource management system
+// @version					1.0
+// @description				A web application to manage interns at the Nextbean Center, designed to oversee their daily tasks and schedules while working at the office. The app aims to streamline the management of internship programs, enabling efficient tracking of intern activities, assignments, and attendance for a well-organized and productive internship experience.
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+// @name						Authorization
 func main() {
-	conn_str := utils.GetConnStr()
+	conn_str := utils.GetConnStr(false)
 	port := utils.GetPort()
 	db, err_db := database.InitMySQLStore(conn_str)
 	if err_db != nil {

@@ -1,0 +1,17 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A web application to manage interns at the Nextbean Center, designed to oversee their daily tasks and schedules while working at the office. The app aims to streamline the management of internship programs, enabling efficient tracking of intern activities, assignments, and attendance for a well-organized and productive internship experience.",
+        "title": "Intern Resource management system",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {},
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
