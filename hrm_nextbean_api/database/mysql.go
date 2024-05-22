@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"log"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -10,16 +11,18 @@ import (
 func InitMySQLStore(conn_str string) (*sql.DB, error) {
 	db, err_connect := sql.Open("mysql", conn_str)
 	if err_connect != nil {
-		log.Println("err when open sql")
+		log.Println("|database| ~ cannot connect to db: ", err_connect)
 		return nil, err_connect
 	}
-
 	defer db.Close()
-
-	// if err_ping := db.Ping(); err_ping != nil {
-	// 	log.Println("err when ping sql")
-	// 	return nil, err_ping
-
-	// }
+	if err_ping := db.Ping(); err_ping != nil {
+		if strings.Contains(err_ping.Error(), "connection refused") {
+			log.Println("|database| ~ Wait for the db'container to start ...")
+		} else {
+			log.Fatalf("|database| ~ Error: %v", err_ping.Error())
+		}
+	} else {
+		log.Println("|database| ~ Ping to database successful ...")
+	}
 	return db, nil
 }

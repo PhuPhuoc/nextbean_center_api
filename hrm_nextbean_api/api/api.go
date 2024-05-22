@@ -28,6 +28,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 func (sv *server) RunApp() error {
 	router := mux.NewRouter()
 	router.HandleFunc("/hello", helloHandler).Methods("GET")
-	log.Printf("#HRM-nextbean-api#|api| + Server is listening at port ... |%v|", sv.address)
+
+	log.Printf("|api| + Server is listening at port ... |%v|", sv.address)
 	return http.ListenAndServe(sv.address, router)
 }
