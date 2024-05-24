@@ -1,3 +1,30 @@
+definitions:
+  model.LoginForm:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  utils.error_response:
+    properties:
+      log:
+        type: string
+      message:
+        type: string
+      status-code:
+        type: integer
+    type: object
+  utils.success_response:
+    properties:
+      data: {}
+      filter: {}
+      message:
+        type: string
+      paging: {}
+      status:
+        type: integer
+    type: object
 info:
   contact: {}
   description: A web application to manage interns at the Nextbean Center, designed
@@ -7,7 +34,33 @@ info:
     internship experience.
   title: Intern Resource management system
   version: "1.0"
-paths: {}
+paths:
+  /api/v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Log in using account with email and password
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful login
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: login failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: login by account
+      tags:
+      - Authen
 securityDefinitions:
   ApiKeyAuth:
     in: header

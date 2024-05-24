@@ -2,7 +2,20 @@
 ./migrate -path db/migrations -database "mysql://pardes:pardes123d@tcp(localhost:3306)/nextbean" down
 migrate create -ext sql -dir db/migrations -seq create_ojt_table
 
+--------- local ---------------
+./migrate -path db/migrations -database "mysql://root:sa12345@tcp(localhost:3307)/nextbean" up
 
--------------
+
+-------------------------------
 docker compose up --build
 docker compose down
+
+
+INSERT INTO account (id, user_name, email, password, role)
+VALUES (
+        '1',
+        'phu_phuoc',
+        'blessforwork@gmail.com',
+        'pass1',
+        'admin'
+    );

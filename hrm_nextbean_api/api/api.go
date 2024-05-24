@@ -2,11 +2,14 @@ package api
 
 import (
 	"database/sql"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 
+	account_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/controller"
+
 	_ "github.com/PhuPhuoc/hrm_nextbean_api/docs"
+	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
@@ -23,10 +26,6 @@ func InitServer(addr string, db *sql.DB) *server {
 	}
 }
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, World!")
-}
-
 func (sv *server) RunApp() error {
 	router := mux.NewRouter()
 
@@ -38,8 +37,18 @@ func (sv *server) RunApp() error {
 		httpSwagger.DomID("swagger-ui"),
 	)).Methods(http.MethodGet)
 
-	router.HandleFunc("/hello", helloHandler).Methods("GET")
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"message": "Welcome to the server: IS-NextBean-v1"})
+	}).Methods("GET")
 
-	log.Printf("|api|\n $ Server is listening at port |%v|\n $ URL swagger: http://localhost%v/swagger/index.html", sv.address, sv.address)
+	subrouter := router.PathPrefix("/api/v1").Subrouter()
+	subrouter.Use(middleware.LoggingMiddleware)
+
+	// router: /login vs /account
+	account_services_controller.RegisterAccountRouter(subrouter, sv.db)
+
+	log.Printf("|api|\n  -+-  Server is listening at port |%v|\n  -+-  URL swagger: http://localhost%v/swagger/index.html", sv.address, sv.address)
 	return http.ListenAndServe(sv.address, router)
 }
