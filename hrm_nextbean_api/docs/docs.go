@@ -15,6 +15,46 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/account": {
+            "post": {
+                "description": "account creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "create new account",
+                "parameters": [
+                    {
+                        "description": "account creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AccountCreationInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "description": "Log in using account with email and password",
@@ -57,6 +97,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.AccountCreationInfo": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
         "model.LoginForm": {
             "type": "object",
             "properties": {

@@ -20,6 +20,12 @@ func GetPort() string {
 	return port
 }
 
+func GetSecretKey() string {
+	loadenv()
+	secret := os.Getenv("SECRET_KEY")
+	return secret
+}
+
 func GetConnStr(flag bool) string {
 	var conn_str string
 	if !flag {

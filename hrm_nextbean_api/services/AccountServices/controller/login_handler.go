@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/business"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/model"
@@ -38,6 +39,8 @@ func HandleLogin(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 		if err_login := biz.Login(info_login, data_response); err_login != nil {
 			if err_login.Error() == "wrong pwd" {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("wrong password", nil))
+			} else if strings.Contains(err_login.Error(), "not exists") {
+				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_login.Error(), nil))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_login))
 			}

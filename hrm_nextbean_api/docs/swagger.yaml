@@ -1,4 +1,15 @@
 definitions:
+  model.AccountCreationInfo:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      user_name:
+        type: string
+    type: object
   model.LoginForm:
     properties:
       email:
@@ -35,6 +46,32 @@ info:
   title: Intern Resource management system
   version: "1.0"
 paths:
+  /api/v1/account:
+    post:
+      consumes:
+      - application/json
+      description: account creation information
+      parameters:
+      - description: account creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.AccountCreationInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new account
+      tags:
+      - Account
   /api/v1/login:
     post:
       consumes:

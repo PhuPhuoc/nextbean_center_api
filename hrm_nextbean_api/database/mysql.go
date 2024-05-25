@@ -14,8 +14,9 @@ func InitMySQLStore(conn_str string) (*sql.DB, error) {
 		log.Println("|database| ~ cannot connect to db: ", err_connect)
 		return nil, err_connect
 	}
-	defer db.Close()
+
 	if err_ping := db.Ping(); err_ping != nil {
+		db.Close()
 		if strings.Contains(err_ping.Error(), "connection refused") {
 			log.Println("|database| ~ Connection refused ~ Wait for the db'container to start ...")
 		} else {

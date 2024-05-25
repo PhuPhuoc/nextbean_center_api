@@ -21,6 +21,7 @@ func main() {
 	if err_db != nil {
 		log.Fatal("|main| ~ Cannot connect to database: ", err_db)
 	}
+	defer db.Close()
 
 	server := api.InitServer(port, db)
 	if err_run_server := server.RunApp(); err_run_server != nil {
