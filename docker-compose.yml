@@ -27,3 +27,5 @@ services:
       DB_USER: pardes
       DB_PASSWORD: pardes123
       DB_NAME: nextbean
+      SECRET_KEY: hay_cay_ductin_ma_danhtran_totlanh
+      APP_PORT: 8080

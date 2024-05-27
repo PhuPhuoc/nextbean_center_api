@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 
 	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/account_query"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/model"
@@ -11,7 +12,10 @@ import (
 
 func (store *AccountStore) CreateAccount(acc_cre_info *model.AccountCreationInfo) error {
 	if err_check_email_exist := store.checkEmailExist(acc_cre_info.Email); err_check_email_exist != nil {
-		return fmt.Errorf("email: %v already exists", acc_cre_info.Email)
+		if strings.Contains(err_check_email_exist.Error(), "email exist") {
+			return fmt.Errorf("email: %v already exists", acc_cre_info.Email)
+		}
+		return fmt.Errorf("error when CreateAccount(checkEmailExist) in store: %v", err_check_email_exist)
 	}
 	pwdHash := utils.GenerateHash(acc_cre_info.Password)
 	rawsql := query.QueryCreateNewAccount()

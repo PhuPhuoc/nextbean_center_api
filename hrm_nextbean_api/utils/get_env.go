@@ -8,20 +8,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func loadenv() {
+func loadenv() error {
 	if err_env := godotenv.Load(".env"); err_env != nil {
-		log.Fatal("|util| ~ Error loading .env file: ", err_env)
+		return fmt.Errorf("|util| ~ error loading .env file: %v", err_env)
 	}
+	return nil
 }
 
 func GetPort() string {
-	loadenv()
-	port := os.Getenv("PORT")
-	return port
+	port := os.Getenv("APP_PORT")
+	return ":" + port
 }
 
 func GetSecretKey() string {
-	loadenv()
 	secret := os.Getenv("SECRET_KEY")
 	return secret
 }
