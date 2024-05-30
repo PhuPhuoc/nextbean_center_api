@@ -15,7 +15,7 @@ import (
 // @in							header
 // @name						Authorization
 func main() {
-	conn_str := utils.GetConnStr(true)
+	conn_str := utils.GetConnStr(false)
 	port := utils.GetPort()
 	db, err_db := database.InitMySQLStore(conn_str)
 	if err_db != nil {

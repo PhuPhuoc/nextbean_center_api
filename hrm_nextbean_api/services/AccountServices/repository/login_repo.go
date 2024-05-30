@@ -10,7 +10,6 @@ import (
 
 func (store *AccountStore) AccountLogin(email, password string, account *model.Account) error {
 	rawqsl := query.QueryGetAccountByEmailForLogin()
-	fmt.Println("hehe: ", rawqsl)
 	rows, err := store.db.Query(rawqsl, email)
 	if err != nil {
 		return fmt.Errorf("DB error (query failed): %v", err)

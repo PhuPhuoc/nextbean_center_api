@@ -10,6 +10,7 @@ import (
 
 	_ "github.com/PhuPhuoc/hrm_nextbean_api/docs"
 	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
@@ -49,6 +50,12 @@ func (sv *server) RunApp() error {
 	// router: /login vs /account
 	account_services_controller.RegisterAccountRouter(subrouter, sv.db)
 
+	corsHandler := handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+	)
+
 	log.Printf("|api|\n  -+-  Server is listening at port |%v|\n  -+-  URL swagger: http://localhost%v/swagger/index.html", sv.address, sv.address)
-	return http.ListenAndServe(sv.address, router)
+	return http.ListenAndServe(sv.address, corsHandler(router))
 }
