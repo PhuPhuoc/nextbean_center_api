@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `task` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `project_id` int NOT NULL,
+  `id` VARCHAR(255) PRIMARY KEY,
+  `project_id` varchar(255) NOT NULL,
   `assigned_to` varchar(255) NOT NULL,
   `status` enum('todo','inprogress','done') NOT NULL DEFAULT 'todo',
   `name` varchar(255) NOT NULL,

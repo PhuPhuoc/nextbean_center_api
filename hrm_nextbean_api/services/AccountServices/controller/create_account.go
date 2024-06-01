@@ -25,13 +25,18 @@ import (
 func HandleCreateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		acc_info := new(model.AccountCreationInfo)
+		var req_body_json map[string]interface{}
 
 		var body_data bytes.Buffer
 		if _, err_read_body := body_data.ReadFrom(req.Body); err_read_body != nil {
 			utils.WriteJSON(rw, utils.ErrorResponse_InvalidRequest(err_read_body))
 			return
 		}
-		json.Unmarshal(body_data.Bytes(), acc_info)
+		json.Unmarshal(body_data.Bytes(), &req_body_json)
+
+		// todo: sử lý validate req_body_json ở đây trước khi map vào model: AccountCreation info
+		// todo:  1/ sử lý validate hợp lệ giữa req_body_json vs AccountCreationInfo
+		// todo:  2/ nếu đã hợp lệ thì map req_body_json vào AccountCreationInfo
 
 		store := repository.NewAccountStore(db)
 		biz := business.NewCreateAccountBusiness(store)

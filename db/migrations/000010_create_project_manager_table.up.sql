@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `project_manager` (
-  `project_id` int NOT NULL,
+  `project_id` varchar(255) NOT NULL,
   `account_id` varchar(255) NOT NULL,
   PRIMARY KEY (`project_id`, `account_id`)
 );

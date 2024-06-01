@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `project` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `id` VARCHAR(255) PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `status` enum('not_start', 'doing', 'done', 'cancel'),
   `description` text,

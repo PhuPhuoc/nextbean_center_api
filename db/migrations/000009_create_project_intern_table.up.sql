@@ -1,6 +1,9 @@
 CREATE TABLE IF NOT EXISTS `project_intern` (
-  `project_id` int NOT NULL,
+  `project_id` varchar(255) NOT NULL,
   `intern_id` varchar(255) NOT NULL,
+  `join_at` datetime NOT NULL,
+  `leave_at` datetime,
+  `status` ENUM('inprogress', 'leave') DEFAULT 'inprogress',
   PRIMARY KEY (`project_id`, `intern_id`)
 );
 

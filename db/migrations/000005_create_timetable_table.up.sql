@@ -6,7 +6,7 @@ CREATE TABLE `timetable` (
   `est_end_at` datetime NOT NULL,
   `act_start_at` datetime,
   `act_end_at` datetime,
-  `is_approved` BOOLEAN DEFAULT false,
+  `status` ENUM('processing', 'notapproved', 'approved') DEFAULT 'processing',
   `created_at` datetime  DEFAULT CURRENT_TIMESTAMP,
   `deleted_ad` datetime
 );

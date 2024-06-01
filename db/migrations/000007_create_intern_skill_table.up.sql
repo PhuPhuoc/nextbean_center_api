@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `intern_skill` (
   `intern_id` varchar(255) NOT NULL,
   `technical_id` int NOT NULL,
+  `skill_level` ENUM('basic', 'intermediate', 'advanced'),
   PRIMARY KEY (`intern_id`, `technical_id`)
 );
 
