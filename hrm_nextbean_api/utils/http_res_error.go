@@ -7,9 +7,9 @@ import (
 )
 
 type error_response struct {
-	StatusCode int    `json:"status-code"`
-	Message    string `json:"message"`
-	Log        string `json:"log"`
+	StatusCode int         `json:"status-code"`
+	Message    interface{} `json:"message"`
+	Log        string      `json:"log"`
 }
 
 func validate_nil_err(e error) string {
@@ -55,6 +55,14 @@ func ErrorResponse_TokenExpired() *error_response {
 }
 
 func ErrorResponse_BadRequest(mess string, e error) *error_response {
+	return &error_response{
+		StatusCode: http.StatusBadRequest,
+		Message:    mess,
+		Log:        validate_nil_err(e),
+	}
+}
+
+func ErrorResponse_BadRequest_ListError(mess interface{}, e error) *error_response {
 	return &error_response{
 		StatusCode: http.StatusBadRequest,
 		Message:    mess,

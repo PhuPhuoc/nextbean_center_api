@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS `intern` (
   `phone_number` varchar(255),
   `ojt_id` int,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `deleted_ad` datetime
+  `deleted_ad` datetime,
+  UNIQUE KEY `intern_account_id_unique` (`account_id`)
 );
 
 ALTER TABLE `intern`

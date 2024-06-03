@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -12,6 +13,10 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
+
+func arrayToString(arr []string) string {
+	return strings.Join(arr, " ~ ")
+}
 
 // @Summary		create new account
 // @Description	account creation information
@@ -34,9 +39,12 @@ func HandleCreateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		}
 		json.Unmarshal(body_data.Bytes(), &req_body_json)
 
-		// todo: sử lý validate req_body_json ở đây trước khi map vào model: AccountCreation info
-		// todo:  1/ sử lý validate hợp lệ giữa req_body_json vs AccountCreationInfo
-		// todo:  2/ nếu đã hợp lệ thì map req_body_json vào AccountCreationInfo
+		check := utils.CreateValidateRequestBody(req_body_json, acc_info)
+		if flag, list_err := check.GetValidateStatus(); !flag {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest_ListError(list_err, fmt.Errorf("check request-body failed")))
+			return
+		}
+		json.Unmarshal(body_data.Bytes(), acc_info)
 
 		store := repository.NewAccountStore(db)
 		biz := business.NewCreateAccountBusiness(store)
