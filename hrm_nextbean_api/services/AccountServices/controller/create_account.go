@@ -14,10 +14,6 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-func arrayToString(arr []string) string {
-	return strings.Join(arr, " ~ ")
-}
-
 // @Summary		create new account
 // @Description	account creation information
 // @Tags			Account

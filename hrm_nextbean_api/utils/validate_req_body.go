@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -145,7 +146,7 @@ func checkEnumValue(value interface{}, rule_value string) bool {
 
 	enum := extractEnum(rule_value)
 
-	list_enum := strings.Split(enum, "-")
+	list_enum := strings.Split(enum, " or ")
 	for i := 0; i < len(list_enum); i++ {
 		if list_enum[i] == valueStr {
 			return true
@@ -178,7 +179,7 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 	default:
 		if strings.Contains(rule_value, "enum") {
 			if !checkEnumValue(value, rule_value) {
-				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be in %v", key, extractEnum(rule_value))}
+				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be %v", key, extractEnum(rule_value))}
 				vrb.list_error = append(vrb.list_error, err_field)
 			}
 		}
@@ -186,19 +187,69 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 
 }
 
-func (vrb *ValidateRequestBody) checkMinMax(key string, value interface{}, rule_value string) {
+func (vrb *ValidateRequestBody) checkMinMax(key string, value interface{}) {
+	err_mess_min := ""
+	err_mess_max := ""
+
+	rule := vrb.rule_dict[key]
+	vl_min, ok_min := rule["min"]
+	vl_max, ok_max := rule["max"]
+
+	if ok_min {
+		value_min, _ := strconv.Atoi(vl_min)
+		if value_string, ok := value.(string); ok {
+			if len(value_string) < value_min {
+				err_mess_min = fmt.Sprintf("%v must more than %v keyword", key, value_min)
+			}
+		} else if isNumber(value) {
+			value_number := value.(int)
+
+			if value_number < value_min {
+				err_mess_min = fmt.Sprintf("%v must more than %v", key, value_min)
+			}
+		}
+	}
+
+	if ok_max {
+		value_max, _ := strconv.Atoi(vl_max)
+		if value_string, ok := value.(string); ok {
+			if len(value_string) > value_max {
+				err_mess_max = fmt.Sprintf("%v must less than %v keyword", key, value_max)
+			}
+		} else if isNumber(value) {
+			value_number := value.(int)
+
+			if value_number > value_max {
+				err_mess_min = fmt.Sprintf("%v must less than %v", key, value_max)
+			}
+		}
+	}
+
+	if err_mess_min != "" {
+		err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: err_mess_min}
+		vrb.list_error = append(vrb.list_error, err_field)
+		return
+	} else if err_mess_max != "" {
+		err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: err_mess_max}
+		vrb.list_error = append(vrb.list_error, err_field)
+		return
+	}
 
 }
 
 func (vrb *ValidateRequestBody) validateReqBody_checkValidField() {
 	for key, value := range vrb.req_body {
 		rule := vrb.rule_dict[key]
+		flag := false
 		for rule_key, rule_value := range rule {
 			switch rule_key {
 			case "type":
 				vrb.checkType(key, value, rule_value)
 			case "min", "max":
-				vrb.checkMinMax(key, value, rule_value)
+				if !flag {
+					vrb.checkMinMax(key, value)
+					flag = true
+				}
 			}
 		}
 	}
