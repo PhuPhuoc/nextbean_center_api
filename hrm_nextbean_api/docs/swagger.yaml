@@ -4,11 +4,19 @@ definitions:
       email:
         type: string
       password:
+        minLength: 6
         type: string
       role:
         type: string
-      user_name:
+      user-name:
+        maxLength: 15
+        minLength: 5
         type: string
+    required:
+    - email
+    - password
+    - role
+    - user-name
     type: object
   model.LoginForm:
     properties:
@@ -21,8 +29,7 @@ definitions:
     properties:
       log:
         type: string
-      message:
-        type: string
+      message: {}
       status-code:
         type: integer
     type: object

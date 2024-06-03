@@ -99,18 +99,27 @@ const docTemplate = `{
     "definitions": {
         "model.AccountCreationInfo": {
             "type": "object",
+            "required": [
+                "email",
+                "password",
+                "role",
+                "user-name"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "minLength": 6
                 },
                 "role": {
                     "type": "string"
                 },
-                "user_name": {
-                    "type": "string"
+                "user-name": {
+                    "type": "string",
+                    "maxLength": 15,
+                    "minLength": 5
                 }
             }
         },
@@ -131,9 +140,7 @@ const docTemplate = `{
                 "log": {
                     "type": "string"
                 },
-                "message": {
-                    "type": "string"
-                },
+                "message": {},
                 "status-code": {
                     "type": "integer"
                 }
