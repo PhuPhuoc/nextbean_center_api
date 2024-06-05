@@ -14,9 +14,9 @@ func NewCreateAccountBusiness(store createAccountStorage) *createAccountBuisines
 	return &createAccountBuisiness{store: store}
 }
 
-func (biz *createAccountBuisiness) CreateNewAccount(acc_cre_info *model.AccountCreationInfo) error {
-	if err_querry := biz.store.CreateAccount(acc_cre_info); err_querry != nil {
-		return err_querry
+func (biz *createAccountBuisiness) CreateNewAccountBiz(acc_cre_info *model.AccountCreationInfo) error {
+	if err_query := biz.store.CreateAccount(acc_cre_info); err_query != nil {
+		return err_query
 	}
 	return nil
 }

@@ -15,7 +15,7 @@ import (
 
 // @Summary		login by account
 // @Description	Log in using account with email and password
-// @Tags			Authen
+// @Tags			Authentication
 // @Accept			json
 // @Produce			json
 // @Param			request	body		model.LoginForm	 true	"Login request"

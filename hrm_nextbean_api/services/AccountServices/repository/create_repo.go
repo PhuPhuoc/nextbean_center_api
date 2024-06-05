@@ -46,5 +46,3 @@ func (store *AccountStore) checkEmailExist(email string) error {
 	}
 	return nil // user'email not exist in db => ready to create
 }
-
-//0945909397
