@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/business"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
@@ -44,7 +45,12 @@ func HandleCreateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Reque
 		store := repository.NewInternStore(db)
 		biz := business.NewCreateAccountBusiness(store)
 		if err_create := biz.CreateNewAccountBiz(intern_info); err_create != nil {
-			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("bad request", err_create))
+			if strings.Contains(err_create.Error(), "duplicate data") {
+				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("duplicate data, cannot create new intern", err_create))
+				return
+			}
+			utils.WriteJSON(rw, utils.ErrorResponse_DB(err_create))
+			return
 		}
 
 		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("Intern created successfully!"))
