@@ -31,6 +31,39 @@ definitions:
     - role
     - user-name
     type: object
+  model.InternCreation:
+    properties:
+      address:
+        type: string
+      avatar:
+        type: string
+      date-of-birth:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      ojt-id:
+        type: integer
+      password:
+        minLength: 6
+        type: string
+      phone-number:
+        type: string
+      student-code:
+        maxLength: 10
+        minLength: 4
+        type: string
+      user-name:
+        maxLength: 20
+        minLength: 4
+        type: string
+    required:
+    - email
+    - password
+    - student-code
+    - user-name
+    type: object
   model.LoginForm:
     properties:
       email:
@@ -229,6 +262,32 @@ paths:
       summary: delete an account
       tags:
       - Account
+  /api/v1/intern:
+    post:
+      consumes:
+      - application/json
+      description: intern creation information
+      parameters:
+      - description: 'Required: user-name, email, password, student-code'
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.InternCreation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new intern-account
+      tags:
+      - Intern
   /api/v1/login:
     post:
       consumes:

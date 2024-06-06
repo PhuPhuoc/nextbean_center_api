@@ -235,6 +235,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/intern": {
+            "post": {
+                "description": "intern creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Intern"
+                ],
+                "summary": "create new intern-account",
+                "parameters": [
+                    {
+                        "description": "Required: user-name, email, password, student-code",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.InternCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "description": "Log in using account with email and password",
@@ -315,6 +355,52 @@ const docTemplate = `{
                 },
                 "role": {
                     "type": "string"
+                },
+                "user-name": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 4
+                }
+            }
+        },
+        "model.InternCreation": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "student-code",
+                "user-name"
+            ],
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "date-of-birth": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "ojt-id": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "phone-number": {
+                    "type": "string"
+                },
+                "student-code": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 4
                 },
                 "user-name": {
                     "type": "string",

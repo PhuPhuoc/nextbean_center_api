@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	account_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/controller"
+	intern_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/controller"
 
 	_ "github.com/PhuPhuoc/hrm_nextbean_api/docs"
 	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
@@ -49,6 +50,8 @@ func (sv *server) RunApp() error {
 
 	// router: /login vs /account
 	account_services_controller.RegisterAccountRouter(subrouter, sv.db)
+	// router: /intern
+	intern_services_controller.RegisterInterntRouter(subrouter, sv.db)
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),

@@ -1,10 +1,12 @@
 CREATE TABLE IF NOT EXISTS `intern` (
   `id` varchar(255) PRIMARY KEY,
   `account_id` varchar(255) NOT NULL,
-  `phone_number` varchar(255),
   `ojt_id` int,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `deleted_ad` datetime,
+  `avatar` varchar(255),
+  `gender` varchar(10),
+  `dateofbirth`varchar(10),
+  `phone_number` varchar(12),
+  `address` varchar(255),
   UNIQUE KEY `intern_account_id_unique` (`account_id`)
 );
 
