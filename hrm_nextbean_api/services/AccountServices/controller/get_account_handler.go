@@ -34,24 +34,24 @@ func handleGetRequestParamQuery(req *http.Request, pagin *common.Pagination, ord
 	filter.CreatedAtTo = req.URL.Query().Get("created-at-to")
 }
 
-// @Summary		Get accounts
-// @Description	Get a list of accounts with filtering, sorting, and pagination
-// @Tags			Account
-// @Accept			json
-// @Produce		json
-// @Param			page			query		int												false	"Page number"
-// @Param			psize			query		int												false	"Number of records per page"
-// @Param			id				query		int												false	"Filter by account ID"
-// @Param			username		query		string											false	"Filter by username"
-// @Param			email			query		string											false	"Filter by email"
-// @Param			role			query		string											false	"Filter by role"
-// @Param			created-at-from	query		string											false	"Filter by creation date from (YYYY-MM-DD)"
-// @Param			created-at-to	query		string											false	"Filter by creation date to (YYYY-MM-DD)"
-// @Param			order			query		string											false	"Order by field (created_at or name), prefix with - for descending order"
-// @Success		200				{object}	utils.success_response{data=[]model.Account}	"OK"
-// @Failure		400				{object}	utils.error_response							"Bad Request"
-// @Failure		404				{object}	utils.error_response							"Not Found"
-// @Router			/api/v1/account [get]
+//	@Summary		Get accounts
+//	@Description	Get a list of accounts with filtering, sorting, and pagination
+//	@Tags			Account
+//	@Accept			json
+//	@Produce		json
+//	@Param			page			query		int												false	"Page number"
+//	@Param			psize			query		int												false	"Number of records per page"
+//	@Param			id				query		string											false	"Filter by account ID"
+//	@Param			username		query		string											false	"Filter by username"
+//	@Param			email			query		string											false	"Filter by email"
+//	@Param			role			query		string											false	"Filter by role"
+//	@Param			created-at-from	query		string											false	"Filter by creation date from (YYYY-MM-DD)"
+//	@Param			created-at-to	query		string											false	"Filter by creation date to (YYYY-MM-DD)"
+//	@Param			order			query		string											false	"Order by field (created_at or name), prefix with - for descending order"
+//	@Success		200				{object}	utils.success_response{data=[]model.Account}	"OK"
+//	@Failure		400				{object}	utils.error_response							"Bad Request"
+//	@Failure		404				{object}	utils.error_response							"Not Found"
+//	@Router			/api/v1/account [get]
 func HandleGetAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		var order string

@@ -42,7 +42,7 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "Filter by account ID",
                         "name": "id",
                         "in": "query"

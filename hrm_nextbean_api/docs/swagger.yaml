@@ -136,7 +136,7 @@ paths:
       - description: Filter by account ID
         in: query
         name: id
-        type: integer
+        type: string
       - description: Filter by username
         in: query
         name: username
