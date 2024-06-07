@@ -48,6 +48,29 @@ definitions:
       user-name:
         type: string
     type: object
+  model.Intern:
+    properties:
+      account-id:
+        type: string
+      address:
+        type: string
+      avatar:
+        type: string
+      date-of-birth:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      ojt:
+        type: integer
+      phone-number:
+        type: string
+      student-code:
+        type: string
+      user-name:
+        type: string
+    type: object
   model.InternCreation:
     properties:
       address:
@@ -80,6 +103,31 @@ definitions:
     - password
     - student-code
     - user-name
+    type: object
+  model.InternFilter:
+    properties:
+      account-id:
+        type: string
+      address:
+        type: string
+      dob-from:
+        type: string
+      dob-to:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      ojt-semester:
+        type: string
+      order-by:
+        type: string
+      phone-number:
+        type: string
+      student-code:
+        type: string
+      user-name:
+        type: string
     type: object
   model.LoginForm:
     properties:
@@ -119,8 +167,6 @@ definitions:
       data: {}
       filter: {}
       message:
-        type: string
-      orderby:
         type: string
       paging: {}
       status:
@@ -280,6 +326,50 @@ paths:
           schema:
             $ref: '#/definitions/utils.error_response'
       summary: create new intern-account
+      tags:
+      - Intern
+  /api/v1/intern/get/{page}/{psize}:
+    post:
+      consumes:
+      - application/json
+      description: Get a list of interns with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: path
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: path
+        name: psize
+        type: integer
+      - description: intern'filter option
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/model.InternFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Intern'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get interns
       tags:
       - Intern
   /api/v1/login:

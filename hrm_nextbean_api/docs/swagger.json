@@ -235,6 +235,78 @@
                 }
             }
         },
+        "/api/v1/intern/get/{page}/{psize}": {
+            "post": {
+                "description": "Get a list of interns with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Intern"
+                ],
+                "summary": "Get interns",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "path"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "path"
+                    },
+                    {
+                        "description": "intern'filter option",
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.InternFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Intern"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "description": "Log in using account with email and password",
@@ -349,6 +421,41 @@
                 }
             }
         },
+        "model.Intern": {
+            "type": "object",
+            "properties": {
+                "account-id": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "date-of-birth": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "ojt": {
+                    "type": "integer"
+                },
+                "phone-number": {
+                    "type": "string"
+                },
+                "student-code": {
+                    "type": "string"
+                },
+                "user-name": {
+                    "type": "string"
+                }
+            }
+        },
         "model.InternCreation": {
             "type": "object",
             "required": [
@@ -392,6 +499,44 @@
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 4
+                }
+            }
+        },
+        "model.InternFilter": {
+            "type": "object",
+            "properties": {
+                "account-id": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "dob-from": {
+                    "type": "string"
+                },
+                "dob-to": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "ojt-semester": {
+                    "type": "string"
+                },
+                "order-by": {
+                    "type": "string"
+                },
+                "phone-number": {
+                    "type": "string"
+                },
+                "student-code": {
+                    "type": "string"
+                },
+                "user-name": {
+                    "type": "string"
                 }
             }
         },
@@ -449,9 +594,6 @@
                 "data": {},
                 "filter": {},
                 "message": {
-                    "type": "string"
-                },
-                "orderby": {
                     "type": "string"
                 },
                 "paging": {},

@@ -50,6 +50,6 @@ func HandleGetAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 			return
 		}
 
-		utils.WriteJSON(rw, utils.SuccessResponse_GetObject(filter.OrderBy, pagin, filter, data))
+		utils.WriteJSON(rw, utils.SuccessResponse_GetObject(pagin, filter, data))
 	}
 }

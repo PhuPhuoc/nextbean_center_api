@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `intern` (
   `ojt_id` int,
   `avatar` varchar(255),
   `gender` varchar(10),
-  `dateofbirth`varchar(10),
+  `date_of_birth`datetime,
   `phone_number` varchar(12),
   `address` varchar(255),
   UNIQUE KEY `intern_account_id_unique` (`account_id`)

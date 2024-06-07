@@ -6,7 +6,6 @@ type success_response struct {
 	Status  int         `json:"status"`
 	Paging  interface{} `json:"paging,omitempty"`
 	Filter  interface{} `json:"filter,omitempty"`
-	OrderBy string      `json:"orderby,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 	Message string      `json:"message,omitempty"`
 }
@@ -20,13 +19,12 @@ func SuccessResponse_Full(status int, paging, filter, data interface{}) *success
 	}
 }
 
-func SuccessResponse_GetObject(orderby string, paging, filter, data interface{}) *success_response {
+func SuccessResponse_GetObject(paging, filter, data interface{}) *success_response {
 	return &success_response{
-		Status:  http.StatusOK,
-		Paging:  paging,
-		Filter:  filter,
-		OrderBy: orderby,
-		Data:    data,
+		Status: http.StatusOK,
+		Paging: paging,
+		Filter: filter,
+		Data:   data,
 	}
 }
 

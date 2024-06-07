@@ -127,9 +127,10 @@ func QueryGetAccount(pagin *common.Pagination, filter *model.AccountFilter) (str
 	pag := createPaginationClause(pagin)
 
 	// double param because in this code has 2 part of where clause ( 1 in cte - other in main select )
-	query.WriteString(cte + main + ord + pag)
 	doubledParams := make([]interface{}, len(param)*2)
 	copy(doubledParams, param)
 	copy(doubledParams[len(param):], param)
+
+	query.WriteString(cte + main + ord + pag)
 	return query.String(), doubledParams
 }
