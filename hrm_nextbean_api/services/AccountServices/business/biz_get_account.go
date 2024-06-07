@@ -6,7 +6,7 @@ import (
 )
 
 type getAccountStore interface {
-	GetAccount(pagin *common.Pagination, order string, filter *model.AccountFilter) ([]model.Account, error)
+	GetAccount(pagin *common.Pagination, filter *model.AccountFilter) ([]model.Account, error)
 }
 
 type getAccountBusiness struct {
@@ -19,8 +19,8 @@ func NewGetAccountBusiness(store getAccountStore) *getAccountBusiness {
 	}
 }
 
-func (biz *getAccountBusiness) GetAccountBiz(pagin *common.Pagination, order string, filter *model.AccountFilter) ([]model.Account, error) {
-	data, err_query := biz.store.GetAccount(pagin, order, filter)
+func (biz *getAccountBusiness) GetAccountBiz(pagin *common.Pagination, filter *model.AccountFilter) ([]model.Account, error) {
+	data, err_query := biz.store.GetAccount(pagin, filter)
 	if err_query != nil {
 		return nil, err_query
 	}

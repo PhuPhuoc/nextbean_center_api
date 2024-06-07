@@ -6,10 +6,10 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/model"
 )
 
-func (store *AccountStore) GetAccount(pagin *common.Pagination, order string, filter *model.AccountFilter) ([]model.Account, error) {
+func (store *AccountStore) GetAccount(pagin *common.Pagination, filter *model.AccountFilter) ([]model.Account, error) {
 	var total_record int64 = 0
 	data := []model.Account{}
-	rawsql, param := query.QueryGetAccount(pagin, order, filter)
+	rawsql, param := query.QueryGetAccount(pagin, filter)
 
 	rows, err_query := store.db.Query(rawsql, param...)
 	if err_query != nil {

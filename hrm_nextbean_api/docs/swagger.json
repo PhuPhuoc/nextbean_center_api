@@ -8,110 +8,6 @@
     },
     "paths": {
         "/api/v1/account": {
-            "get": {
-                "description": "Get a list of accounts with filtering, sorting, and pagination",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Account"
-                ],
-                "summary": "Get accounts",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of records per page",
-                        "name": "psize",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by account ID",
-                        "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by username",
-                        "name": "username",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by email",
-                        "name": "email",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by role",
-                        "name": "role",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by creation date from (YYYY-MM-DD)",
-                        "name": "created-at-from",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Filter by creation date to (YYYY-MM-DD)",
-                        "name": "created-at-to",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Order by field (created_at or name), prefix with - for descending order",
-                        "name": "order",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Account"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            },
             "put": {
                 "description": "update account's information",
                 "consumes": [
@@ -182,6 +78,78 @@
                     },
                     "400": {
                         "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/account/get/{page}/{psize}": {
+            "post": {
+                "description": "Get a list of accounts with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Get accounts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "path"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "path"
+                    },
+                    {
+                        "description": "account'filter option",
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.AccountFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Account"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -352,6 +320,32 @@
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 4
+                }
+            }
+        },
+        "model.AccountFilter": {
+            "type": "object",
+            "properties": {
+                "created-at-from": {
+                    "type": "string"
+                },
+                "created-at-to": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "order-by": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "user-name": {
+                    "type": "string"
                 }
             }
         },

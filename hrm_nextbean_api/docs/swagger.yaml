@@ -31,6 +31,23 @@ definitions:
     - role
     - user-name
     type: object
+  model.AccountFilter:
+    properties:
+      created-at-from:
+        type: string
+      created-at-to:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      order-by:
+        type: string
+      role:
+        type: string
+      user-name:
+        type: string
+    type: object
   model.InternCreation:
     properties:
       address:
@@ -120,73 +137,6 @@ info:
   version: "1.0"
 paths:
   /api/v1/account:
-    get:
-      consumes:
-      - application/json
-      description: Get a list of accounts with filtering, sorting, and pagination
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Number of records per page
-        in: query
-        name: psize
-        type: integer
-      - description: Filter by account ID
-        in: query
-        name: id
-        type: string
-      - description: Filter by username
-        in: query
-        name: username
-        type: string
-      - description: Filter by email
-        in: query
-        name: email
-        type: string
-      - description: Filter by role
-        in: query
-        name: role
-        type: string
-      - description: Filter by creation date from (YYYY-MM-DD)
-        in: query
-        name: created-at-from
-        type: string
-      - description: Filter by creation date to (YYYY-MM-DD)
-        in: query
-        name: created-at-to
-        type: string
-      - description: Order by field (created_at or name), prefix with - for descending
-          order
-        in: query
-        name: order
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.success_response'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.Account'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.error_response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: Get accounts
-      tags:
-      - Account
     post:
       consumes:
       - application/json
@@ -260,6 +210,50 @@ paths:
           schema:
             $ref: '#/definitions/utils.error_response'
       summary: delete an account
+      tags:
+      - Account
+  /api/v1/account/get/{page}/{psize}:
+    post:
+      consumes:
+      - application/json
+      description: Get a list of accounts with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: path
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: path
+        name: psize
+        type: integer
+      - description: account'filter option
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/model.AccountFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Account'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get accounts
       tags:
       - Account
   /api/v1/intern:

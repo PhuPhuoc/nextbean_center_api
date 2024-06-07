@@ -105,7 +105,7 @@ func createSelectClause(condition_clause string) string {
 func createOrderByClause(order string) string {
 	var query strings.Builder
 	if order == "" {
-		order = "created_at"
+		order = "created_at desc"
 	}
 	query.WriteString(` order by ` + order + ` `)
 	return query.String()
@@ -118,12 +118,12 @@ func createPaginationClause(pagin *common.Pagination) string {
 	return query.String()
 }
 
-func QueryGetAccount(pagin *common.Pagination, order string, filter *model.AccountFilter) (string, []interface{}) {
+func QueryGetAccount(pagin *common.Pagination, filter *model.AccountFilter) (string, []interface{}) {
 	var query strings.Builder
 	where, param := createConditionClause(filter)
 	cte := createCTEClause(where)
 	main := createSelectClause(where)
-	ord := createOrderByClause(order)
+	ord := createOrderByClause(filter.OrderBy)
 	pag := createPaginationClause(pagin)
 
 	// double param because in this code has 2 part of where clause ( 1 in cte - other in main select )

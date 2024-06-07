@@ -7,4 +7,5 @@ type AccountFilter struct {
 	Role          string `json:"role,omitempty"`
 	CreatedAtFrom string `json:"created-at-from,omitempty"`
 	CreatedAtTo   string `json:"created-at-to,omitempty"`
+	OrderBy       string `json:"order-by,omitempty"`
 }
