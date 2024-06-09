@@ -10,9 +10,9 @@ import (
 	"github.com/google/uuid"
 )
 
-func (store *AccountStore) CreateAccount(acc_cre_info *model.AccountCreationInfo) error {
+func (store *accountStore) CreateAccount(acc_cre_info *model.AccountCreationInfo) error {
 	if err_check_email_exist := store.checkEmailExist(acc_cre_info.Email); err_check_email_exist != nil {
-		if strings.Contains(err_check_email_exist.Error(), "email exist") {
+		if strings.Contains(err_check_email_exist.Error(), "duplicate_data_email") {
 			return fmt.Errorf("email: %v already exists", acc_cre_info.Email)
 		}
 		return fmt.Errorf("error when CreateAccount(checkEmailExist) in store: %v", err_check_email_exist)
@@ -35,14 +35,14 @@ func (store *AccountStore) CreateAccount(acc_cre_info *model.AccountCreationInfo
 	}
 }
 
-func (store *AccountStore) checkEmailExist(email string) error {
+func (store *accountStore) checkEmailExist(email string) error {
 	var flag bool
 	rawsql := query.QueryCheckExistEmail()
 	if err_query := store.db.QueryRow(rawsql, email).Scan(&flag); err_query != nil {
-		return fmt.Errorf("error when CreateAccount in store (check exist email): %v", err_query)
+		return fmt.Errorf("error when CreateAccount in store (check exists email): %v", err_query)
 	}
 	if flag {
-		return fmt.Errorf("email exist")
+		return fmt.Errorf("duplicate_data_email")
 	}
 	return nil // user'email not exist in db => ready to create
 }

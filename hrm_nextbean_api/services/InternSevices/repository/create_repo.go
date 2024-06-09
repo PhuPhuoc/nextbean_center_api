@@ -3,7 +3,6 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	intern_query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/intern_query"
 
@@ -12,7 +11,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (store *InternStore) checkInfoDuplicateInTableIntern(email, studentcode, phone string) (bool, map[string]bool, error) {
+func (store *internStore) checkInfoDuplicateInTableIntern(email, studentcode, phone string) (bool, map[string]bool, error) {
 	rawsql := intern_query.QueryCheckDulicateDataInIntern()
 
 	row := store.db.QueryRow(rawsql, email, studentcode, phone)
@@ -38,7 +37,7 @@ func (store *InternStore) checkInfoDuplicateInTableIntern(email, studentcode, ph
 	return isDuplicate, duplicateFields, nil
 }
 
-func (store *InternStore) CreateIntern(intern_cre_info *model.InternCreation) error {
+func (store *internStore) CreateIntern(intern_cre_info *model.InternCreation) error {
 	isDuplicate, duplicateFields, err_checkDup := store.checkInfoDuplicateInTableIntern(intern_cre_info.Email, intern_cre_info.StudentCode, intern_cre_info.PhoneNumber)
 	if err_checkDup != nil {
 		return fmt.Errorf("error when CreateIntern(checkInfoDuplicateInTableIntern) in store: %v", err_checkDup)
@@ -59,27 +58,32 @@ func (store *InternStore) CreateIntern(intern_cre_info *model.InternCreation) er
 	rawsql_intern := intern_query.QueryCreateNewIntern()
 	newUUID := uuid.New()
 
-	// begin transaction
-	var err_tx error
+	// Begin transaction
 	tx, err := store.db.Begin()
 	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = tx.Exec(rawsql_acc, newUUID, intern_cre_info.UserName, intern_cre_info.Email, pwdHash, "user", utils.CreateDateTimeCurrentFormated())
-	if err != nil {
-		err_tx = fmt.Errorf("error when CreateIntern in store - transaction - account: %v", err)
-	}
-	_, err = tx.Exec(rawsql_intern, intern_cre_info.StudentCode, newUUID, intern_cre_info.OjtId, intern_cre_info.Avatar, intern_cre_info.Gender, intern_cre_info.DateOfBirth, intern_cre_info.PhoneNumber, intern_cre_info.Address)
-	if err != nil {
-		err_tx = fmt.Errorf("error when CreateIntern in store - transaction - intern: %v", err)
+		return fmt.Errorf("error when CreateIntern(start transaction) in store: %v", err)
 	}
 
-	// commit transaction
+	// Execute first query
+	_, err = tx.Exec(rawsql_acc, newUUID, intern_cre_info.UserName, intern_cre_info.Email, pwdHash, "user", utils.CreateDateTimeCurrentFormated())
+	if err != nil {
+		tx.Rollback()
+		return fmt.Errorf("error when CreateIntern in store - transaction - account: %v", err)
+	}
+
+	// Execute second query
+	_, err = tx.Exec(rawsql_intern, intern_cre_info.StudentCode, newUUID, intern_cre_info.OjtId, intern_cre_info.Avatar, intern_cre_info.Gender, intern_cre_info.DateOfBirth, intern_cre_info.PhoneNumber, intern_cre_info.Address)
+	if err != nil {
+		tx.Rollback()
+		return fmt.Errorf("error when CreateIntern in store - transaction - intern: %v", err)
+	}
+
+	// Commit transaction
 	err = tx.Commit()
 	if err != nil {
 		tx.Rollback()
-		return err_tx
+		return fmt.Errorf("error when committing transaction in store: %v", err)
 	}
-	return nil
 
+	return nil
 }

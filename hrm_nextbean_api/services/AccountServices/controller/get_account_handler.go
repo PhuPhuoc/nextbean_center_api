@@ -12,7 +12,6 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
-	"github.com/gorilla/mux"
 )
 
 // @Summary		Get accounts
@@ -20,18 +19,26 @@ import (
 // @Tags			Account
 // @Accept			json
 // @Produce		json
-// @Param			page	path		int												false	"Page number"
-// @Param			psize	path		int												false	"Number of records per page"
+// @Param			page	query		int												false	"Page number"
+// @Param			psize	query		int												false	"Number of records per page"
 // @Param			request	body		model.AccountFilter								false	"account'filter option"
 // @Success		200		{object}	utils.success_response{data=[]model.Account}	"OK"
 // @Failure		400		{object}	utils.error_response							"Bad Request"
 // @Failure		404		{object}	utils.error_response							"Not Found"
-// @Router			/api/v1/account/get/{page}/{psize} [post]
+// @Router			/api/v1/account/get [post]
 func HandleGetAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		pagin := new(common.Pagination)
-		pagin.Page, _ = strconv.Atoi(mux.Vars(req)["page"])
-		pagin.PSize, _ = strconv.Atoi(mux.Vars(req)["psize"])
+		page, err := strconv.Atoi(req.URL.Query().Get("page"))
+		if err != nil {
+			pagin.Page = 1
+		}
+		psize, err := strconv.Atoi(req.URL.Query().Get("psize"))
+		if err != nil {
+			pagin.PSize = 10
+		}
+		pagin.Page = page
+		pagin.PSize = psize
 		pagin.Process()
 		filter := new(model.AccountFilter)
 

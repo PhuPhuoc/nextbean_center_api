@@ -45,7 +45,7 @@ func HandleCreateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		store := repository.NewAccountStore(db)
 		biz := business.NewCreateAccountBusiness(store)
 		if err := biz.CreateNewAccountBiz(acc_info); err != nil {
-			if strings.Contains(err.Error(), "exists") {
+			if strings.Contains(err.Error(), "duplicate_data") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err))

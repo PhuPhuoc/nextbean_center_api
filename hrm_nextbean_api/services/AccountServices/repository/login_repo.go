@@ -8,7 +8,7 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-func (store *AccountStore) AccountLogin(email, password string, account *model.Account) error {
+func (store *accountStore) AccountLogin(email, password string, account *model.Account) error {
 	rawqsl := query.QueryGetAccountByEmailForLogin()
 	rows, err := store.db.Query(rawqsl, email)
 	if err != nil {

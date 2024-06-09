@@ -93,7 +93,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/account/get/{page}/{psize}": {
+        "/api/v1/account/get": {
             "post": {
                 "description": "Get a list of accounts with filtering, sorting, and pagination",
                 "consumes": [
@@ -111,13 +111,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Page number",
                         "name": "page",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Number of records per page",
                         "name": "psize",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "description": "account'filter option",
@@ -204,6 +204,44 @@ const docTemplate = `{
             }
         },
         "/api/v1/intern": {
+            "put": {
+                "description": "update intern's information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Intern"
+                ],
+                "summary": "update intern",
+                "parameters": [
+                    {
+                        "description": "account creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.InternUpdateInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful update",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "update failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "intern creation information",
                 "consumes": [
@@ -243,7 +281,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/intern/get/{page}/{psize}": {
+        "/api/v1/intern/get": {
             "post": {
                 "description": "Get a list of interns with filtering, sorting, and pagination",
                 "consumes": [
@@ -261,13 +299,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Page number",
                         "name": "page",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Number of records per page",
                         "name": "psize",
-                        "in": "path"
+                        "in": "query"
                     },
                     {
                         "description": "intern'filter option",
@@ -450,8 +488,8 @@ const docTemplate = `{
                 "gender": {
                     "type": "string"
                 },
-                "ojt": {
-                    "type": "integer"
+                "ojt-semester": {
+                    "type": "string"
                 },
                 "phone-number": {
                     "type": "string"
@@ -545,6 +583,51 @@ const docTemplate = `{
                 },
                 "user-name": {
                     "type": "string"
+                }
+            }
+        },
+        "model.InternUpdateInfo": {
+            "type": "object",
+            "required": [
+                "account-id",
+                "email",
+                "student-code",
+                "user-name"
+            ],
+            "properties": {
+                "account-id": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "date-of-birth": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "ojt-id": {
+                    "type": "integer"
+                },
+                "phone-number": {
+                    "type": "string"
+                },
+                "student-code": {
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 4
+                },
+                "user-name": {
+                    "type": "string",
+                    "maxLength": 20,
+                    "minLength": 4
                 }
             }
         },

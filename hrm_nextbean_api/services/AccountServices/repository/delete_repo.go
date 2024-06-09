@@ -8,7 +8,7 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-func (store *AccountStore) DeleteAccount(id string) error {
+func (store *accountStore) DeleteAccount(id string) error {
 
 	if err_check_id_exist := store.checkIdExist(id); err_check_id_exist != nil {
 		if strings.Contains(err_check_id_exist.Error(), "id not exist") {

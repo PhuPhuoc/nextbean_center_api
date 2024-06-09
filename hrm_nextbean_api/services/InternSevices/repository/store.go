@@ -2,10 +2,10 @@ package repository
 
 import "database/sql"
 
-type InternStore struct {
+type internStore struct {
 	db *sql.DB
 }
 
-func NewInternStore(db *sql.DB) *InternStore {
-	return &InternStore{db: db}
+func NewInternStore(db *sql.DB) *internStore {
+	return &internStore{db: db}
 }

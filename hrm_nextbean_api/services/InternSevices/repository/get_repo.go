@@ -6,7 +6,7 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
 )
 
-func (store *InternStore) GetIntern(pagin *common.Pagination, filter *model.InternFilter) ([]model.Intern, error) {
+func (store *internStore) GetIntern(pagin *common.Pagination, filter *model.InternFilter) ([]model.Intern, error) {
 	var total_record int64 = 0
 	data := []model.Intern{}
 	rawsql, param := query.QueryGetIntern(pagin, filter)

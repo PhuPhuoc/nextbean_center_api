@@ -1,6 +1,7 @@
 package internquery
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -8,15 +9,24 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
 )
 
-var table = `intern`
-var table_name = ` ` + table + ` `
-
 func QueryCreateNewAccount() string {
-	return `insert into` + table_name + `(id, user_name, email, password, role, created_at) values (?,?,?,?,?,?)`
+	return `insert into account(id, user_name, email, password, role, created_at) values (?,?,?,?,?,?)`
 }
 
 func QueryCreateNewIntern() string {
-	return `insert into` + table_name + `(id,account_id,ojt_id,avatar,gender,dateofbirth,phone_number,address) values (?,?,?,?,?,?,?,?)`
+	return `insert into intern(id,account_id,ojt_id,avatar,gender,date_of_birth,phone_number,address) values (?,?,?,?,?,?,?,?)`
+}
+
+func QueryUpdateAccount() string {
+	return `update account set user_name = ?, email = ? where id = ?`
+}
+
+func QueryUpdateIntern() string {
+	return `update intern set id = ?, ojt_id = ?, avatar = ?, gender = ?, date_of_birth = ?, phone_number = ?, address = ? where id = ?`
+}
+
+func QueryGetCurrentStudentCodeByAccountID() string {
+	return `select i.id from intern i join account acc on i.account_id = acc.id where acc.id = ?`
 }
 
 func QueryCheckDulicateDataInIntern() string {
@@ -24,6 +34,15 @@ func QueryCheckDulicateDataInIntern() string {
 	part1 := ` case when exists (select 1 from account where email = ?) then 'email' end as email_exists,`
 	part2 := ` case when exists (select 1 from intern where id = ?) then 'id' end as studentcode_exists,`
 	part3 := ` case when exists (select 1 from intern where phone_number = ?) then 'phone_number' end as phonenumber_exists`
+	end := `from DUAL;`
+	return start + ` ` + part1 + ` ` + part2 + ` ` + part3 + ` ` + end
+}
+
+func QueryCheckDulicateDataInInternUpdate(acc_id, in_id string) string {
+	start := `select`
+	part1 := fmt.Sprintf(` case when exists (select 1 from account where email = ? and id != '%s') then 'email' end as email_exists,`, acc_id)
+	part2 := fmt.Sprintf(` case when exists (select 1 from intern where id = ? and id != '%s') then 'id' end as studentcode_exists,`, in_id)
+	part3 := fmt.Sprintf(` case when exists (select 1 from intern where phone_number = ? and id != '%s') then 'phone_number' end as phonenumber_exists`, in_id)
 	end := `from DUAL;`
 	return start + ` ` + part1 + ` ` + part2 + ` ` + part3 + ` ` + end
 }

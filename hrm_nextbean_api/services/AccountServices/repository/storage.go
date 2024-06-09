@@ -2,10 +2,10 @@ package repository
 
 import "database/sql"
 
-type AccountStore struct {
+type accountStore struct {
 	db *sql.DB
 }
 
-func NewAccountStore(db *sql.DB) *AccountStore {
-	return &AccountStore{db: db}
+func NewAccountStore(db *sql.DB) *accountStore {
+	return &accountStore{db: db}
 }

@@ -62,8 +62,8 @@ definitions:
         type: string
       gender:
         type: string
-      ojt:
-        type: integer
+      ojt-semester:
+        type: string
       phone-number:
         type: string
       student-code:
@@ -128,6 +128,38 @@ definitions:
         type: string
       user-name:
         type: string
+    type: object
+  model.InternUpdateInfo:
+    properties:
+      account-id:
+        type: string
+      address:
+        type: string
+      avatar:
+        type: string
+      date-of-birth:
+        type: string
+      email:
+        type: string
+      gender:
+        type: string
+      ojt-id:
+        type: integer
+      phone-number:
+        type: string
+      student-code:
+        maxLength: 10
+        minLength: 4
+        type: string
+      user-name:
+        maxLength: 20
+        minLength: 4
+        type: string
+    required:
+    - account-id
+    - email
+    - student-code
+    - user-name
     type: object
   model.LoginForm:
     properties:
@@ -258,18 +290,18 @@ paths:
       summary: delete an account
       tags:
       - Account
-  /api/v1/account/get/{page}/{psize}:
+  /api/v1/account/get:
     post:
       consumes:
       - application/json
       description: Get a list of accounts with filtering, sorting, and pagination
       parameters:
       - description: Page number
-        in: path
+        in: query
         name: page
         type: integer
       - description: Number of records per page
-        in: path
+        in: query
         name: psize
         type: integer
       - description: account'filter option
@@ -328,18 +360,43 @@ paths:
       summary: create new intern-account
       tags:
       - Intern
-  /api/v1/intern/get/{page}/{psize}:
+    put:
+      consumes:
+      - application/json
+      description: update intern's information
+      parameters:
+      - description: account creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.InternUpdateInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful update
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: update failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: update intern
+      tags:
+      - Intern
+  /api/v1/intern/get:
     post:
       consumes:
       - application/json
       description: Get a list of interns with filtering, sorting, and pagination
       parameters:
       - description: Page number
-        in: path
+        in: query
         name: page
         type: integer
       - description: Number of records per page
-        in: path
+        in: query
         name: psize
         type: integer
       - description: intern'filter option

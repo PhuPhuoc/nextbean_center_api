@@ -45,13 +45,13 @@ func HandleUpdateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		store := repository.NewAccountStore(db)
 		biz := business.NewUpdateAccountBusiness(store)
 		if err := biz.UpdateAccountBiz(acc_info); err != nil {
-			if strings.Contains(err.Error(), "exists") {
+			if strings.Contains(err.Error(), "duplicate_data") || strings.Contains(err.Error(), "not_exist") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err))
 			}
 			return
 		}
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageUpdated("Account updated successfully!"))
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageUpdated("account updated successfully!"))
 	}
 }
