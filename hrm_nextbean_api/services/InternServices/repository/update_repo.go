@@ -10,6 +10,9 @@ import (
 )
 
 func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInfo) error {
+	if err_check_accID_exist := checkAccountIDExist(store, intern_update_info.AccountId); err_check_accID_exist != nil {
+		return err_check_accID_exist
+	}
 	current_student_code, err_check := getStudentCodeByAccountID(store, intern_update_info.AccountId)
 	if err_check != nil {
 		return err_check
@@ -48,6 +51,19 @@ func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInf
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when committing transaction in store: %v", err)
+	}
+	return nil
+}
+
+func checkAccountIDExist(store *internStore, accID string) error {
+	var flag bool
+	query := intern_query.QueryCheckExistAccountID()
+	err := store.db.QueryRow(query, accID).Scan(&flag)
+	if err != nil {
+		return fmt.Errorf("error when check exist account-id : %v", err)
+	}
+	if !flag {
+		return fmt.Errorf("account'id not exists")
 	}
 	return nil
 }

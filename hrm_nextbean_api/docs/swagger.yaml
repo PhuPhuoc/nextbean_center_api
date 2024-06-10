@@ -48,6 +48,44 @@ definitions:
       user-name:
         type: string
     type: object
+  model.DetailProject:
+    properties:
+      join-at:
+        type: string
+      leave-at:
+        type: string
+      project-name:
+        type: string
+      status:
+        type: string
+    type: object
+  model.DetailSkill:
+    properties:
+      skill-level:
+        type: string
+      technical-skill:
+        type: string
+    type: object
+  model.FilterOJT:
+    properties:
+      id:
+        type: integer
+      order-by:
+        type: string
+      semester:
+        type: string
+      university:
+        type: string
+    type: object
+  model.FilterTechnical:
+    properties:
+      Technical-skill:
+        type: string
+      id:
+        type: integer
+      order-by:
+        type: string
+    type: object
   model.Intern:
     properties:
       account-id:
@@ -103,6 +141,37 @@ definitions:
     - password
     - student-code
     - user-name
+    type: object
+  model.InternDetailInfo:
+    properties:
+      account-id:
+        type: string
+      address:
+        type: string
+      avatar:
+        type: string
+      date-of-birth:
+        type: string
+      detail-project:
+        items:
+          $ref: '#/definitions/model.DetailProject'
+        type: array
+      detail-skill:
+        items:
+          $ref: '#/definitions/model.DetailSkill'
+        type: array
+      email:
+        type: string
+      gender:
+        type: string
+      ojt-semester:
+        type: string
+      phone-number:
+        type: string
+      student-code:
+        type: string
+      user-name:
+        type: string
     type: object
   model.InternFilter:
     properties:
@@ -168,6 +237,36 @@ definitions:
       password:
         type: string
     type: object
+  model.MapInternSkill:
+    properties:
+      skill-level:
+        items:
+          type: string
+        type: array
+      skills:
+        items:
+          type: integer
+        type: array
+      student-code:
+        type: string
+    required:
+    - skill-level
+    - skills
+    - student-code
+    type: object
+  model.OJT:
+    properties:
+      end-at:
+        type: string
+      id:
+        type: integer
+      semester:
+        type: string
+      start-at:
+        type: string
+      university:
+        type: string
+    type: object
   model.OJTCreationInfo:
     properties:
       end-at:
@@ -183,6 +282,20 @@ definitions:
     - semester
     - start-at
     - university
+    type: object
+  model.Technical:
+    properties:
+      Technical-skill:
+        type: string
+      id:
+        type: integer
+    type: object
+  model.TechnicalCreationInfo:
+    properties:
+      technical-skill:
+        type: string
+    required:
+    - technical-skill
     type: object
   model.UpdateAccountInfo:
     properties:
@@ -420,6 +533,40 @@ paths:
       summary: update intern
       tags:
       - Intern
+  /api/v1/intern/{account-id}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of intern (base infomation, skills, projects)
+      parameters:
+      - description: enter account-id
+        in: path
+        name: account-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.InternDetailInfo'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get intern'details by account-id
+      tags:
+      - Intern
   /api/v1/intern/get:
     post:
       consumes:
@@ -462,6 +609,32 @@ paths:
           schema:
             $ref: '#/definitions/utils.error_response'
       summary: Get interns
+      tags:
+      - Intern
+  /api/v1/intern/skill:
+    post:
+      consumes:
+      - application/json
+      description: Add intern skills information
+      parameters:
+      - description: 'Required: Fill in the id (number) of the skills into this array'
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.MapInternSkill'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful mapping
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: mapping failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: map intern-intern
       tags:
       - Intern
   /api/v1/login:
@@ -566,6 +739,120 @@ paths:
       summary: delete an ojt
       tags:
       - OJT
+  /api/v1/ojt/get:
+    post:
+      consumes:
+      - application/json
+      description: Get a list of ojt with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: ojt'filter option
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/model.FilterOJT'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.OJT'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get OJT
+      tags:
+      - OJT
+  /api/v1/technical:
+    post:
+      consumes:
+      - application/json
+      description: technical creation information
+      parameters:
+      - description: technical creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.TechnicalCreationInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new Technical
+      tags:
+      - Technical
+  /api/v1/technical/get:
+    post:
+      consumes:
+      - application/json
+      description: Get a list of Technical with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: ojt'filter option
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/model.FilterTechnical'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Technical'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get Technical
+      tags:
+      - Technical
 securityDefinitions:
   ApiKeyAuth:
     in: header

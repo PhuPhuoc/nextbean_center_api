@@ -14,18 +14,18 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-// @Summary		update intern
-// @Description	update intern's information
+// @Summary		map intern-intern
+// @Description	Add intern skills information
 // @Tags			Intern
 // @Accept			json
 // @Produce		json
-// @Param			request	body		model.InternUpdateInfo	true	"account creation request"
-// @Success		200		{object}	utils.success_response	"Successful update"
-// @Failure		400		{object}	utils.error_response	"update failure"
-// @Router			/api/v1/intern [put]
-func handleUpdateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+// @Param			request	body		model.MapInternSkill	true	"Required: Fill in the id (number) of the skills into this array"
+// @Success		200		{object}	utils.success_response	"Successful mapping"
+// @Failure		400		{object}	utils.error_response	"mapping failure"
+// @Router			/api/v1/intern/skill [post]
+func handleMapInternSkill(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		intern_info := new(model.InternUpdateInfo)
+		map_info := new(model.MapInternSkill)
 		var req_body_json map[string]interface{}
 
 		var body_data bytes.Buffer
@@ -35,22 +35,23 @@ func handleUpdateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Reque
 		}
 		json.Unmarshal(body_data.Bytes(), &req_body_json)
 
-		check := utils.CreateValidateRequestBody(req_body_json, intern_info)
+		check := utils.CreateValidateRequestBody(req_body_json, map_info)
 		if flag, list_err := check.GetValidateStatus(); !flag {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest_ListError(list_err, fmt.Errorf("check request-body failed")))
 			return
 		}
-		json.Unmarshal(body_data.Bytes(), intern_info)
+		json.Unmarshal(body_data.Bytes(), map_info)
+
 		store := repository.NewInternStore(db)
-		biz := business.NewUpdateInternBusiness(store)
-		if err_biz := biz.UpdateInternBiz(intern_info); err_biz != nil {
-			if strings.Contains(err_biz.Error(), "duplicate data") || strings.Contains(err_biz.Error(), "not exists") {
+		biz := business.NewMapInternSkillBiz(store)
+		if err_biz := biz.MapInternSkillBiz(map_info); err_biz != nil {
+			if strings.Contains(err_biz.Error(), "not exist") || strings.Contains(err_biz.Error(), "same length") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
 			}
 			return
 		}
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageUpdated("intern updated successfully!"))
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("Add skill information to your internship resume successfully!"))
 	}
 }

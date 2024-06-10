@@ -353,6 +353,102 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/intern/skill": {
+            "post": {
+                "description": "Add intern skills information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Intern"
+                ],
+                "summary": "map intern-intern",
+                "parameters": [
+                    {
+                        "description": "Required: Fill in the id (number) of the skills into this array",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MapInternSkill"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/intern/{account-id}": {
+            "get": {
+                "description": "Get details of intern (base infomation, skills, projects)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Intern"
+                ],
+                "summary": "Get intern'details by account-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter account-id",
+                        "name": "account-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.InternDetailInfo"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/login": {
             "post": {
                 "description": "Log in using account with email and password",
@@ -471,6 +567,78 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/ojt/get": {
+            "post": {
+                "description": "Get a list of ojt with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJT"
+                ],
+                "summary": "Get OJT",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "description": "ojt'filter option",
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.FilterOJT"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.OJT"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/ojt/{id}": {
             "delete": {
                 "description": "delete ojt information",
@@ -502,6 +670,118 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "delete failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/technical": {
+            "post": {
+                "description": "technical creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Technical"
+                ],
+                "summary": "create new Technical",
+                "parameters": [
+                    {
+                        "description": "technical creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TechnicalCreationInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/technical/get": {
+            "post": {
+                "description": "Get a list of Technical with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Technical"
+                ],
+                "summary": "Get Technical",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "description": "ojt'filter option",
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/model.FilterTechnical"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Technical"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -579,6 +859,65 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user-name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DetailProject": {
+            "type": "object",
+            "properties": {
+                "join-at": {
+                    "type": "string"
+                },
+                "leave-at": {
+                    "type": "string"
+                },
+                "project-name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DetailSkill": {
+            "type": "object",
+            "properties": {
+                "skill-level": {
+                    "type": "string"
+                },
+                "technical-skill": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.FilterOJT": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "order-by": {
+                    "type": "string"
+                },
+                "semester": {
+                    "type": "string"
+                },
+                "university": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.FilterTechnical": {
+            "type": "object",
+            "properties": {
+                "Technical-skill": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order-by": {
                     "type": "string"
                 }
             }
@@ -661,6 +1000,53 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 4
+                }
+            }
+        },
+        "model.InternDetailInfo": {
+            "type": "object",
+            "properties": {
+                "account-id": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "date-of-birth": {
+                    "type": "string"
+                },
+                "detail-project": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DetailProject"
+                    }
+                },
+                "detail-skill": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DetailSkill"
+                    }
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "ojt-semester": {
+                    "type": "string"
+                },
+                "phone-number": {
+                    "type": "string"
+                },
+                "student-code": {
+                    "type": "string"
+                },
+                "user-name": {
+                    "type": "string"
                 }
             }
         },
@@ -758,6 +1144,51 @@ const docTemplate = `{
                 }
             }
         },
+        "model.MapInternSkill": {
+            "type": "object",
+            "required": [
+                "skill-level",
+                "skills",
+                "student-code"
+            ],
+            "properties": {
+                "skill-level": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "skills": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "student-code": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.OJT": {
+            "type": "object",
+            "properties": {
+                "end-at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "semester": {
+                    "type": "string"
+                },
+                "start-at": {
+                    "type": "string"
+                },
+                "university": {
+                    "type": "string"
+                }
+            }
+        },
         "model.OJTCreationInfo": {
             "type": "object",
             "required": [
@@ -777,6 +1208,28 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "university": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Technical": {
+            "type": "object",
+            "properties": {
+                "Technical-skill": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.TechnicalCreationInfo": {
+            "type": "object",
+            "required": [
+                "technical-skill"
+            ],
+            "properties": {
+                "technical-skill": {
                     "type": "string"
                 }
             }

@@ -233,6 +233,32 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a string", key)}
 			vrb.list_error = append(vrb.list_error, err_field)
 		}
+	case "int_array":
+		if arr, ok := value.([]interface{}); ok {
+			for _, v := range arr {
+				if ok := isNumber(v); !ok {
+					err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("all elements of field '%v' must be integers", key)}
+					vrb.list_error = append(vrb.list_error, err_field)
+					break
+				}
+			}
+		} else {
+			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be an array of integers", key)}
+			vrb.list_error = append(vrb.list_error, err_field)
+		}
+	case "string_array":
+		if arr, ok := value.([]interface{}); ok {
+			for _, v := range arr {
+				if _, ok := v.(string); !ok {
+					err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("all elements of field '%v' must be strings", key)}
+					vrb.list_error = append(vrb.list_error, err_field)
+					break
+				}
+			}
+		} else {
+			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be an array of strings", key)}
+			vrb.list_error = append(vrb.list_error, err_field)
+		}
 	default:
 		if strings.Contains(rule_value, "enum") {
 			if !checkEnumValue(value, rule_value) {

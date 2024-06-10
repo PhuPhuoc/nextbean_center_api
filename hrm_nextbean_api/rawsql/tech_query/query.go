@@ -1,30 +1,18 @@
-package ojtquery
+package techquery
 
 import (
 	"strconv"
 	"strings"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/common"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/model"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/TechnicalServices/model"
 )
 
-func QueryCreateNewOJT() string {
-	return `insert into ojt(semester, university, start_at, end_at, created_at) values (?,?,?,?,?)`
+func QueryCreateTechnical() string {
+	return `insert into technical(technical_skill, created_at) values (?,?)`
 }
 
-func QueryCheckExistID() string {
-	return `select exists(select 1 from ojt where id = ?)`
-}
-
-func QueryUpdateOJT() string {
-	return `update ojt set semester = ?, university = ?, start_at = ?, end_at = ? where id = ?`
-}
-
-func QueryDeleteOJT() string {
-	return `update ojt set deleted_at = ? where id = ?`
-}
-
-func QueryGetOJT(pagin *common.Pagination, filter *model.FilterOJT) (string, []interface{}) {
+func QueryGetTech(pagin *common.Pagination, filter *model.FilterTechnical) (string, []interface{}) {
 	var query strings.Builder
 	where, param := createConditionClause(filter)
 	cte := createCTEClause(where)
@@ -41,7 +29,7 @@ func QueryGetOJT(pagin *common.Pagination, filter *model.FilterOJT) (string, []i
 	return query.String(), doubledParams
 }
 
-func createConditionClause(filter *model.FilterOJT) (string, []interface{}) {
+func createConditionClause(filter *model.FilterTechnical) (string, []interface{}) {
 	param := []interface{}{}
 	var query strings.Builder
 	query.WriteString(` where `)
@@ -50,15 +38,9 @@ func createConditionClause(filter *model.FilterOJT) (string, []interface{}) {
 		query.WriteString(`id = ? and `)
 		param = append(param, filter.Id)
 	}
-	if filter.Semester != "" {
-		query.WriteString(`semester like ? and `)
-		p := `%` + filter.Semester + `%`
-		param = append(param, p)
-
-	}
-	if filter.University != "" {
-		query.WriteString(`university like ? and `)
-		p := `%` + filter.University + `%`
+	if filter.TechnicalSkill != "" {
+		query.WriteString(`technical_skill like ? and `)
+		p := `%` + filter.TechnicalSkill + `%`
 		param = append(param, p)
 
 	}
@@ -69,13 +51,13 @@ func createConditionClause(filter *model.FilterOJT) (string, []interface{}) {
 
 func createCTEClause(condition_clause string) string {
 	var query strings.Builder
-	query.WriteString(`with cte as ( select count(*) as total_record from ojt` + condition_clause + `)`)
+	query.WriteString(`with cte as ( select count(*) as total_record from technical` + condition_clause + `)`)
 	return query.String()
 }
 
 func createSelectClause(condition_clause string) string {
 	var query strings.Builder
-	query.WriteString(` select id, semester, university, start_at, end_at, cte.total_record from ojt`)
+	query.WriteString(` select id, technical_skill, cte.total_record from technical`)
 	query.WriteString(` join cte `)
 	query.WriteString(condition_clause)
 	return query.String()

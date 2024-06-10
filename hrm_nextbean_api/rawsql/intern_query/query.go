@@ -29,6 +29,13 @@ func QueryGetCurrentStudentCodeByAccountID() string {
 	return `select i.id from intern i join account acc on i.account_id = acc.id where acc.id = ?`
 }
 
+func QueryCheckExistAccountID() string {
+	return `select exists(select 1 from account where id = ? and deleted_at is null)`
+}
+func QueryCheckExistInternID() string {
+	return `select exists(select 1 from intern i join account acc on i.account_id = acc.id where i.id = ? and acc.deleted_at is null)`
+}
+
 func QueryCheckDulicateDataInIntern() string {
 	start := `select`
 	part1 := ` case when exists (select 1 from account where email = ?) then 'email' end as email_exists,`
@@ -159,3 +166,23 @@ func createConditionClause(filter *model.InternFilter) (string, []interface{}) {
 	query.WriteString(`acc.deleted_at is null `)
 	return query.String(), param
 }
+
+// todo:  map intern - skill
+func QueryMapInternSkill(values string) string {
+	return fmt.Sprintf("INSERT INTO intern_skill (intern_id, technical_id, skill_level) VALUES %s ON DUPLICATE KEY UPDATE skill_level=VALUES(skill_level)", values)
+}
+
+func QueryDeleteMapInternSkill() string {
+	return `DELETE FROM intern_skill WHERE intern_id = ?`
+}
+
+// todo: get details
+func QueryGetInternDetailInfo() string {
+	return `select acc.user_name, acc.email, i.id, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address from account acc join intern i on acc.id = i.account_id where acc.id = ? and acc.deleted_at is null`
+}
+
+func QueryGetInternSkill() string {
+	return `select t.technical_skill, s.skill_level from intern_skill s join technical t on t.id = s.technical_id where s.intern_id = ?`
+}
+
+// todo ... QueryGetInternProject()
