@@ -224,7 +224,7 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 	case "date":
 		if v, ok := value.(string); ok {
 			if is_email := isValidDate(v); !is_email {
-				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a date (YYYY-MM-DD", key)}
+				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a date (YYYY-MM-DD)", key)}
 				vrb.list_error = append(vrb.list_error, err_field)
 			}
 		}

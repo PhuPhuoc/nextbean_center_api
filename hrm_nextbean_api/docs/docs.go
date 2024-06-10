@@ -677,6 +677,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/project": {
+            "post": {
+                "description": "project creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "create new project",
+                "parameters": [
+                    {
+                        "description": "project creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProjectCreationInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/technical": {
             "post": {
                 "description": "technical creation information",
@@ -1006,9 +1046,6 @@ const docTemplate = `{
         "model.InternDetailInfo": {
             "type": "object",
             "properties": {
-                "account-id": {
-                    "type": "string"
-                },
                 "address": {
                     "type": "string"
                 },
@@ -1208,6 +1245,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "university": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ProjectCreationInfo": {
+            "type": "object",
+            "required": [
+                "description",
+                "duration",
+                "name",
+                "start-at"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "start-at": {
                     "type": "string"
                 }
             }

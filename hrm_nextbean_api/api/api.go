@@ -9,6 +9,7 @@ import (
 	account_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/controller"
 	intern_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/controller"
 	ojt_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/controller"
+	project_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/ProjectServices/controller"
 	tech_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TechnicalServices/controller"
 
 	_ "github.com/PhuPhuoc/hrm_nextbean_api/docs"
@@ -58,6 +59,8 @@ func (sv *server) RunApp() error {
 	ojt_services_controller.RegisterOJTRouter(subrouter, sv.db)
 	// router: /technical
 	tech_services_controller.RegisterTechnicalRouter(subrouter, sv.db)
+	// router: /project
+	project_services_controller.RegisterProjectRouter(subrouter, sv.db)
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
