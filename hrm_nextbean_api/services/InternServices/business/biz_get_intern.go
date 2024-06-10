@@ -2,7 +2,7 @@ package business
 
 import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/common"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 )
 
 type getInternStore interface {

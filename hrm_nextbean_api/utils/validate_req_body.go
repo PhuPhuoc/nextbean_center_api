@@ -132,6 +132,56 @@ func isValidEmail(email string) bool {
 	return re.MatchString(email)
 }
 
+func isValidDate(date string) bool {
+	// Định dạng regex để kiểm tra định dạng YYYY-MM-DD
+	dateRegex := `^(?P<Year>\d{4})-(?P<Month>0[1-9]|1[0-2])-(?P<Day>0[1-9]|[12]\d|3[01])$`
+	re := regexp.MustCompile(dateRegex)
+
+	// Kiểm tra xem chuỗi date có khớp với định dạng không
+	if !re.MatchString(date) {
+		return false
+	}
+
+	// Phân tích các nhóm trong chuỗi khớp với regex
+	matches := re.FindStringSubmatch(date)
+
+	year, err := strconv.Atoi(matches[1])
+	if err != nil {
+		return false
+	}
+	month, err := strconv.Atoi(matches[2])
+	if err != nil {
+		return false
+	}
+	day, err := strconv.Atoi(matches[3])
+	if err != nil {
+		return false
+	}
+
+	// Kiểm tra ngày hợp lệ cho từng tháng
+	if (month == 4 || month == 6 || month == 9 || month == 11) && day > 30 {
+		return false
+	}
+	if month == 2 {
+		if isLeapYear(year) {
+			if day > 29 {
+				return false
+			}
+		} else {
+			if day > 28 {
+				return false
+			}
+		}
+	}
+
+	return true
+}
+
+// Hàm kiểm tra năm nhuận
+func isLeapYear(year int) bool {
+	return (year%4 == 0 && year%100 != 0) || (year%400 == 0)
+}
+
 func extractEnum(enumString string) string {
 	trimmed := strings.TrimPrefix(enumString, "enum(")
 	trimmed = strings.TrimSuffix(trimmed, ")")
@@ -168,6 +218,13 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 		if v, ok := value.(string); ok {
 			if is_email := isValidEmail(v); !is_email {
 				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a email (@gmail.com or @fpt.edu.vn)", key)}
+				vrb.list_error = append(vrb.list_error, err_field)
+			}
+		}
+	case "date":
+		if v, ok := value.(string); ok {
+			if is_email := isValidDate(v); !is_email {
+				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a date (YYYY-MM-DD", key)}
 				vrb.list_error = append(vrb.list_error, err_field)
 			}
 		}

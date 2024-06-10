@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	intern_query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/intern_query"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 )
 
 func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInfo) error {

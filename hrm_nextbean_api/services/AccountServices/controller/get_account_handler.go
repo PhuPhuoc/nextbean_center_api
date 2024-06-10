@@ -26,7 +26,7 @@ import (
 // @Failure		400		{object}	utils.error_response							"Bad Request"
 // @Failure		404		{object}	utils.error_response							"Not Found"
 // @Router			/api/v1/account/get [post]
-func HandleGetAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleGetAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		pagin := new(common.Pagination)
 		page, err := strconv.Atoi(req.URL.Query().Get("page"))

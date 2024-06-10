@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/business"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/repository"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/business"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
@@ -23,7 +23,7 @@ import (
 // @Success		200		{object}	utils.success_response	"Successful create"
 // @Failure		400		{object}	utils.error_response	"create failure"
 // @Router			/api/v1/intern [post]
-func HandleCreateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleCreateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		intern_info := new(model.InternCreation)
 		var req_body_json map[string]interface{}

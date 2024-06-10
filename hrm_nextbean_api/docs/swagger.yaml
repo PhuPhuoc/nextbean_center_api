@@ -168,6 +168,22 @@ definitions:
       password:
         type: string
     type: object
+  model.OJTCreationInfo:
+    properties:
+      end-at:
+        type: string
+      semester:
+        type: string
+      start-at:
+        type: string
+      university:
+        type: string
+    required:
+    - end-at
+    - semester
+    - start-at
+    - university
+    type: object
   model.UpdateAccountInfo:
     properties:
       email:
@@ -185,6 +201,25 @@ definitions:
     - id
     - role
     - user-name
+    type: object
+  model.UpdateOJTInfo:
+    properties:
+      end-at:
+        type: string
+      id:
+        type: integer
+      semester:
+        type: string
+      start-at:
+        type: string
+      university:
+        type: string
+    required:
+    - end-at
+    - id
+    - semester
+    - start-at
+    - university
     type: object
   utils.error_response:
     properties:
@@ -245,7 +280,7 @@ paths:
       - application/json
       description: update account's information
       parameters:
-      - description: account creation request
+      - description: account update request
         in: body
         name: request
         required: true
@@ -455,6 +490,82 @@ paths:
       summary: login by account
       tags:
       - Authentication
+  /api/v1/ojt:
+    post:
+      consumes:
+      - application/json
+      description: ojt creation information
+      parameters:
+      - description: ojt creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.OJTCreationInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new ojt (on the job training)
+      tags:
+      - OJT
+    put:
+      consumes:
+      - application/json
+      description: update ojt's information
+      parameters:
+      - description: OJT update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateOJTInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful update
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: update failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: update ojt
+      tags:
+      - OJT
+  /api/v1/ojt/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete ojt information
+      parameters:
+      - description: OJT ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful delete
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: delete failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: delete an ojt
+      tags:
+      - OJT
 securityDefinitions:
   ApiKeyAuth:
     in: header

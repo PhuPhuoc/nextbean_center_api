@@ -23,7 +23,7 @@ import (
 // @Success		200		{object}	utils.success_response		"Successful create"
 // @Failure		400		{object}	utils.error_response		"create failure"
 // @Router			/api/v1/account [post]
-func HandleCreateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleCreateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		acc_info := new(model.AccountCreationInfo)
 		var req_body_json map[string]interface{}

@@ -30,7 +30,7 @@ const docTemplate = `{
                 "summary": "update account",
                 "parameters": [
                     {
-                        "description": "account creation request",
+                        "description": "account update request",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -392,6 +392,122 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/ojt": {
+            "put": {
+                "description": "update ojt's information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJT"
+                ],
+                "summary": "update ojt",
+                "parameters": [
+                    {
+                        "description": "OJT update request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateOJTInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful update",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "update failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "ojt creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJT"
+                ],
+                "summary": "create new ojt (on the job training)",
+                "parameters": [
+                    {
+                        "description": "ojt creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.OJTCreationInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/ojt/{id}": {
+            "delete": {
+                "description": "delete ojt information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJT"
+                ],
+                "summary": "delete an ojt",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "OJT ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful delete",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "delete failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -642,6 +758,29 @@ const docTemplate = `{
                 }
             }
         },
+        "model.OJTCreationInfo": {
+            "type": "object",
+            "required": [
+                "end-at",
+                "semester",
+                "start-at",
+                "university"
+            ],
+            "properties": {
+                "end-at": {
+                    "type": "string"
+                },
+                "semester": {
+                    "type": "string"
+                },
+                "start-at": {
+                    "type": "string"
+                },
+                "university": {
+                    "type": "string"
+                }
+            }
+        },
         "model.UpdateAccountInfo": {
             "type": "object",
             "required": [
@@ -664,6 +803,33 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 4
+                }
+            }
+        },
+        "model.UpdateOJTInfo": {
+            "type": "object",
+            "required": [
+                "end-at",
+                "id",
+                "semester",
+                "start-at",
+                "university"
+            ],
+            "properties": {
+                "end-at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "semester": {
+                    "type": "string"
+                },
+                "start-at": {
+                    "type": "string"
+                },
+                "university": {
+                    "type": "string"
                 }
             }
         },

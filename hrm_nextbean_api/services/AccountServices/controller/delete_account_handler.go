@@ -21,7 +21,7 @@ import (
 // @Success		200	{object}	utils.success_response	"Successful delete"
 // @Failure		400	{object}	utils.error_response	"delete failure"
 // @Router			/api/v1/account/{id} [delete]
-func HandleDeleteAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleDeleteAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		accountID := mux.Vars(req)["id"]
 		if accountID == "" {

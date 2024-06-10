@@ -3,7 +3,7 @@ package repository
 import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/common"
 	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/intern_query"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 )
 
 func (store *internStore) GetIntern(pagin *common.Pagination, filter *model.InternFilter) ([]model.Intern, error) {

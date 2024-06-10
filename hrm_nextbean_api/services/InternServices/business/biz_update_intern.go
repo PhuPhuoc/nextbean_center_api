@@ -1,6 +1,6 @@
 package business
 
-import "github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
+import "github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 
 type updateInternStorage interface {
 	UpdateIntern(intern_update_info *model.InternUpdateInfo) error

@@ -6,7 +6,7 @@ import (
 
 	intern_query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/intern_query"
 
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 	"github.com/google/uuid"
 )

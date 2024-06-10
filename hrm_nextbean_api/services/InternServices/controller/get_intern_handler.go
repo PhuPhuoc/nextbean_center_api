@@ -8,9 +8,9 @@ import (
 	"strconv"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/common"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/business"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/model"
-	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternSevices/repository"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/business"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
@@ -26,7 +26,7 @@ import (
 // @Failure		400		{object}	utils.error_response						"Bad Request"
 // @Failure		404		{object}	utils.error_response						"Not Found"
 // @Router			/api/v1/intern/get [post]
-func HandleGetIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleGetIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		pagin := new(common.Pagination)
 		page, err := strconv.Atoi(req.URL.Query().Get("page"))

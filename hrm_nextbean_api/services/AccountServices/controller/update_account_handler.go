@@ -19,11 +19,11 @@ import (
 // @Tags			Account
 // @Accept			json
 // @Produce		json
-// @Param			request	body		model.UpdateAccountInfo	true	"account creation request"
+// @Param			request	body		model.UpdateAccountInfo	true	"account update request"
 // @Success		200		{object}	utils.success_response	"Successful update"
 // @Failure		400		{object}	utils.error_response	"update failure"
 // @Router			/api/v1/account [put]
-func HandleUpdateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleUpdateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		acc_info := new(model.UpdateAccountInfo)
 		var req_body_json map[string]interface{}
