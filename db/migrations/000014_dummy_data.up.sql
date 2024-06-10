@@ -19,7 +19,9 @@ VALUES ('1', 'phuoc', 'phuoc@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'ad
 
 
 INSERT INTO ojt (semester, university, start_at, end_at)
-VALUES ('summer24', 'FPT', '2024-03-01 00:00:00', '2024-06-15 00:00:00');
+VALUES ('spring24', 'FPT', '2024-01-01 00:00:00', '2024-04-15 00:00:00'),
+('summer24', 'FPT', '2024-05-01 00:00:00', '2024-09-15 00:00:00'),
+('fall24', 'FPT', '2024-10-01 00:00:00', '2024-12-15 00:00:00');
 
 INSERT INTO intern (id, account_id, ojt_id, avatar, gender, date_of_birth, phone_number, address)
 VALUES ('SE170001', '7', 1, 'avatar_url', 'male', '2003-01-15', '090000001', 'Khu A Duong B Quan C Phuong D, HCM'),
@@ -34,4 +36,15 @@ VALUES ('SE170001', '7', 1, 'avatar_url', 'male', '2003-01-15', '090000001', 'Kh
 ('SE170010', '16', 1, 'avatar_url', 'female', '2003-06-15', '090000010', 'Khu A Duong B Quan C Phuong D, HCM'),
 ('SE170011', '17', 1, 'avatar_url', 'female', '2003-07-15', '090000011', 'Khu A Duong B Quan C Phuong D, HCM');
 
-
+INSERT INTO technical (technical_skill)
+VALUES ('ReactJS'),
+('Angular'),
+('VueJS'),
+('Flutter'),
+('React Native'),
+('Asp dotNet'),
+('Winform dotNet'),
+('Golang'),
+('Python'),
+('NestJS'),
+('NextJS');
