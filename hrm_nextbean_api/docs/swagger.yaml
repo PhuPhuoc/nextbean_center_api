@@ -281,6 +281,19 @@ definitions:
     - start-at
     - university
     type: object
+  model.Project:
+    properties:
+      duration:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      start-date:
+        type: string
+      status:
+        type: string
+    type: object
   model.ProjectCreationInfo:
     properties:
       description:
@@ -296,6 +309,19 @@ definitions:
     - duration
     - name
     - start-at
+    type: object
+  model.ProjectFilter:
+    properties:
+      name:
+        type: string
+      order-by:
+        type: string
+      start-date-from:
+        type: string
+      start-date-to:
+        type: string
+      status:
+        type: string
     type: object
   model.Technical:
     properties:
@@ -347,6 +373,28 @@ definitions:
     - semester
     - start-at
     - university
+    type: object
+  model.UpdateProjectInfo:
+    properties:
+      description:
+        type: string
+      duration:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      start-at:
+        type: string
+      status:
+        type: string
+    required:
+    - description
+    - duration
+    - id
+    - name
+    - start-at
+    - status
     type: object
   utils.error_response:
     properties:
@@ -821,6 +869,75 @@ paths:
           schema:
             $ref: '#/definitions/utils.error_response'
       summary: create new project
+      tags:
+      - Project
+    put:
+      consumes:
+      - application/json
+      description: project update information
+      parameters:
+      - description: project update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateProjectInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Update project
+      tags:
+      - Project
+  /api/v1/project/get:
+    post:
+      consumes:
+      - application/json
+      description: Get a list of projects with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: account'filter option
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/model.ProjectFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Project'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get projects
       tags:
       - Project
   /api/v1/technical:

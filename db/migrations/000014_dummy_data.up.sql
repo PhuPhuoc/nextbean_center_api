@@ -48,3 +48,8 @@ VALUES ('ReactJS'),
 ('Python'),
 ('NestJS'),
 ('NextJS');
+
+INSERT INTO `project` (`id`, `name`, `status`, `description`, `start_date`, `duration`)
+VALUES ('proj1', 'Project Alpha', 'not_start', 'This is the first project', '2024-06-15 08:00:00', '3 months'),
+('proj2', 'Project Beta', 'doing', 'This project is currently in progress', '2024-05-01 09:00:00', '6 months'),
+('proj3', 'Project Gamma', 'done', 'This project has been completed', '2023-12-01 10:00:00', '1 year');
