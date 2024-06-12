@@ -56,7 +56,8 @@ func (store *internStore) CreateIntern(intern_cre_info *model.InternCreation) er
 	pwdHash := utils.GenerateHash(intern_cre_info.Password)
 	rawsql_acc := intern_query.QueryCreateNewAccount()
 	rawsql_intern := intern_query.QueryCreateNewIntern()
-	newUUID := uuid.New()
+	newUUID_account := uuid.New()
+	newUUID_intern := uuid.New()
 
 	// Begin transaction
 	tx, err := store.db.Begin()
@@ -65,14 +66,14 @@ func (store *internStore) CreateIntern(intern_cre_info *model.InternCreation) er
 	}
 
 	// Execute first query
-	_, err = tx.Exec(rawsql_acc, newUUID, intern_cre_info.UserName, intern_cre_info.Email, pwdHash, "user", utils.CreateDateTimeCurrentFormated())
+	_, err = tx.Exec(rawsql_acc, newUUID_account, intern_cre_info.UserName, intern_cre_info.Email, pwdHash, "user", utils.CreateDateTimeCurrentFormated())
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when CreateIntern in store - transaction - account: %v", err)
 	}
 
 	// Execute second query
-	_, err = tx.Exec(rawsql_intern, intern_cre_info.StudentCode, newUUID, intern_cre_info.OjtId, intern_cre_info.Avatar, intern_cre_info.Gender, intern_cre_info.DateOfBirth, intern_cre_info.PhoneNumber, intern_cre_info.Address)
+	_, err = tx.Exec(rawsql_intern, newUUID_intern, intern_cre_info.StudentCode, newUUID_account, intern_cre_info.OjtId, intern_cre_info.Avatar, intern_cre_info.Gender, intern_cre_info.DateOfBirth, intern_cre_info.PhoneNumber, intern_cre_info.Address)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when CreateIntern in store - transaction - intern: %v", err)

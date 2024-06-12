@@ -100,6 +100,8 @@ definitions:
         type: string
       gender:
         type: string
+      intern-id:
+        type: string
       ojt-semester:
         type: string
       phone-number:
@@ -161,6 +163,8 @@ definitions:
       email:
         type: string
       gender:
+        type: string
+      id:
         type: string
       ojt-semester:
         type: string
@@ -237,6 +241,8 @@ definitions:
     type: object
   model.MapInternSkill:
     properties:
+      intern-id:
+        type: string
       skill-level:
         items:
           type: string
@@ -245,12 +251,32 @@ definitions:
         items:
           type: integer
         type: array
-      student-code:
-        type: string
     required:
+    - intern-id
     - skill-level
     - skills
-    - student-code
+    type: object
+  model.MapProMem:
+    properties:
+      mem-id:
+        type: string
+      project-id:
+        type: string
+    required:
+    - mem-id
+    - project-id
+    type: object
+  model.MapProPM:
+    properties:
+      list-manager-id:
+        items:
+          type: string
+        type: array
+      project-id:
+        type: string
+    required:
+    - list-manager-id
+    - project-id
     type: object
   model.OJT:
     properties:
@@ -910,7 +936,7 @@ paths:
         in: query
         name: psize
         type: integer
-      - description: account'filter option
+      - description: project'filter option
         in: body
         name: request
         schema:
@@ -938,6 +964,58 @@ paths:
           schema:
             $ref: '#/definitions/utils.error_response'
       summary: Get projects
+      tags:
+      - Project
+  /api/v1/project/manager:
+    post:
+      consumes:
+      - application/json
+      description: Add manager to project information
+      parameters:
+      - description: 'Required: Fill in the id of the project manager into this array'
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.MapProPM'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful mapping
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: mapping failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: map project-manager
+      tags:
+      - Project
+  /api/v1/project/member:
+    post:
+      consumes:
+      - application/json
+      description: Add member to project information
+      parameters:
+      - description: Add project-id and member-id to this json
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.MapProMem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful mapping
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: mapping failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: map project-member
       tags:
       - Project
   /api/v1/technical:

@@ -2,6 +2,7 @@ package model
 
 type Intern struct {
 	AccountID    string `json:"account-id"`
+	InternID     string `json:"intern-id"`
 	UserName     string `json:"user-name"`
 	Email        string `json:"email"`
 	StudentCode  string `json:"student-code"`

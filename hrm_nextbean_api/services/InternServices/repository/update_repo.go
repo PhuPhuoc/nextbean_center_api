@@ -13,11 +13,11 @@ func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInf
 	if err_check_accID_exist := checkAccountIDExist(store, intern_update_info.AccountId); err_check_accID_exist != nil {
 		return err_check_accID_exist
 	}
-	current_student_code, err_check := getStudentCodeByAccountID(store, intern_update_info.AccountId)
+	intern_id, err_check := getInternIDByAccountID(store, intern_update_info.AccountId)
 	if err_check != nil {
 		return err_check
 	}
-	if err_check_duplicate := checkDuplicateDataWhenUpdateIntern(store, intern_update_info, *current_student_code); err_check_duplicate != nil {
+	if err_check_duplicate := checkDuplicateDataWhenUpdateIntern(store, intern_update_info, *intern_id); err_check_duplicate != nil {
 		if strings.Contains(err_check_duplicate.Error(), "duplicate data") {
 			return err_check_duplicate
 		}
@@ -40,7 +40,7 @@ func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInf
 	}
 
 	// Execute second query
-	_, err = tx.Exec(rawsql_intern, intern_update_info.StudentCode, intern_update_info.OjtId, intern_update_info.Avatar, intern_update_info.Gender, intern_update_info.DateOfBirth, intern_update_info.PhoneNumber, intern_update_info.Address, current_student_code)
+	_, err = tx.Exec(rawsql_intern, intern_update_info.StudentCode, intern_update_info.OjtId, intern_update_info.Avatar, intern_update_info.Gender, intern_update_info.DateOfBirth, intern_update_info.PhoneNumber, intern_update_info.Address, intern_id)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when UpdateIntern in store - transaction - intern: %v", err)
@@ -68,9 +68,9 @@ func checkAccountIDExist(store *internStore, accID string) error {
 	return nil
 }
 
-func getStudentCodeByAccountID(store *internStore, accID string) (*string, error) {
+func getInternIDByAccountID(store *internStore, accID string) (*string, error) {
 	var stuID *string
-	query := intern_query.QueryGetCurrentStudentCodeByAccountID()
+	query := intern_query.QueryGetCurrentInternIDByAccountID()
 	err := store.db.QueryRow(query, accID).Scan(&stuID)
 	if err != nil {
 		return nil, fmt.Errorf("error when get current student-code: %v", err)
@@ -78,8 +78,8 @@ func getStudentCodeByAccountID(store *internStore, accID string) (*string, error
 	return stuID, nil
 }
 
-func checkDuplicateDataWhenUpdateIntern(store *internStore, intern_update_info *model.InternUpdateInfo, current_student_code string) error {
-	rawsql := intern_query.QueryCheckDulicateDataInInternUpdate(intern_update_info.AccountId, current_student_code)
+func checkDuplicateDataWhenUpdateIntern(store *internStore, intern_update_info *model.InternUpdateInfo, intern_id string) error {
+	rawsql := intern_query.QueryCheckDulicateDataInInternUpdate(intern_update_info.AccountId, intern_id)
 	row := store.db.QueryRow(rawsql, intern_update_info.Email, intern_update_info.StudentCode, intern_update_info.PhoneNumber)
 
 	var emailExists, studentcodeExists, phoneExists sql.NullString

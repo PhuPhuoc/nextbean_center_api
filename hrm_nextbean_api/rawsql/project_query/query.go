@@ -1,6 +1,7 @@
 package projectquery
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -16,8 +17,57 @@ func QueryCheckProjectIDExist() string {
 	return `select exists(select 1 from project where id = ?)`
 }
 
+func QueryCheckPMIDExist() string {
+	return `select exists(select 1 from account where id = ? and role='pm')`
+}
+
+func QueryCheckMemIDExist() string {
+	return `select exists(select 1 from intern where id = ?)`
+}
+
 func QueryUpdateProject() string {
 	return `update project set name=?, status=?, description=?, start_date=?, duration=? where id=?`
+}
+
+// todo: map PM
+func QueryDeleteMapProjectPM() string {
+	return `DELETE FROM project_manager WHERE project_id = ?`
+}
+
+func QueryMapProjectPM(values string) string {
+	return fmt.Sprintf("INSERT INTO project_manager (project_id, account_id) VALUES %s", values)
+}
+
+// todo: map project-member
+func QueryCheckMemberInProjectSatusLeave() string { // 2
+	return `select exists(select 1 from project_intern where project_id = ? and intern_id = ? and status = 'leave')`
+}
+
+func QueryCheckMemberInProjectNotExist() string { // 1
+	return `select exists(select 1 from project_intern where project_id = ? and intern_id = ?)`
+}
+
+// todo: for delete
+func QueryCheckMemTaskBeforeDelete() string {
+	return `select exists(select 1 from task where project_id=? and assigned_to=? and status!='done')`
+}
+
+func QueryDeleteMemberInProject() string {
+	return `update project_intern set leave_at=? and status='leave' where project_id=? intern_id=?`
+}
+
+// todo: for add
+func QueryAddMemberToProject() string {
+	return `insert into project_intern(project_id, intern_id, join_at, status) values (?,?,?,?)`
+}
+
+func QueryReJoinProject() string {
+	return `update project_intern set leave_at=null, status='inprogress' where project_id=? and intern_id=?`
+}
+
+// todo: get all member in project
+func QueryGetAllMemberInProject() string {
+	return ``
 }
 
 // todo: get

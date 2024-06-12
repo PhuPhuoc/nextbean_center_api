@@ -774,7 +774,7 @@
                         "in": "query"
                     },
                     {
-                        "description": "account'filter option",
+                        "description": "project'filter option",
                         "name": "request",
                         "in": "body",
                         "schema": {
@@ -812,6 +812,86 @@
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/project/manager": {
+            "post": {
+                "description": "Add manager to project information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "map project-manager",
+                "parameters": [
+                    {
+                        "description": "Required: Fill in the id of the project manager into this array",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MapProPM"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/project/member": {
+            "post": {
+                "description": "Add member to project information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "map project-member",
+                "parameters": [
+                    {
+                        "description": "Add project-id and member-id to this json",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MapProMem"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -1085,6 +1165,9 @@
                 "gender": {
                     "type": "string"
                 },
+                "intern-id": {
+                    "type": "string"
+                },
                 "ojt-semester": {
                     "type": "string"
                 },
@@ -1173,6 +1256,9 @@
                     "type": "string"
                 },
                 "gender": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "ojt-semester": {
@@ -1286,11 +1372,14 @@
         "model.MapInternSkill": {
             "type": "object",
             "required": [
+                "intern-id",
                 "skill-level",
-                "skills",
-                "student-code"
+                "skills"
             ],
             "properties": {
+                "intern-id": {
+                    "type": "string"
+                },
                 "skill-level": {
                     "type": "array",
                     "items": {
@@ -1302,8 +1391,38 @@
                     "items": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "model.MapProMem": {
+            "type": "object",
+            "required": [
+                "mem-id",
+                "project-id"
+            ],
+            "properties": {
+                "mem-id": {
+                    "type": "string"
                 },
-                "student-code": {
+                "project-id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.MapProPM": {
+            "type": "object",
+            "required": [
+                "list-manager-id",
+                "project-id"
+            ],
+            "properties": {
+                "list-manager-id": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "project-id": {
                     "type": "string"
                 }
             }

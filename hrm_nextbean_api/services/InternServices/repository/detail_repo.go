@@ -15,11 +15,11 @@ func (store *internStore) GetDetailIntern(acc_id string) (*model.InternDetailInf
 	infoQuery := query.QueryGetInternDetailInfo()
 	skillQuery := query.QueryGetInternSkill()
 
-	if err_query_info := store.db.QueryRow(infoQuery, acc_id).Scan(&i_info.UserName, &i_info.Email, &i_info.StudentCode, &i_info.Avatar, &i_info.Gender, &i_info.DateOfBirth, &i_info.PhoneNumber, &i_info.Address); err_query_info != nil {
+	if err_query_info := store.db.QueryRow(infoQuery, acc_id).Scan(&i_info.Id, &i_info.UserName, &i_info.Email, &i_info.StudentCode, &i_info.Avatar, &i_info.Gender, &i_info.DateOfBirth, &i_info.PhoneNumber, &i_info.Address); err_query_info != nil {
 		return nil, err_query_info
 	}
 
-	rows, err_query := store.db.Query(skillQuery, i_info.StudentCode)
+	rows, err_query := store.db.Query(skillQuery, i_info.Id)
 	if err_query != nil {
 		return nil, err_query
 	}

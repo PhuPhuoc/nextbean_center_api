@@ -23,18 +23,18 @@ VALUES ('spring24', 'FPT', '2024-01-01 00:00:00', '2024-04-15 00:00:00'),
 ('summer24', 'FPT', '2024-05-01 00:00:00', '2024-09-15 00:00:00'),
 ('fall24', 'FPT', '2024-10-01 00:00:00', '2024-12-15 00:00:00');
 
-INSERT INTO intern (id, account_id, ojt_id, avatar, gender, date_of_birth, phone_number, address)
-VALUES ('SE170001', '7', 1, 'avatar_url', 'male', '2003-01-15', '090000001', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170002', '8', 1, 'avatar_url', 'male', '2003-01-15', '090000002', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170003', '9', 1, 'avatar_url', 'male', '2003-02-15', '090000003', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170004', '10', 1, 'avatar_url', 'male', '2003-02-15', '090000004', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170005', '11', 1, 'avatar_url', 'female', '2003-03-15', '090000005', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170006', '12', 1, 'avatar_url', 'male', '2003-03-15', '090000006', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170007', '13', 1, 'avatar_url', 'male', '2003-04-15', '090000007', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170008', '14', 1, 'avatar_url', 'male', '2003-04-15', '090000008', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170009', '15', 1, 'avatar_url', 'male', '2003-05-15', '090000009', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170010', '16', 1, 'avatar_url', 'female', '2003-06-15', '090000010', 'Khu A Duong B Quan C Phuong D, HCM'),
-('SE170011', '17', 1, 'avatar_url', 'female', '2003-07-15', '090000011', 'Khu A Duong B Quan C Phuong D, HCM');
+INSERT INTO intern (id, student_code, account_id, ojt_id,  avatar, gender, date_of_birth, phone_number, address)
+VALUES ('intern1', 'SE170001', '7', 1, 'avatar_url', 'male', '2003-01-15', '090000001', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern2','SE170002', '8', 1, 'avatar_url', 'male', '2003-01-15', '090000002', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern3','SE170003', '9', 1, 'avatar_url', 'male', '2003-02-15', '090000003', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern4','SE170004', '10', 1, 'avatar_url', 'male', '2003-02-15', '090000004', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern5','SE170005', '11', 1, 'avatar_url', 'female', '2003-03-15', '090000005', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern6','SE170006', '12', 1, 'avatar_url', 'male', '2003-03-15', '090000006', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern7','SE170007', '13', 1, 'avatar_url', 'male', '2003-04-15', '090000007', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern8','SE170008', '14', 1, 'avatar_url', 'male', '2003-04-15', '090000008', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern9','SE170009', '15', 1, 'avatar_url', 'male', '2003-05-15', '090000009', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern10','SE170010', '16', 1, 'avatar_url', 'female', '2003-06-15', '090000010', 'Khu A Duong B Quan C Phuong D, HCM'),
+('intern11','SE170011', '17', 1, 'avatar_url', 'female', '2003-07-15', '090000011', 'Khu A Duong B Quan C Phuong D, HCM');
 
 INSERT INTO technical (technical_skill)
 VALUES ('ReactJS'),

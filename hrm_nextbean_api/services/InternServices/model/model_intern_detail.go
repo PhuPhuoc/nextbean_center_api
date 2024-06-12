@@ -1,6 +1,7 @@
 package model
 
 type InternDetailInfo struct {
+	Id            string          `json:"id"`
 	UserName      string          `json:"user-name"`
 	Email         string          `json:"email"`
 	StudentCode   string          `json:"student-code"`

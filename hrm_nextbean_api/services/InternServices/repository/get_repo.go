@@ -19,7 +19,7 @@ func (store *internStore) GetIntern(pagin *common.Pagination, filter *model.Inte
 
 	for rows.Next() {
 		in := new(model.Intern)
-		if err_scan := rows.Scan(&in.AccountID, &in.UserName, &in.Email, &in.StudentCode, &in.Ojt_semester, &in.Avatar, &in.Gender, &in.DateOfBirth, &in.PhoneNumber, &in.Address, &total_record); err_scan != nil {
+		if err_scan := rows.Scan(&in.AccountID, &in.InternID, &in.UserName, &in.Email, &in.StudentCode, &in.Ojt_semester, &in.Avatar, &in.Gender, &in.DateOfBirth, &in.PhoneNumber, &in.Address, &total_record); err_scan != nil {
 			return data, err_scan
 		}
 		data = append(data, *in)

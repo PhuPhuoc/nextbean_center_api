@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS `intern` (
   `id` varchar(255) PRIMARY KEY,
   `account_id` varchar(255) NOT NULL,
   `ojt_id` int,
+  `student_code` varchar(20),
   `avatar` varchar(255),
   `gender` varchar(10),
   `date_of_birth`datetime,

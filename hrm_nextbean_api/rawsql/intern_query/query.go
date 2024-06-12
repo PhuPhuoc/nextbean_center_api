@@ -14,7 +14,7 @@ func QueryCreateNewAccount() string {
 }
 
 func QueryCreateNewIntern() string {
-	return `insert into intern(id,account_id,ojt_id,avatar,gender,date_of_birth,phone_number,address) values (?,?,?,?,?,?,?,?)`
+	return `insert into intern(id,student_code,account_id,ojt_id,avatar,gender,date_of_birth,phone_number,address) values (?,?,?,?,?,?,?,?,?)`
 }
 
 func QueryUpdateAccount() string {
@@ -22,10 +22,10 @@ func QueryUpdateAccount() string {
 }
 
 func QueryUpdateIntern() string {
-	return `update intern set id = ?, ojt_id = ?, avatar = ?, gender = ?, date_of_birth = ?, phone_number = ?, address = ? where id = ?`
+	return `update intern set student_code = ?, ojt_id = ?, avatar = ?, gender = ?, date_of_birth = ?, phone_number = ?, address = ? where id = ?`
 }
 
-func QueryGetCurrentStudentCodeByAccountID() string {
+func QueryGetCurrentInternIDByAccountID() string {
 	return `select i.id from intern i join account acc on i.account_id = acc.id where acc.id = ?`
 }
 
@@ -48,7 +48,7 @@ func QueryCheckDulicateDataInIntern() string {
 func QueryCheckDulicateDataInInternUpdate(acc_id, in_id string) string {
 	start := `select`
 	part1 := fmt.Sprintf(` case when exists (select 1 from account where email = ? and id != '%s') then 'email' end as email_exists,`, acc_id)
-	part2 := fmt.Sprintf(` case when exists (select 1 from intern where id = ? and id != '%s') then 'id' end as studentcode_exists,`, in_id)
+	part2 := fmt.Sprintf(` case when exists (select 1 from intern where student_code = ? and id != '%s') then 'id' end as studentcode_exists,`, in_id)
 	part3 := fmt.Sprintf(` case when exists (select 1 from intern where phone_number = ? and id != '%s') then 'phone_number' end as phonenumber_exists`, in_id)
 	end := `from DUAL;`
 	return start + ` ` + part1 + ` ` + part2 + ` ` + part3 + ` ` + end
@@ -81,7 +81,7 @@ func createCTEClause(condition_clause string) string {
 func createSelectClause(condition_clause string) string {
 	var query strings.Builder
 	join := `from intern i join account acc on i.account_id = acc.id join ojt o on i.ojt_id = o.id join cte`
-	query.WriteString(` select acc.id, acc.user_name, acc.email, i.id, o.semester, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address , cte.total_record ` + join)
+	query.WriteString(` select acc.id, i.id, acc.user_name, acc.email, i.student_code, o.semester, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address , cte.total_record ` + join)
 	query.WriteString(condition_clause)
 	return query.String()
 }
@@ -131,7 +131,7 @@ func createConditionClause(filter *model.InternFilter) (string, []interface{}) {
 	}
 
 	if filter.StudentCode != "" {
-		query.WriteString(`i.id like ? and `)
+		query.WriteString(`i.student_code like ? and `)
 		p := `%` + filter.StudentCode + `%`
 		param = append(param, p)
 	}
@@ -178,7 +178,7 @@ func QueryDeleteMapInternSkill() string {
 
 // todo: get details
 func QueryGetInternDetailInfo() string {
-	return `select acc.user_name, acc.email, i.id, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address from account acc join intern i on acc.id = i.account_id where acc.id = ? and acc.deleted_at is null`
+	return `select i.id, acc.user_name, acc.email, i.student_code, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address from account acc join intern i on acc.id = i.account_id where acc.id = ? and acc.deleted_at is null`
 }
 
 func QueryGetInternSkill() string {
