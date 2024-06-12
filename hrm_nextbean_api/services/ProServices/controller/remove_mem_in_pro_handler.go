@@ -14,16 +14,16 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-// @Summary		map project-member
-// @Description	Add member to project information
+// @Summary		remove map project-member
+// @Description	remove member to project information
 // @Tags			Project
 // @Accept			json
 // @Produce		json
-// @Param			request	body		model.MapProMem			true	"Add project-id and member-id to this json"
+// @Param			request	body		model.MapProMem			true	"add project-id and member-id to this json"
 // @Success		200		{object}	utils.success_response	"Successful mapping"
 // @Failure		400		{object}	utils.error_response	"mapping failure"
-// @Router			/api/v1/project/member [post]
-func handleMapProjectMember(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+// @Router			/api/v1/project/remove-member [put]
+func handleRemoveMemberInProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		map_info := new(model.MapProMem)
 		var req_body_json map[string]interface{}
@@ -43,15 +43,15 @@ func handleMapProjectMember(db *sql.DB) func(rw http.ResponseWriter, req *http.R
 		json.Unmarshal(body_data.Bytes(), map_info)
 
 		store := repository.NewProjectStore(db)
-		biz := business.NewMapProMemBiz(store)
-		if err_biz := biz.MapProMemBiz(map_info); err_biz != nil {
-			if strings.Contains(err_biz.Error(), "exist") {
+		biz := business.NewRemoveProMemBiz(store)
+		if err_biz := biz.RemoveProMemBiz(map_info); err_biz != nil {
+			if strings.Contains(err_biz.Error(), "exist") || strings.Contains(err_biz.Error(), "remove") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("request execution failed", err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
 			}
 			return
 		}
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("Add member to project successfully!"))
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("removed member to project successfully!"))
 	}
 }

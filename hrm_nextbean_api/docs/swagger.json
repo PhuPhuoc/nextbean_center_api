@@ -819,6 +819,238 @@
                 }
             }
         },
+        "/api/v1/project/get-mem-not-in/{project-id}": {
+            "get": {
+                "description": "Get a list of Memer not in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Get Memer not in project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.PM"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/project/get-mem/{project-id}": {
+            "get": {
+                "description": "Get a list of Member in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Get Member in Project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Member"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/project/get-pm-not-in/{project-id}": {
+            "get": {
+                "description": "Get a list of PM not in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Get PM not in project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.PM"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/project/get-pm/{project-id}": {
+            "get": {
+                "description": "Get a list of PM in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Get PM",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.PM"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/project/manager": {
             "post": {
                 "description": "Add manager to project information",
@@ -875,6 +1107,46 @@
                 "parameters": [
                     {
                         "description": "Add project-id and member-id to this json",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MapProMem"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/project/remove-member": {
+            "put": {
+                "description": "remove member to project information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Project"
+                ],
+                "summary": "remove map project-member",
+                "parameters": [
+                    {
+                        "description": "add project-id and member-id to this json",
                         "name": "request",
                         "in": "body",
                         "required": true,
@@ -1427,6 +1699,26 @@
                 }
             }
         },
+        "model.Member": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "student-code": {
+                    "type": "string"
+                },
+                "technical_skills": {
+                    "type": "string"
+                },
+                "user-name": {
+                    "type": "string"
+                }
+            }
+        },
         "model.OJT": {
             "type": "object",
             "properties": {
@@ -1466,6 +1758,20 @@
                     "type": "string"
                 },
                 "university": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.PM": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "user-name": {
                     "type": "string"
                 }
             }

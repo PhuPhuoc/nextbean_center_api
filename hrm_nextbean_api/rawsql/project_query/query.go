@@ -53,7 +53,7 @@ func QueryCheckMemTaskBeforeDelete() string {
 }
 
 func QueryDeleteMemberInProject() string {
-	return `update project_intern set leave_at=? and status='leave' where project_id=? intern_id=?`
+	return `update project_intern set leave_at=?, status='leave' where project_id=? and intern_id=?`
 }
 
 // todo: for add
@@ -67,7 +67,38 @@ func QueryReJoinProject() string {
 
 // todo: get all member in project
 func QueryGetAllMemberInProject() string {
-	return ``
+	fields := `i.id, acc.user_name, i.student_code, i.avatar`
+	sel := `select ` + fields + ` , GROUP_CONCAT(tech.technical_skill SEPARATOR ', ') AS technical_skills `
+	from := `from intern i`
+	join1 := ` join account acc on i.account_id=acc.id `
+	join2 := ` join project_intern proi on proi.intern_id = i.id `
+	join3 := ` join intern_skill ins on ins.intern_id = i.id `
+	join4 := ` join technical tech on tech.id=ins.technical_id `
+	where := `where proi.project_id = ?`
+	groupby := ` group by ` + fields
+	return sel + from + join1 + join2 + join3 + join4 + where + groupby
+}
+
+func QueryGetAllMemberNotInProject() string {
+	fields := `i.id, acc.user_name, i.student_code, i.avatar`
+	sel := `select ` + fields + ` , GROUP_CONCAT(tech.technical_skill SEPARATOR ', ') AS technical_skills `
+	from := `from intern i`
+	join1 := ` join account acc on i.account_id=acc.id `
+	join2 := ` left join project_intern proi on proi.intern_id = i.id `
+	join3 := ` left join intern_skill ins on ins.intern_id = i.id `
+	join4 := ` left join technical tech on tech.id=ins.technical_id `
+	where := `where i.id not in (select intern_id from project_intern where project_id=?)`
+	groupby := ` group by ` + fields
+	return sel + from + join1 + join2 + join3 + join4 + where + groupby
+}
+
+// todo: get all pm in project
+func QueryGetAllPMInProject() string {
+	return `select acc.id, acc.user_name, acc.email from project_manager pm join account acc on pm.account_id=acc.id where pm.project_id=?`
+}
+
+func QueryGetAllPMNotInProject() string {
+	return `select acc.id, acc.user_name, acc.email from account acc left join project_manager pm on pm.account_id=acc.id where acc.id not in (select account_id from project_manager where project_id=?) and acc.role = 'pm'`
 }
 
 // todo: get

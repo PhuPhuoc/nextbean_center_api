@@ -278,6 +278,19 @@ definitions:
     - list-manager-id
     - project-id
     type: object
+  model.Member:
+    properties:
+      avatar:
+        type: string
+      id:
+        type: string
+      student-code:
+        type: string
+      technical_skills:
+        type: string
+      user-name:
+        type: string
+    type: object
   model.OJT:
     properties:
       end-at:
@@ -306,6 +319,15 @@ definitions:
     - semester
     - start-at
     - university
+    type: object
+  model.PM:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      user-name:
+        type: string
     type: object
   model.Project:
     properties:
@@ -966,6 +988,146 @@ paths:
       summary: Get projects
       tags:
       - Project
+  /api/v1/project/get-mem-not-in/{project-id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of Memer not in Project
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.PM'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get Memer not in project
+      tags:
+      - Project
+  /api/v1/project/get-mem/{project-id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of Member in Project
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Member'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get Member in Project
+      tags:
+      - Project
+  /api/v1/project/get-pm-not-in/{project-id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of PM not in Project
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.PM'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get PM not in project
+      tags:
+      - Project
+  /api/v1/project/get-pm/{project-id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of PM in Project
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.PM'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get PM
+      tags:
+      - Project
   /api/v1/project/manager:
     post:
       consumes:
@@ -1016,6 +1178,32 @@ paths:
           schema:
             $ref: '#/definitions/utils.error_response'
       summary: map project-member
+      tags:
+      - Project
+  /api/v1/project/remove-member:
+    put:
+      consumes:
+      - application/json
+      description: remove member to project information
+      parameters:
+      - description: add project-id and member-id to this json
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.MapProMem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful mapping
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: mapping failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: remove map project-member
       tags:
       - Project
   /api/v1/technical:
