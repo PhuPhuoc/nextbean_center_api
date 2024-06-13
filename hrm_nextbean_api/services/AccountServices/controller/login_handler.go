@@ -21,7 +21,7 @@ import (
 // @Param			request	body		model.LoginForm	 true	"Login request"
 // @Success		200		{object}	utils.success_response	"Successful login"
 // @Failure		400		{object}	utils.error_response	"login failure"
-// @Router			/api/v1/login [post]
+// @Router			/login [post]
 func HandleLogin(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		info_login := new(model.LoginForm)

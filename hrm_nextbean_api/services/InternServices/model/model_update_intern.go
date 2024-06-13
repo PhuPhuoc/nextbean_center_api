@@ -1,7 +1,6 @@
 package model
 
 type InternUpdateInfo struct {
-	AccountId   string `json:"account-id" validate:"required,type=string"`
 	UserName    string `json:"user-name" validate:"required,type=string,min=4,max=20"`
 	Email       string `json:"email" validate:"required,type=email"`
 	StudentCode string `json:"student-code" validate:"required,type=string,min=4,max=10"`

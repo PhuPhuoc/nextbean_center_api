@@ -5,7 +5,7 @@ import (
 )
 
 type getDetailInternStore interface {
-	GetDetailIntern(acc_id string) (*model.InternDetailInfo, error)
+	GetDetailIntern(int_id string) (*model.InternDetailInfo, error)
 }
 
 type getDetailInternBiz struct {
@@ -18,8 +18,8 @@ func NewGetDetailInternBiz(store getDetailInternStore) *getDetailInternBiz {
 	}
 }
 
-func (biz *getDetailInternBiz) GetDetailInternBiz(acc_id string) (*model.InternDetailInfo, error) {
-	data, err_query := biz.store.GetDetailIntern(acc_id)
+func (biz *getDetailInternBiz) GetDetailInternBiz(int_id string) (*model.InternDetailInfo, error) {
+	data, err_query := biz.store.GetDetailIntern(int_id)
 	if err_query != nil {
 		return nil, err_query
 	}

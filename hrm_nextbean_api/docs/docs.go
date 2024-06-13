@@ -15,86 +15,8 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/account": {
-            "put": {
-                "description": "update account's information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Account"
-                ],
-                "summary": "update account",
-                "parameters": [
-                    {
-                        "description": "account update request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UpdateAccountInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful update",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "update failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "account creation information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Account"
-                ],
-                "summary": "create new account",
-                "parameters": [
-                    {
-                        "description": "account creation request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.AccountCreationInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful create",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "create failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/account/get": {
-            "post": {
+        "/accounts": {
+            "get": {
                 "description": "Get a list of accounts with filtering, sorting, and pagination",
                 "consumes": [
                     "application/json"
@@ -103,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Account"
+                    "Accounts"
                 ],
                 "summary": "Get accounts",
                 "parameters": [
@@ -120,12 +42,46 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "description": "account'filter option",
-                        "name": "request",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/model.AccountFilter"
-                        }
+                        "type": "integer",
+                        "description": "Filter by account ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by username",
+                        "name": "username",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by role ~ ex: admin-pm | admin-manager-pm",
+                        "name": "role",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by creation date from (YYYY-MM-DD) ~ ex:2024-05-29",
+                        "name": "created-at-from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by creation date to (YYYY-MM-DD)",
+                        "name": "created-at-to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by field (created_at or name), prefix with - for descending order ~ Ex: user_name desc",
+                        "name": "order-by",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -163,11 +119,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/api/v1/account/{id}": {
-            "delete": {
-                "description": "delete account information",
+            },
+            "post": {
+                "description": "account creation information",
                 "consumes": [
                     "application/json"
                 ],
@@ -175,47 +129,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Account"
+                    "Accounts"
                 ],
-                "summary": "delete an account",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Account ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful delete",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "delete failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/intern": {
-            "put": {
-                "description": "update intern's information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Intern"
-                ],
-                "summary": "update intern",
+                "summary": "create new account",
                 "parameters": [
                     {
                         "description": "account creation request",
@@ -223,45 +139,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.InternUpdateInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful update",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "update failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "intern creation information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Intern"
-                ],
-                "summary": "create new intern-account",
-                "parameters": [
-                    {
-                        "description": "Required: user-name, email, password, student-code",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.InternCreation"
+                            "$ref": "#/definitions/model.AccountCreationInfo"
                         }
                     }
                 ],
@@ -281,9 +159,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/intern/get": {
-            "post": {
-                "description": "Get a list of interns with filtering, sorting, and pagination",
+        "/accounts/{account-id}": {
+            "put": {
+                "description": "update account's information",
                 "consumes": [
                     "application/json"
                 ],
@@ -291,111 +169,44 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Intern"
+                    "Accounts"
                 ],
-                "summary": "Get interns",
+                "summary": "update account",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "account-id",
+                        "in": "path",
+                        "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "Number of records per page",
-                        "name": "psize",
-                        "in": "query"
-                    },
-                    {
-                        "description": "intern'filter option",
-                        "name": "request",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/model.InternFilter"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Intern"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/intern/skill": {
-            "post": {
-                "description": "Add intern skills information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Intern"
-                ],
-                "summary": "map intern-intern",
-                "parameters": [
-                    {
-                        "description": "Required: Fill in the id (number) of the skills into this array",
+                        "description": "account update request",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.MapInternSkill"
+                            "$ref": "#/definitions/model.UpdateAccountInfo"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful mapping",
+                        "description": "Successful update",
                         "schema": {
                             "$ref": "#/definitions/utils.success_response"
                         }
                     },
                     "400": {
-                        "description": "mapping failure",
+                        "description": "update failure",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
                     }
                 }
-            }
-        },
-        "/api/v1/intern/{account-id}": {
-            "get": {
-                "description": "Get details of intern (base infomation, skills, projects)",
+            },
+            "delete": {
+                "description": "delete account information",
                 "consumes": [
                     "application/json"
                 ],
@@ -403,13 +214,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Intern"
+                    "Accounts"
                 ],
-                "summary": "Get intern'details by account-id",
+                "summary": "delete an account",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "enter account-id",
+                        "description": "Account ID",
                         "name": "account-id",
                         "in": "path",
                         "required": true
@@ -417,71 +228,13 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/model.InternDetailInfo"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/login": {
-            "post": {
-                "description": "Log in using account with email and password",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "login by account",
-                "parameters": [
-                    {
-                        "description": "Login request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.LoginForm"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful login",
+                        "description": "Successful delete",
                         "schema": {
                             "$ref": "#/definitions/utils.success_response"
                         }
                     },
                     "400": {
-                        "description": "login failure",
+                        "description": "delete failure",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -1290,6 +1043,362 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/interns": {
+            "get": {
+                "description": "Get a list of interns with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Interns"
+                ],
+                "summary": "Get interns",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "account-id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Student Code",
+                        "name": "student-code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "OJT Semester",
+                        "name": "ojt-semester",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Gender",
+                        "name": "gender",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Phone Number",
+                        "name": "phone-number",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Address",
+                        "name": "address",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date of Birth From",
+                        "name": "dob-from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Date of Birth To",
+                        "name": "dob-to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by field (created_at or name), prefix with - for descending order ~ Ex: user_name desc",
+                        "name": "order-by",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Intern"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "intern creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Interns"
+                ],
+                "summary": "create new intern-account",
+                "parameters": [
+                    {
+                        "description": "Required: user-name, email, password, student-code",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.InternCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/interns/{intern-id}": {
+            "get": {
+                "description": "Get details of intern (base infomation, skills, projects)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Interns"
+                ],
+                "summary": "Get intern'details by account-id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter intern-id",
+                        "name": "intern-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.InternDetailInfo"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update intern's information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Interns"
+                ],
+                "summary": "update intern",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "intern ID",
+                        "name": "intern-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "intern update request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.InternUpdateInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful update",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "update failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/interns/{intern-id}/skill": {
+            "post": {
+                "description": "Add intern skills information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Interns"
+                ],
+                "summary": "map intern-skill",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Intern ID",
+                        "name": "intern-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Required: Fill in the id (number) of the skills into this array",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MapInternSkill"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Log in using account with email and password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "login by account",
+                "parameters": [
+                    {
+                        "description": "Login request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "login failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1336,32 +1445,6 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 4
-                }
-            }
-        },
-        "model.AccountFilter": {
-            "type": "object",
-            "properties": {
-                "created-at-from": {
-                    "type": "string"
-                },
-                "created-at-to": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "order-by": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "user-name": {
-                    "type": "string"
                 }
             }
         },
@@ -1555,56 +1638,14 @@ const docTemplate = `{
                 }
             }
         },
-        "model.InternFilter": {
-            "type": "object",
-            "properties": {
-                "account-id": {
-                    "type": "string"
-                },
-                "address": {
-                    "type": "string"
-                },
-                "dob-from": {
-                    "type": "string"
-                },
-                "dob-to": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "gender": {
-                    "type": "string"
-                },
-                "ojt-semester": {
-                    "type": "string"
-                },
-                "order-by": {
-                    "type": "string"
-                },
-                "phone-number": {
-                    "type": "string"
-                },
-                "student-code": {
-                    "type": "string"
-                },
-                "user-name": {
-                    "type": "string"
-                }
-            }
-        },
         "model.InternUpdateInfo": {
             "type": "object",
             "required": [
-                "account-id",
                 "email",
                 "student-code",
                 "user-name"
             ],
             "properties": {
-                "account-id": {
-                    "type": "string"
-                },
                 "address": {
                     "type": "string"
                 },
@@ -1652,14 +1693,10 @@ const docTemplate = `{
         "model.MapInternSkill": {
             "type": "object",
             "required": [
-                "intern-id",
                 "skill-level",
                 "skills"
             ],
             "properties": {
-                "intern-id": {
-                    "type": "string"
-                },
                 "skill-level": {
                     "type": "array",
                     "items": {
@@ -1873,15 +1910,11 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "email",
-                "id",
                 "role",
                 "user-name"
             ],
             "properties": {
                 "email": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "role": {
@@ -1991,10 +2024,10 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "",
-	BasePath:         "",
+	Host:             "localhost:8080",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "Intern Resource management system",
+	Title:            "Intern Resource Management System",
 	Description:      "A web application to manage interns at the Nextbean Center, designed to oversee their daily tasks and schedules while working at the office. The app aims to streamline the management of internship programs, enabling efficient tracking of intern activities, assignments, and attendance for a well-organized and productive internship experience.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

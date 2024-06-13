@@ -9,15 +9,17 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 )
 
-func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInfo) error {
-	if err_check_accID_exist := checkAccountIDExist(store, intern_update_info.AccountId); err_check_accID_exist != nil {
+func (store *internStore) UpdateIntern(int_id string, intern_update_info *model.InternUpdateInfo) error {
+	if err_check_accID_exist := checkInternIDExist(store, int_id); err_check_accID_exist != nil {
 		return err_check_accID_exist
 	}
-	intern_id, err_check := getInternIDByAccountID(store, intern_update_info.AccountId)
-	if err_check != nil {
-		return err_check
+
+	accID, err_get_acc := getAccIDByInternID(store, int_id)
+	if err_get_acc != nil {
+		return err_get_acc
 	}
-	if err_check_duplicate := checkDuplicateDataWhenUpdateIntern(store, intern_update_info, *intern_id); err_check_duplicate != nil {
+
+	if err_check_duplicate := checkDuplicateDataWhenUpdateIntern(store, intern_update_info, *accID, int_id); err_check_duplicate != nil {
 		if strings.Contains(err_check_duplicate.Error(), "duplicate data") {
 			return err_check_duplicate
 		}
@@ -33,14 +35,14 @@ func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInf
 	}
 
 	// Execute first query
-	_, err = tx.Exec(rawsql_acc, intern_update_info.UserName, intern_update_info.Email, intern_update_info.AccountId)
+	_, err = tx.Exec(rawsql_acc, intern_update_info.UserName, intern_update_info.Email, accID)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when UpdateIntern in store - transaction - account: %v", err)
 	}
 
 	// Execute second query
-	_, err = tx.Exec(rawsql_intern, intern_update_info.StudentCode, intern_update_info.OjtId, intern_update_info.Avatar, intern_update_info.Gender, intern_update_info.DateOfBirth, intern_update_info.PhoneNumber, intern_update_info.Address, intern_id)
+	_, err = tx.Exec(rawsql_intern, intern_update_info.StudentCode, intern_update_info.OjtId, intern_update_info.Avatar, intern_update_info.Gender, intern_update_info.DateOfBirth, intern_update_info.PhoneNumber, intern_update_info.Address, int_id)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when UpdateIntern in store - transaction - intern: %v", err)
@@ -55,31 +57,8 @@ func (store *internStore) UpdateIntern(intern_update_info *model.InternUpdateInf
 	return nil
 }
 
-func checkAccountIDExist(store *internStore, accID string) error {
-	var flag bool
-	query := intern_query.QueryCheckExistAccountID()
-	err := store.db.QueryRow(query, accID).Scan(&flag)
-	if err != nil {
-		return fmt.Errorf("error when check exist account-id : %v", err)
-	}
-	if !flag {
-		return fmt.Errorf("account'id not exists")
-	}
-	return nil
-}
-
-func getInternIDByAccountID(store *internStore, accID string) (*string, error) {
-	var stuID *string
-	query := intern_query.QueryGetCurrentInternIDByAccountID()
-	err := store.db.QueryRow(query, accID).Scan(&stuID)
-	if err != nil {
-		return nil, fmt.Errorf("error when get current student-code: %v", err)
-	}
-	return stuID, nil
-}
-
-func checkDuplicateDataWhenUpdateIntern(store *internStore, intern_update_info *model.InternUpdateInfo, intern_id string) error {
-	rawsql := intern_query.QueryCheckDulicateDataInInternUpdate(intern_update_info.AccountId, intern_id)
+func checkDuplicateDataWhenUpdateIntern(store *internStore, intern_update_info *model.InternUpdateInfo, acc_id, intern_id string) error {
+	rawsql := intern_query.QueryCheckDulicateDataInInternUpdate(acc_id, intern_id)
 	row := store.db.QueryRow(rawsql, intern_update_info.Email, intern_update_info.StudentCode, intern_update_info.PhoneNumber)
 
 	var emailExists, studentcodeExists, phoneExists sql.NullString

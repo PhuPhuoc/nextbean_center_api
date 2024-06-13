@@ -5,8 +5,8 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 )
 
-func (store *internStore) GetDetailIntern(acc_id string) (*model.InternDetailInfo, error) {
-	if err_check_accID_exist := checkAccountIDExist(store, acc_id); err_check_accID_exist != nil {
+func (store *internStore) GetDetailIntern(int_id string) (*model.InternDetailInfo, error) {
+	if err_check_accID_exist := checkInternIDExist(store, int_id); err_check_accID_exist != nil {
 		return nil, err_check_accID_exist
 	}
 
@@ -15,7 +15,7 @@ func (store *internStore) GetDetailIntern(acc_id string) (*model.InternDetailInf
 	infoQuery := query.QueryGetInternDetailInfo()
 	skillQuery := query.QueryGetInternSkill()
 
-	if err_query_info := store.db.QueryRow(infoQuery, acc_id).Scan(&i_info.Id, &i_info.UserName, &i_info.Email, &i_info.StudentCode, &i_info.Avatar, &i_info.Gender, &i_info.DateOfBirth, &i_info.PhoneNumber, &i_info.Address); err_query_info != nil {
+	if err_query_info := store.db.QueryRow(infoQuery, int_id).Scan(&i_info.Id, &i_info.UserName, &i_info.Email, &i_info.StudentCode, &i_info.Avatar, &i_info.Gender, &i_info.DateOfBirth, &i_info.PhoneNumber, &i_info.Address); err_query_info != nil {
 		return nil, err_query_info
 	}
 

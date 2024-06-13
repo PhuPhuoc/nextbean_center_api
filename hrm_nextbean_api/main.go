@@ -8,9 +8,11 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-// @title						Intern Resource management system
+// @title						Intern Resource Management System
 // @version					1.0
 // @description				A web application to manage interns at the Nextbean Center, designed to oversee their daily tasks and schedules while working at the office. The app aims to streamline the management of internship programs, enabling efficient tracking of intern activities, assignments, and attendance for a well-organized and productive internship experience.
+// @host						localhost:8080
+// @BasePath					/api/v1
 // @securityDefinitions.apikey	ApiKeyAuth
 // @in							header
 // @name						Authorization

@@ -12,19 +12,26 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
+	"github.com/gorilla/mux"
 )
 
 // @Summary		update account
 // @Description	update account's information
-// @Tags			Account
+// @Tags			Accounts
 // @Accept			json
 // @Produce		json
-// @Param			request	body		model.UpdateAccountInfo	true	"account update request"
-// @Success		200		{object}	utils.success_response	"Successful update"
-// @Failure		400		{object}	utils.error_response	"update failure"
-// @Router			/api/v1/account [put]
+// @Param			account-id	path		string					true	"Account ID"
+// @Param			request		body		model.UpdateAccountInfo	true	"account update request"
+// @Success		200			{object}	utils.success_response	"Successful update"
+// @Failure		400			{object}	utils.error_response	"update failure"
+// @Router			/accounts/{account-id} [put]
 func handleUpdateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		accountID := mux.Vars(req)["account-id"]
+		if accountID == "" {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing account ID", fmt.Errorf("missing account ID")))
+			return
+		}
 		acc_info := new(model.UpdateAccountInfo)
 		var req_body_json map[string]interface{}
 
@@ -44,8 +51,8 @@ func handleUpdateAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 
 		store := repository.NewAccountStore(db)
 		biz := business.NewUpdateAccountBusiness(store)
-		if err := biz.UpdateAccountBiz(acc_info); err != nil {
-			if strings.Contains(err.Error(), "duplicate_data") || strings.Contains(err.Error(), "not_exist") {
+		if err := biz.UpdateAccountBiz(accountID, acc_info); err != nil {
+			if strings.Contains(err.Error(), "duplicate_data") || strings.Contains(err.Error(), "exists") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err))

@@ -29,6 +29,10 @@ func QueryGetCurrentInternIDByAccountID() string {
 	return `select i.id from intern i join account acc on i.account_id = acc.id where acc.id = ?`
 }
 
+func QueryGetAccIDByInternID() string {
+	return `select acc.id from account acc join intern i on i.account_id = acc.id where i.id = ?`
+}
+
 func QueryCheckExistAccountID() string {
 	return `select exists(select 1 from account where id = ? and deleted_at is null)`
 }
@@ -178,7 +182,7 @@ func QueryDeleteMapInternSkill() string {
 
 // todo: get details
 func QueryGetInternDetailInfo() string {
-	return `select i.id, acc.user_name, acc.email, i.student_code, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address from account acc join intern i on acc.id = i.account_id where acc.id = ? and acc.deleted_at is null`
+	return `select i.id, acc.user_name, acc.email, i.student_code, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address from account acc join intern i on acc.id = i.account_id where i.id = ? and acc.deleted_at is null`
 }
 
 func QueryGetInternSkill() string {

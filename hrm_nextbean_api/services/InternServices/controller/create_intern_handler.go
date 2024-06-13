@@ -16,13 +16,13 @@ import (
 
 // @Summary		create new intern-account
 // @Description	intern creation information
-// @Tags			Intern
+// @Tags			Interns
 // @Accept			json
 // @Produce		json
 // @Param			request	body		model.InternCreation	true	"Required: user-name, email, password, student-code"
 // @Success		200		{object}	utils.success_response	"Successful create"
 // @Failure		400		{object}	utils.error_response	"create failure"
-// @Router			/api/v1/intern [post]
+// @Router			/interns [post]
 func handleCreateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		intern_info := new(model.InternCreation)

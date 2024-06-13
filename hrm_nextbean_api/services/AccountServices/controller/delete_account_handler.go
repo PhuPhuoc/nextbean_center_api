@@ -12,18 +12,18 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary		delete an account
-// @Description	delete account information
-// @Tags			Account
-// @Accept			json
-// @Produce		json
-// @Param			id	path		string					true	"Account ID"
-// @Success		200	{object}	utils.success_response	"Successful delete"
-// @Failure		400	{object}	utils.error_response	"delete failure"
-// @Router			/api/v1/account/{id} [delete]
+//	@Summary		delete an account
+//	@Description	delete account information
+//	@Tags			Accounts
+//	@Accept			json
+//	@Produce		json
+//	@Param			account-id	path		string					true	"Account ID"
+//	@Success		200			{object}	utils.success_response	"Successful delete"
+//	@Failure		400			{object}	utils.error_response	"delete failure"
+//	@Router			/accounts/{account-id} [delete]
 func handleDeleteAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		accountID := mux.Vars(req)["id"]
+		accountID := mux.Vars(req)["account-id"]
 		if accountID == "" {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing account ID", fmt.Errorf("missing account ID")))
 			return
@@ -32,7 +32,7 @@ func handleDeleteAccount(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		store := repository.NewAccountStore(db)
 		biz := business.NewDeleteAccountBusiness(store)
 		if err := biz.DeleteAccountBiz(accountID); err != nil {
-			if strings.Contains(err.Error(), "account'ID not exists") {
+			if strings.Contains(err.Error(), "exists") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err))

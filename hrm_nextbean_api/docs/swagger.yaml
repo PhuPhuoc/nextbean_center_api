@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   model.Account:
     properties:
@@ -30,23 +31,6 @@ definitions:
     - password
     - role
     - user-name
-    type: object
-  model.AccountFilter:
-    properties:
-      created-at-from:
-        type: string
-      created-at-to:
-        type: string
-      email:
-        type: string
-      id:
-        type: string
-      order-by:
-        type: string
-      role:
-        type: string
-      user-name:
-        type: string
     type: object
   model.DetailProject:
     properties:
@@ -175,35 +159,8 @@ definitions:
       user-name:
         type: string
     type: object
-  model.InternFilter:
-    properties:
-      account-id:
-        type: string
-      address:
-        type: string
-      dob-from:
-        type: string
-      dob-to:
-        type: string
-      email:
-        type: string
-      gender:
-        type: string
-      ojt-semester:
-        type: string
-      order-by:
-        type: string
-      phone-number:
-        type: string
-      student-code:
-        type: string
-      user-name:
-        type: string
-    type: object
   model.InternUpdateInfo:
     properties:
-      account-id:
-        type: string
       address:
         type: string
       avatar:
@@ -227,7 +184,6 @@ definitions:
         minLength: 4
         type: string
     required:
-    - account-id
     - email
     - student-code
     - user-name
@@ -241,8 +197,6 @@ definitions:
     type: object
   model.MapInternSkill:
     properties:
-      intern-id:
-        type: string
       skill-level:
         items:
           type: string
@@ -252,7 +206,6 @@ definitions:
           type: integer
         type: array
     required:
-    - intern-id
     - skill-level
     - skills
     type: object
@@ -389,8 +342,6 @@ definitions:
     properties:
       email:
         type: string
-      id:
-        type: string
       role:
         type: string
       user-name:
@@ -399,7 +350,6 @@ definitions:
         type: string
     required:
     - email
-    - id
     - role
     - user-name
     type: object
@@ -462,6 +412,7 @@ definitions:
       status:
         type: integer
     type: object
+host: localhost:8080
 info:
   contact: {}
   description: A web application to manage interns at the Nextbean Center, designed
@@ -469,87 +420,11 @@ info:
     aims to streamline the management of internship programs, enabling efficient tracking
     of intern activities, assignments, and attendance for a well-organized and productive
     internship experience.
-  title: Intern Resource management system
+  title: Intern Resource Management System
   version: "1.0"
 paths:
-  /api/v1/account:
-    post:
-      consumes:
-      - application/json
-      description: account creation information
-      parameters:
-      - description: account creation request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.AccountCreationInfo'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful create
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: create failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: create new account
-      tags:
-      - Account
-    put:
-      consumes:
-      - application/json
-      description: update account's information
-      parameters:
-      - description: account update request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.UpdateAccountInfo'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful update
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: update failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: update account
-      tags:
-      - Account
-  /api/v1/account/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete account information
-      parameters:
-      - description: Account ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful delete
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: delete failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: delete an account
-      tags:
-      - Account
-  /api/v1/account/get:
-    post:
+  /accounts:
+    get:
       consumes:
       - application/json
       description: Get a list of accounts with filtering, sorting, and pagination
@@ -562,11 +437,35 @@ paths:
         in: query
         name: psize
         type: integer
-      - description: account'filter option
-        in: body
-        name: request
-        schema:
-          $ref: '#/definitions/model.AccountFilter'
+      - description: Filter by account ID
+        in: query
+        name: id
+        type: integer
+      - description: Filter by username
+        in: query
+        name: username
+        type: string
+      - description: Filter by email
+        in: query
+        name: email
+        type: string
+      - description: 'Filter by role ~ ex: admin-pm | admin-manager-pm'
+        in: query
+        name: role
+        type: string
+      - description: Filter by creation date from (YYYY-MM-DD) ~ ex:2024-05-29
+        in: query
+        name: created-at-from
+        type: string
+      - description: Filter by creation date to (YYYY-MM-DD)
+        in: query
+        name: created-at-to
+        type: string
+      - description: 'Order by field (created_at or name), prefix with - for descending
+          order ~ Ex: user_name desc'
+        in: query
+        name: order-by
+        type: string
       produces:
       - application/json
       responses:
@@ -591,19 +490,18 @@ paths:
             $ref: '#/definitions/utils.error_response'
       summary: Get accounts
       tags:
-      - Account
-  /api/v1/intern:
+      - Accounts
     post:
       consumes:
       - application/json
-      description: intern creation information
+      description: account creation information
       parameters:
-      - description: 'Required: user-name, email, password, student-code'
+      - description: account creation request
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/model.InternCreation'
+          $ref: '#/definitions/model.AccountCreationInfo'
       produces:
       - application/json
       responses:
@@ -615,20 +513,50 @@ paths:
           description: create failure
           schema:
             $ref: '#/definitions/utils.error_response'
-      summary: create new intern-account
+      summary: create new account
       tags:
-      - Intern
+      - Accounts
+  /accounts/{account-id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete account information
+      parameters:
+      - description: Account ID
+        in: path
+        name: account-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful delete
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: delete failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: delete an account
+      tags:
+      - Accounts
     put:
       consumes:
       - application/json
-      description: update intern's information
+      description: update account's information
       parameters:
-      - description: account creation request
+      - description: Account ID
+        in: path
+        name: account-id
+        required: true
+        type: string
+      - description: account update request
         in: body
         name: request
         required: true
         schema:
-          $ref: '#/definitions/model.InternUpdateInfo'
+          $ref: '#/definitions/model.UpdateAccountInfo'
       produces:
       - application/json
       responses:
@@ -640,139 +568,9 @@ paths:
           description: update failure
           schema:
             $ref: '#/definitions/utils.error_response'
-      summary: update intern
+      summary: update account
       tags:
-      - Intern
-  /api/v1/intern/{account-id}:
-    get:
-      consumes:
-      - application/json
-      description: Get details of intern (base infomation, skills, projects)
-      parameters:
-      - description: enter account-id
-        in: path
-        name: account-id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.success_response'
-            - properties:
-                data:
-                  $ref: '#/definitions/model.InternDetailInfo'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.error_response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: Get intern'details by account-id
-      tags:
-      - Intern
-  /api/v1/intern/get:
-    post:
-      consumes:
-      - application/json
-      description: Get a list of interns with filtering, sorting, and pagination
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Number of records per page
-        in: query
-        name: psize
-        type: integer
-      - description: intern'filter option
-        in: body
-        name: request
-        schema:
-          $ref: '#/definitions/model.InternFilter'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.success_response'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.Intern'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.error_response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: Get interns
-      tags:
-      - Intern
-  /api/v1/intern/skill:
-    post:
-      consumes:
-      - application/json
-      description: Add intern skills information
-      parameters:
-      - description: 'Required: Fill in the id (number) of the skills into this array'
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.MapInternSkill'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful mapping
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: mapping failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: map intern-intern
-      tags:
-      - Intern
-  /api/v1/login:
-    post:
-      consumes:
-      - application/json
-      description: Log in using account with email and password
-      parameters:
-      - description: Login request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.LoginForm'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful login
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: login failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: login by account
-      tags:
-      - Authentication
+      - Accounts
   /api/v1/ojt:
     post:
       consumes:
@@ -1276,6 +1074,236 @@ paths:
       summary: Get Technical
       tags:
       - Technical
+  /interns:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of interns with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: Account ID
+        in: query
+        name: account-id
+        type: string
+      - description: Username
+        in: query
+        name: username
+        type: string
+      - description: Email
+        in: query
+        name: email
+        type: string
+      - description: Student Code
+        in: query
+        name: student-code
+        type: string
+      - description: OJT Semester
+        in: query
+        name: ojt-semester
+        type: string
+      - description: Gender
+        in: query
+        name: gender
+        type: string
+      - description: Phone Number
+        in: query
+        name: phone-number
+        type: string
+      - description: Address
+        in: query
+        name: address
+        type: string
+      - description: Date of Birth From
+        in: query
+        name: dob-from
+        type: string
+      - description: Date of Birth To
+        in: query
+        name: dob-to
+        type: string
+      - description: 'Order by field (created_at or name), prefix with - for descending
+          order ~ Ex: user_name desc'
+        in: query
+        name: order-by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Intern'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get interns
+      tags:
+      - Interns
+    post:
+      consumes:
+      - application/json
+      description: intern creation information
+      parameters:
+      - description: 'Required: user-name, email, password, student-code'
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.InternCreation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new intern-account
+      tags:
+      - Interns
+  /interns/{intern-id}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of intern (base infomation, skills, projects)
+      parameters:
+      - description: enter intern-id
+        in: path
+        name: intern-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.InternDetailInfo'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get intern'details by account-id
+      tags:
+      - Interns
+    put:
+      consumes:
+      - application/json
+      description: update intern's information
+      parameters:
+      - description: intern ID
+        in: path
+        name: intern-id
+        required: true
+        type: string
+      - description: intern update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.InternUpdateInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful update
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: update failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: update intern
+      tags:
+      - Interns
+  /interns/{intern-id}/skill:
+    post:
+      consumes:
+      - application/json
+      description: Add intern skills information
+      parameters:
+      - description: Intern ID
+        in: path
+        name: intern-id
+        required: true
+        type: string
+      - description: 'Required: Fill in the id (number) of the skills into this array'
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.MapInternSkill'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful mapping
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: mapping failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: map intern-skill
+      tags:
+      - Interns
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Log in using account with email and password
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful login
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: login failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: login by account
+      tags:
+      - Authentication
 securityDefinitions:
   ApiKeyAuth:
     in: header

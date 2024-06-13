@@ -8,8 +8,8 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 )
 
-func (store *internStore) MapInternSkill(info *model.MapInternSkill) error {
-	if errInternIDNotExist := checkInternIDExist(store, info.InternId); errInternIDNotExist != nil {
+func (store *internStore) MapInternSkill(internID string, info *model.MapInternSkill) error {
+	if errInternIDNotExist := checkInternIDExist(store, internID); errInternIDNotExist != nil {
 		return errInternIDNotExist
 	}
 
@@ -23,7 +23,7 @@ func (store *internStore) MapInternSkill(info *model.MapInternSkill) error {
 	}
 
 	deleteQuery := query.QueryDeleteMapInternSkill()
-	if _, err := tx.Exec(deleteQuery, info.InternId); err != nil {
+	if _, err := tx.Exec(deleteQuery, internID); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when MapInternSkill (delete mapping transaction) in store: %v", err)
 	}
@@ -33,7 +33,7 @@ func (store *internStore) MapInternSkill(info *model.MapInternSkill) error {
 		if i > 0 {
 			values += ","
 		}
-		values += fmt.Sprintf("('%s', %d, '%s')", info.InternId, info.Skills[i], info.SkillLevel[i])
+		values += fmt.Sprintf("('%s', %d, '%s')", internID, info.Skills[i], info.SkillLevel[i])
 	}
 
 	updateQuery := query.QueryMapInternSkill(values)
@@ -47,19 +47,6 @@ func (store *internStore) MapInternSkill(info *model.MapInternSkill) error {
 		tx.Rollback()
 		return fmt.Errorf("error when MapInternSkill (commit transaction) in store: %v", err)
 
-	}
-	return nil
-}
-
-func checkInternIDExist(store *internStore, intern_id string) error {
-	var flag bool
-	query := query.QueryCheckExistInternID()
-	err := store.db.QueryRow(query, intern_id).Scan(&flag)
-	if err != nil {
-		return fmt.Errorf("error when check exist student-code : %v", err)
-	}
-	if !flag {
-		return fmt.Errorf("student-code does not exist")
 	}
 	return nil
 }

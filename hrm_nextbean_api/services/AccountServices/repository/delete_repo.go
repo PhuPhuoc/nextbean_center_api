@@ -11,8 +11,8 @@ import (
 func (store *accountStore) DeleteAccount(id string) error {
 
 	if err_check_id_exist := store.checkIdExist(id); err_check_id_exist != nil {
-		if strings.Contains(err_check_id_exist.Error(), "id not exist") {
-			return fmt.Errorf("account'ID not exists")
+		if strings.Contains(err_check_id_exist.Error(), "not_exist_id") {
+			return fmt.Errorf("account'ID: %v not does exists", id)
 		}
 		return fmt.Errorf("error when DeleteAccount(checkIdExist) in store: %v", err_check_id_exist)
 	}
@@ -27,7 +27,7 @@ func (store *accountStore) DeleteAccount(id string) error {
 		return fmt.Errorf("error when DeleteAccount in store (check affect): %v", err)
 	}
 	if rowsAffected == 1 {
-		return nil // created sucessfully
+		return nil // deleted sucessfully
 	} else {
 		return fmt.Errorf("error when DeleteAccount in store (No user deleted): %v", err)
 	}
