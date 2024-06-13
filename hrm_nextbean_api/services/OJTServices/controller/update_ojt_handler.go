@@ -11,19 +11,26 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
+	"github.com/gorilla/mux"
 )
 
-// @Summary		update ojt
-// @Description	update ojt's information
-// @Tags			OJT
-// @Accept			json
-// @Produce		json
-// @Param			request	body		model.UpdateOJTInfo		true	"OJT update request"
-// @Success		200		{object}	utils.success_response	"Successful update"
-// @Failure		400		{object}	utils.error_response	"update failure"
-// @Router			/api/v1/ojt [put]
+//	@Summary		update ojt
+//	@Description	update ojt's information
+//	@Tags			OJTS
+//	@Accept			json
+//	@Produce		json
+//	@Param			ojt-id	path		int						true	"OJT ID"
+//	@Param			request	body		model.UpdateOJTInfo		true	"OJT update request"
+//	@Success		200		{object}	utils.success_response	"Successful update"
+//	@Failure		400		{object}	utils.error_response	"update failure"
+//	@Router			/ojts/{ojt-id} [put]
 func handleUpdateOJT(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		ojt_id := mux.Vars(req)["ojt-id"]
+		if ojt_id == "" {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing account ID", fmt.Errorf("missing account ID")))
+			return
+		}
 		info := new(model.UpdateOJTInfo)
 		var req_body_json map[string]interface{}
 
@@ -43,7 +50,7 @@ func handleUpdateOJT(db *sql.DB) func(rw http.ResponseWriter, req *http.Request)
 
 		store := repository.NewOjtStore(db)
 		biz := business.NewUpdateOJTBiz(store)
-		if err_biz := biz.UpdateOJTBiz(info); err_biz != nil {
+		if err_biz := biz.UpdateOJTBiz(ojt_id, info); err_biz != nil {
 			utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
 			return
 		}

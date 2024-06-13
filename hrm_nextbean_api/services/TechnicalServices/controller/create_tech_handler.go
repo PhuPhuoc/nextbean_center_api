@@ -13,15 +13,15 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-//	@Summary		create new Technical
-//	@Description	technical creation information
-//	@Tags			Technical
-//	@Accept			json
-//	@Produce		json
-//	@Param			request	body		model.TechnicalCreationInfo	true	"technical creation request"
-//	@Success		200		{object}	utils.success_response		"Successful create"
-//	@Failure		400		{object}	utils.error_response		"create failure"
-//	@Router			/api/v1/technical [post]
+// @Summary		create new Technical
+// @Description	technical creation information
+// @Tags			Technicals
+// @Accept			json
+// @Produce		json
+// @Param			request	body		model.TechnicalCreationInfo	true	"technical creation request"
+// @Success		200		{object}	utils.success_response		"Successful create"
+// @Failure		400		{object}	utils.error_response		"create failure"
+// @Router			/technicals [post]
 func handleCreateTech(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		info := new(model.TechnicalCreationInfo)

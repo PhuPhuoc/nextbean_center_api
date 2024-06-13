@@ -242,194 +242,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/ojt": {
-            "put": {
-                "description": "update ojt's information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "OJT"
-                ],
-                "summary": "update ojt",
-                "parameters": [
-                    {
-                        "description": "OJT update request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UpdateOJTInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful update",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "update failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "ojt creation information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "OJT"
-                ],
-                "summary": "create new ojt (on the job training)",
-                "parameters": [
-                    {
-                        "description": "ojt creation request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.OJTCreationInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful create",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "create failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/ojt/get": {
-            "post": {
-                "description": "Get a list of ojt with filtering, sorting, and pagination",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "OJT"
-                ],
-                "summary": "Get OJT",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of records per page",
-                        "name": "psize",
-                        "in": "query"
-                    },
-                    {
-                        "description": "ojt'filter option",
-                        "name": "request",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/model.FilterOJT"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.OJT"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/ojt/{id}": {
-            "delete": {
-                "description": "delete ojt information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "OJT"
-                ],
-                "summary": "delete an ojt",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "OJT ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful delete",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "delete failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/project": {
             "put": {
                 "description": "project update information",
@@ -932,118 +744,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/technical": {
-            "post": {
-                "description": "technical creation information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Technical"
-                ],
-                "summary": "create new Technical",
-                "parameters": [
-                    {
-                        "description": "technical creation request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.TechnicalCreationInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful create",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "create failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/technical/get": {
-            "post": {
-                "description": "Get a list of Technical with filtering, sorting, and pagination",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Technical"
-                ],
-                "summary": "Get Technical",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of records per page",
-                        "name": "psize",
-                        "in": "query"
-                    },
-                    {
-                        "description": "ojt'filter option",
-                        "name": "request",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/model.FilterTechnical"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Technical"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
         "/interns": {
             "get": {
                 "description": "Get a list of interns with filtering, sorting, and pagination",
@@ -1399,6 +1099,335 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/ojts": {
+            "get": {
+                "description": "Get a list of ojt with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJTS"
+                ],
+                "summary": "Get OJT",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by account ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by semester",
+                        "name": "semester",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by university",
+                        "name": "university",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc",
+                        "name": "order-by",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.OJT"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "ojt creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJTS"
+                ],
+                "summary": "create new ojt (on the job training)",
+                "parameters": [
+                    {
+                        "description": "ojt creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.OJTCreationInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/ojts/{ojt-id}": {
+            "put": {
+                "description": "update ojt's information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJTS"
+                ],
+                "summary": "update ojt",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "OJT ID",
+                        "name": "ojt-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "OJT update request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateOJTInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful update",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "update failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete ojt information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "OJTS"
+                ],
+                "summary": "delete an ojt",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "OJT ID",
+                        "name": "ojt-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful delete",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "delete failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/technicals": {
+            "get": {
+                "description": "Get a list of Technical with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Technicals"
+                ],
+                "summary": "Get Technical",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by account ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by technical-skill",
+                        "name": "technical-skill",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc",
+                        "name": "order-by",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Technical"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "technical creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Technicals"
+                ],
+                "summary": "create new Technical",
+                "parameters": [
+                    {
+                        "description": "technical creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TechnicalCreationInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1472,37 +1501,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "technical-skill": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.FilterOJT": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "order-by": {
-                    "type": "string"
-                },
-                "semester": {
-                    "type": "string"
-                },
-                "university": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.FilterTechnical": {
-            "type": "object",
-            "properties": {
-                "Technical-skill": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "order-by": {
                     "type": "string"
                 }
             }
@@ -1931,7 +1929,6 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "end-at",
-                "id",
                 "semester",
                 "start-at",
                 "university"
@@ -1939,9 +1936,6 @@ const docTemplate = `{
             "properties": {
                 "end-at": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "semester": {
                     "type": "string"

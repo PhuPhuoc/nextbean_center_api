@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/ojt_query"
@@ -9,16 +10,20 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/model"
 )
 
-func (store *ojtStore) UpdateOJT(info *model.UpdateOJTInfo) error {
-	if err_exist := checkExistID(store, info.Id); err_exist != nil {
+func (store *ojtStore) UpdateOJT(ojt_id string, info *model.UpdateOJTInfo) error {
+	id, err_int := strconv.Atoi(ojt_id)
+	if err_int != nil {
+		return err_int
+	}
+	if err_exist := checkExistID(store, id); err_exist != nil {
 		if strings.Contains(err_exist.Error(), "id_not_exist") {
-			return fmt.Errorf("ojt'id: %v not exist", info.Id)
+			return fmt.Errorf("ojt'id: %v not exist", ojt_id)
 		}
 		return err_exist
 	}
 
 	rawsql := query.QueryUpdateOJT()
-	result, err := store.db.Exec(rawsql, info.Semester, info.University, info.StartAt, info.EndAt, info.Id)
+	result, err := store.db.Exec(rawsql, info.Semester, info.University, info.StartAt, info.EndAt, id)
 	if err != nil {
 		return fmt.Errorf("error when UpdateOJT in store: %v", err)
 	}

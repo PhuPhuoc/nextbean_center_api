@@ -13,7 +13,7 @@ func QueryCreateNewOJT() string {
 }
 
 func QueryCheckExistID() string {
-	return `select exists(select 1 from ojt where id = ?)`
+	return `select exists(select 1 from ojt where id = ? and deleted_at is null)`
 }
 
 func QueryUpdateOJT() string {

@@ -50,26 +50,6 @@ definitions:
       technical-skill:
         type: string
     type: object
-  model.FilterOJT:
-    properties:
-      id:
-        type: integer
-      order-by:
-        type: string
-      semester:
-        type: string
-      university:
-        type: string
-    type: object
-  model.FilterTechnical:
-    properties:
-      Technical-skill:
-        type: string
-      id:
-        type: integer
-      order-by:
-        type: string
-    type: object
   model.Intern:
     properties:
       account-id:
@@ -357,8 +337,6 @@ definitions:
     properties:
       end-at:
         type: string
-      id:
-        type: integer
       semester:
         type: string
       start-at:
@@ -367,7 +345,6 @@ definitions:
         type: string
     required:
     - end-at
-    - id
     - semester
     - start-at
     - university
@@ -571,126 +548,6 @@ paths:
       summary: update account
       tags:
       - Accounts
-  /api/v1/ojt:
-    post:
-      consumes:
-      - application/json
-      description: ojt creation information
-      parameters:
-      - description: ojt creation request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.OJTCreationInfo'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful create
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: create failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: create new ojt (on the job training)
-      tags:
-      - OJT
-    put:
-      consumes:
-      - application/json
-      description: update ojt's information
-      parameters:
-      - description: OJT update request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.UpdateOJTInfo'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful update
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: update failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: update ojt
-      tags:
-      - OJT
-  /api/v1/ojt/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete ojt information
-      parameters:
-      - description: OJT ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful delete
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: delete failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: delete an ojt
-      tags:
-      - OJT
-  /api/v1/ojt/get:
-    post:
-      consumes:
-      - application/json
-      description: Get a list of ojt with filtering, sorting, and pagination
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Number of records per page
-        in: query
-        name: psize
-        type: integer
-      - description: ojt'filter option
-        in: body
-        name: request
-        schema:
-          $ref: '#/definitions/model.FilterOJT'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.success_response'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.OJT'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.error_response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: Get OJT
-      tags:
-      - OJT
   /api/v1/project:
     post:
       consumes:
@@ -1004,76 +861,6 @@ paths:
       summary: remove map project-member
       tags:
       - Project
-  /api/v1/technical:
-    post:
-      consumes:
-      - application/json
-      description: technical creation information
-      parameters:
-      - description: technical creation request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/model.TechnicalCreationInfo'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successful create
-          schema:
-            $ref: '#/definitions/utils.success_response'
-        "400":
-          description: create failure
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: create new Technical
-      tags:
-      - Technical
-  /api/v1/technical/get:
-    post:
-      consumes:
-      - application/json
-      description: Get a list of Technical with filtering, sorting, and pagination
-      parameters:
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Number of records per page
-        in: query
-        name: psize
-        type: integer
-      - description: ojt'filter option
-        in: body
-        name: request
-        schema:
-          $ref: '#/definitions/model.FilterTechnical'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/utils.success_response'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/model.Technical'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/utils.error_response'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/utils.error_response'
-      summary: Get Technical
-      tags:
-      - Technical
   /interns:
     get:
       consumes:
@@ -1304,6 +1091,219 @@ paths:
       summary: login by account
       tags:
       - Authentication
+  /ojts:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of ojt with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: Filter by account ID
+        in: query
+        name: id
+        type: integer
+      - description: Filter by semester
+        in: query
+        name: semester
+        type: string
+      - description: Filter by university
+        in: query
+        name: university
+        type: string
+      - description: 'Order by field (created_at or name), prefix with - for descending
+          order ~ Ex: university desc'
+        in: query
+        name: order-by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.OJT'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get OJT
+      tags:
+      - OJTS
+    post:
+      consumes:
+      - application/json
+      description: ojt creation information
+      parameters:
+      - description: ojt creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.OJTCreationInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new ojt (on the job training)
+      tags:
+      - OJTS
+  /ojts/{ojt-id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete ojt information
+      parameters:
+      - description: OJT ID
+        in: path
+        name: ojt-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful delete
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: delete failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: delete an ojt
+      tags:
+      - OJTS
+    put:
+      consumes:
+      - application/json
+      description: update ojt's information
+      parameters:
+      - description: OJT ID
+        in: path
+        name: ojt-id
+        required: true
+        type: integer
+      - description: OJT update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateOJTInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful update
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: update failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: update ojt
+      tags:
+      - OJTS
+  /technicals:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of Technical with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: Filter by account ID
+        in: query
+        name: id
+        type: integer
+      - description: Filter by technical-skill
+        in: query
+        name: technical-skill
+        type: string
+      - description: 'Order by field (created_at or name), prefix with - for descending
+          order ~ Ex: university desc'
+        in: query
+        name: order-by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Technical'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get Technical
+      tags:
+      - Technicals
+    post:
+      consumes:
+      - application/json
+      description: technical creation information
+      parameters:
+      - description: technical creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.TechnicalCreationInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new Technical
+      tags:
+      - Technicals
 securityDefinitions:
   ApiKeyAuth:
     in: header

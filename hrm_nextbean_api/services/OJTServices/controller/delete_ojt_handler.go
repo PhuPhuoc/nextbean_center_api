@@ -14,16 +14,16 @@ import (
 
 //	@Summary		delete an ojt
 //	@Description	delete ojt information
-//	@Tags			OJT
+//	@Tags			OJTS
 //	@Accept			json
 //	@Produce		json
-//	@Param			id	path		string					true	"OJT ID"
-//	@Success		200	{object}	utils.success_response	"Successful delete"
-//	@Failure		400	{object}	utils.error_response	"delete failure"
-//	@Router			/api/v1/ojt/{id} [delete]
+//	@Param			ojt-id	path		string					true	"OJT ID"
+//	@Success		200		{object}	utils.success_response	"Successful delete"
+//	@Failure		400		{object}	utils.error_response	"delete failure"
+//	@Router			/ojts/{ojt-id} [delete]
 func handleDeleteOJT(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		ojt_id := mux.Vars(req)["id"]
+		ojt_id := mux.Vars(req)["ojt-id"]
 		if ojt_id == "" {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing account ID", fmt.Errorf("missing account ID")))
 			return

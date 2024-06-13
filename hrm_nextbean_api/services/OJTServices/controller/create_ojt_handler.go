@@ -15,13 +15,13 @@ import (
 
 // @Summary		create new ojt (on the job training)
 // @Description	ojt creation information
-// @Tags			OJT
+// @Tags			OJTS
 // @Accept			json
 // @Produce		json
 // @Param			request	body		model.OJTCreationInfo	true	"ojt creation request"
 // @Success		200		{object}	utils.success_response	"Successful create"
 // @Failure		400		{object}	utils.error_response	"create failure"
-// @Router			/api/v1/ojt [post]
+// @Router			/ojts [post]
 func handleCreateOJT(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		info := new(model.OJTCreationInfo)

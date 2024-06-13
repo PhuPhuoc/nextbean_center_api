@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -16,31 +17,28 @@ import (
 
 //	@Summary		Get Technical
 //	@Description	Get a list of Technical with filtering, sorting, and pagination
-//	@Tags			Technical
+//	@Tags			Technicals
 //	@Accept			json
 //	@Produce		json
-//	@Param			page	query		int												false	"Page number"
-//	@Param			psize	query		int												false	"Number of records per page"
-//	@Param			request	body		model.FilterTechnical							false	"ojt'filter option"
-//	@Success		200		{object}	utils.success_response{data=[]model.Technical}	"OK"
-//	@Failure		400		{object}	utils.error_response							"Bad Request"
-//	@Failure		404		{object}	utils.error_response							"Not Found"
-//	@Router			/api/v1/technical/get [post]
+//	@Param			page			query		int												false	"Page number"
+//	@Param			psize			query		int												false	"Number of records per page"
+//	@Param			id				query		int												false	"Filter by account ID"
+//	@Param			technical-skill	query		string											false	"Filter by technical-skill"
+//	@Param			order-by		query		string											false	"Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc"
+//	@Success		200				{object}	utils.success_response{data=[]model.Technical}	"OK"
+//	@Failure		400				{object}	utils.error_response							"Bad Request"
+//	@Failure		404				{object}	utils.error_response							"Not Found"
+//	@Router			/technicals [get]
 func handleGetTech(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		pagin := new(common.Pagination)
-		page, err := strconv.Atoi(req.URL.Query().Get("page"))
-		if err != nil {
-			pagin.Page = 1
-		}
-		psize, err := strconv.Atoi(req.URL.Query().Get("psize"))
-		if err != nil {
-			pagin.PSize = 10
-		}
-		pagin.Page = page
-		pagin.PSize = psize
-		pagin.Process()
 		filter := new(model.FilterTechnical)
+
+		err := getRequestQuery(req, pagin, filter)
+		if err != nil {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
+			return
+		}
 
 		var body_data bytes.Buffer
 		if _, err_read_body := body_data.ReadFrom(req.Body); err_read_body != nil {
@@ -59,4 +57,29 @@ func handleGetTech(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 
 		utils.WriteJSON(rw, utils.SuccessResponse_GetObject(pagin, filter, data))
 	}
+}
+
+func getRequestQuery(req *http.Request, pagin *common.Pagination, filter *model.FilterTechnical) error {
+	page, err := strconv.Atoi(req.URL.Query().Get("page"))
+	if err != nil {
+		pagin.Page = 1
+	}
+	psize, err := strconv.Atoi(req.URL.Query().Get("psize"))
+	if err != nil {
+		pagin.PSize = 10
+	}
+	pagin.Page = page
+	pagin.PSize = psize
+	pagin.Process()
+
+	ojt_id := req.URL.Query().Get("id")
+	if ojt_id != "" {
+		filter.Id, err = strconv.Atoi(ojt_id)
+		if err != nil {
+			return fmt.Errorf("ojt-id must be a number")
+		}
+	}
+	filter.TechnicalSkill = req.URL.Query().Get("technical-skill")
+	filter.OrderBy = req.URL.Query().Get("order-by")
+	return nil
 }

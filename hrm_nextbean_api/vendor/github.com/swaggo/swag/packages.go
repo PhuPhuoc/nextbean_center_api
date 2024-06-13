@@ -114,7 +114,7 @@ func (pkgDefs *PackagesDefinitions) RangeFiles(handle func(info *AstFileInfo) er
 }
 
 // ParseTypes parse types
-// @Return parsed definitions.
+//	@Return	parsed definitions.
 func (pkgDefs *PackagesDefinitions) ParseTypes() (map[*TypeSpecDef]*Schema, error) {
 	parsedSchemas := make(map[*TypeSpecDef]*Schema)
 	for astFile, info := range pkgDefs.files {
@@ -436,9 +436,9 @@ func (pkgDefs *PackagesDefinitions) loadExternalPackage(importPath string) error
 }
 
 // findPackagePathFromImports finds out the package path of a package via ranging imports of an ast.File
-// @pkg the name of the target package
-// @file current ast.File in which to search imports
-// @return the package paths of a package of @pkg.
+//	@pkg	the name of the target package
+//	@file	current ast.File in which to search imports
+//	@return	the package paths of a package of @pkg.
 func (pkgDefs *PackagesDefinitions) findPackagePathFromImports(pkg string, file *ast.File) (matchedPkgPaths, externalPkgPaths []string) {
 	if file == nil {
 		return
@@ -528,9 +528,9 @@ func (pkgDefs *PackagesDefinitions) findTypeSpecFromPackagePaths(matchedPkgPaths
 }
 
 // FindTypeSpec finds out TypeSpecDef of a type by typeName
-// @typeName the name of the target type, if it starts with a package name, find its own package path from imports on top of @file
-// @file the ast.file in which @typeName is used
-// @pkgPath the package path of @file.
+//	@typeName	the name of the target type, if it starts with a package name, find its own package path from imports on top of @file
+//	@file		the ast.file in which @typeName is used
+//	@pkgPath	the package path of @file.
 func (pkgDefs *PackagesDefinitions) FindTypeSpec(typeName string, file *ast.File) *TypeSpecDef {
 	if IsGolangPrimitiveType(typeName) {
 		return nil
