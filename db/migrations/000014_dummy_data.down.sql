@@ -1,3 +1,4 @@
+DELETE FROM project_intern;
 DELETE FROM project_manager;
 DELETE FROM project;
 DELETE FROM intern_skill;
