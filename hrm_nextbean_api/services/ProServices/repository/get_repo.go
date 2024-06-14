@@ -20,7 +20,7 @@ func (store *projectStore) GetProject(pagin *common.Pagination, filter *model.Pr
 
 	for rows.Next() {
 		acc := new(model.Project)
-		if err_scan := rows.Scan(&acc.Id, &acc.Name, &acc.Status, &acc.Duration, &acc.StartDate, &total_record); err_scan != nil {
+		if err_scan := rows.Scan(&acc.Id, &acc.Name, &acc.Status, &acc.Description, &acc.Duration, &acc.StartDate, &total_record); err_scan != nil {
 			return data, err_scan
 		}
 		data = append(data, *acc)

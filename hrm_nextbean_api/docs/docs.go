@@ -242,508 +242,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/project": {
-            "put": {
-                "description": "project update information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Update project",
-                "parameters": [
-                    {
-                        "description": "project update request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.UpdateProjectInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful create",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "create failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "project creation information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "create new project",
-                "parameters": [
-                    {
-                        "description": "project creation request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ProjectCreationInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful create",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "create failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/get": {
-            "post": {
-                "description": "Get a list of projects with filtering, sorting, and pagination",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Get projects",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of records per page",
-                        "name": "psize",
-                        "in": "query"
-                    },
-                    {
-                        "description": "project'filter option",
-                        "name": "request",
-                        "in": "body",
-                        "schema": {
-                            "$ref": "#/definitions/model.ProjectFilter"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Project"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/get-mem-not-in/{project-id}": {
-            "get": {
-                "description": "Get a list of Memer not in Project",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Get Memer not in project",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "enter project-id",
-                        "name": "project-id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.PM"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/get-mem/{project-id}": {
-            "get": {
-                "description": "Get a list of Member in Project",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Get Member in Project",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "enter project-id",
-                        "name": "project-id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.Member"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/get-pm-not-in/{project-id}": {
-            "get": {
-                "description": "Get a list of PM not in Project",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Get PM not in project",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "enter project-id",
-                        "name": "project-id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.PM"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/get-pm/{project-id}": {
-            "get": {
-                "description": "Get a list of PM in Project",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "Get PM",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "enter project-id",
-                        "name": "project-id",
-                        "in": "path"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/utils.success_response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/model.PM"
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/manager": {
-            "post": {
-                "description": "Add manager to project information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "map project-manager",
-                "parameters": [
-                    {
-                        "description": "Required: Fill in the id of the project manager into this array",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.MapProPM"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful mapping",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "mapping failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/member": {
-            "post": {
-                "description": "Add member to project information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "map project-member",
-                "parameters": [
-                    {
-                        "description": "Add project-id and member-id to this json",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.MapProMem"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful mapping",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "mapping failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/project/remove-member": {
-            "put": {
-                "description": "remove member to project information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Project"
-                ],
-                "summary": "remove map project-member",
-                "parameters": [
-                    {
-                        "description": "add project-id and member-id to this json",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.MapProMem"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful mapping",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "mapping failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            }
-        },
         "/interns": {
             "get": {
                 "description": "Get a list of interns with filtering, sorting, and pagination",
@@ -1309,6 +807,590 @@ const docTemplate = `{
                 }
             }
         },
+        "/projects": {
+            "get": {
+                "description": "Get a list of projects with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get projects",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Project's Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Project's Status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get project which have start date from this date",
+                        "name": "start-date-from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get project which have start date to this date",
+                        "name": "start-date-to",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Project"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "project creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "create new project",
+                "parameters": [
+                    {
+                        "description": "project creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProjectCreationInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}": {
+            "put": {
+                "description": "project update information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Update project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Project ID",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "project update request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateProjectInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/member": {
+            "post": {
+                "description": "Add member to project information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "map project-member",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Project ID",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Add project-id and member-id to this json",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MapProMem"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/member-in-project": {
+            "get": {
+                "description": "Get a list of Member in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Member in Project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Member"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/member-outside-project": {
+            "get": {
+                "description": "Get a list of Memer not in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get Memer not in project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "member'name",
+                        "name": "user-name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "student-code of member",
+                        "name": "student-code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "member'semester",
+                        "name": "semester",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "member's university",
+                        "name": "university",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Member"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/pm-in-project": {
+            "get": {
+                "description": "Get a list of PM in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get PM",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.PM"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/pm-outside-project": {
+            "get": {
+                "description": "Get a list of PM not in Project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Get PM not in project",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.PM"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/project-managers": {
+            "post": {
+                "description": "Add manager to project information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "map project-manager",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Project ID",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Required: Fill in the id of the project manager into this array",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MapProPM"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/{member-id}": {
+            "delete": {
+                "description": "remove member to project information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "remove map project-member",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Project ID",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Member ID",
+                        "name": "member-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/technicals": {
             "get": {
                 "description": "Get a list of Technical with filtering, sorting, and pagination",
@@ -1712,14 +1794,10 @@ const docTemplate = `{
         "model.MapProMem": {
             "type": "object",
             "required": [
-                "mem-id",
-                "project-id"
+                "mem-id"
             ],
             "properties": {
                 "mem-id": {
-                    "type": "string"
-                },
-                "project-id": {
                     "type": "string"
                 }
             }
@@ -1727,8 +1805,7 @@ const docTemplate = `{
         "model.MapProPM": {
             "type": "object",
             "required": [
-                "list-manager-id",
-                "project-id"
+                "list-manager-id"
             ],
             "properties": {
                 "list-manager-id": {
@@ -1736,9 +1813,6 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
-                },
-                "project-id": {
-                    "type": "string"
                 }
             }
         },
@@ -1749,6 +1823,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "ojt-semester-university": {
                     "type": "string"
                 },
                 "student-code": {
@@ -1822,6 +1899,9 @@ const docTemplate = `{
         "model.Project": {
             "type": "object",
             "properties": {
+                "description": {
+                    "type": "string"
+                },
                 "duration": {
                     "type": "string"
                 },
@@ -1858,26 +1938,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "start-at": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.ProjectFilter": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "order-by": {
-                    "type": "string"
-                },
-                "start-date-from": {
-                    "type": "string"
-                },
-                "start-date-to": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 }
             }
@@ -1953,9 +2013,8 @@ const docTemplate = `{
             "required": [
                 "description",
                 "duration",
-                "id",
                 "name",
-                "start-at",
+                "start-date",
                 "status"
             ],
             "properties": {
@@ -1965,13 +2024,10 @@ const docTemplate = `{
                 "duration": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 },
-                "start-at": {
+                "start-date": {
                     "type": "string"
                 },
                 "status": {

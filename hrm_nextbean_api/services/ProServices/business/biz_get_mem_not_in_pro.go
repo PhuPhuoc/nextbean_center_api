@@ -1,9 +1,12 @@
 package business
 
-import "github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
+import (
+	"github.com/PhuPhuoc/hrm_nextbean_api/common"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
+)
 
 type getMemNotInProStore interface {
-	GetMemNotInPro(pro_id string) ([]model.Member, error)
+	GetMemNotInPro(pro_id string, pagin *common.Pagination, filter *model.MemberFilter) ([]model.Member, error)
 }
 
 type getMemNotInProBiz struct {
@@ -16,8 +19,8 @@ func NewGetMemNotInProBiz(store getMemNotInProStore) *getMemNotInProBiz {
 	}
 }
 
-func (biz *getMemNotInProBiz) GetMemNotInProBiz(pro_id string) ([]model.Member, error) {
-	data, err_query := biz.store.GetMemNotInPro(pro_id)
+func (biz *getMemNotInProBiz) GetMemNotInProBiz(pro_id string, pagin *common.Pagination, filter *model.MemberFilter) ([]model.Member, error) {
+	data, err_query := biz.store.GetMemNotInPro(pro_id, pagin, filter)
 	if err_query != nil {
 		return nil, err_query
 	}

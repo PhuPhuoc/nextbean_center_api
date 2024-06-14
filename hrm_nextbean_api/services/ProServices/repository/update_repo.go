@@ -7,12 +7,12 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
 )
 
-func (store *projectStore) UpdateProject(info *model.UpdateProjectInfo) error {
-	if err_check_id := checkProjectIDExist(store, info.Id); err_check_id != nil {
+func (store *projectStore) UpdateProject(proid string, info *model.UpdateProjectInfo) error {
+	if err_check_id := checkProjectIDExist(store, proid); err_check_id != nil {
 		return err_check_id
 	}
 	rawsql := query.QueryUpdateProject()
-	result, err := store.db.Exec(rawsql, info.Name, info.Status, info.Description, info.StartAt, info.Duration, info.Id)
+	result, err := store.db.Exec(rawsql, info.Name, info.Status, info.Description, info.StartDate, info.Duration, proid)
 	if err != nil {
 		return fmt.Errorf("error when UpdateProject in store: %v", err)
 	}

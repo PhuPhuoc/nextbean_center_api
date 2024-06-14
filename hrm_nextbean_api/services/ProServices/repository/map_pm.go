@@ -8,8 +8,8 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
 )
 
-func (store *projectStore) MapPM(info *model.MapProPM) error {
-	if err_check_pro_id := checkProjectIDExist(store, info.ProjectId); err_check_pro_id != nil {
+func (store *projectStore) MapPM(proid string, info *model.MapProPM) error {
+	if err_check_pro_id := checkProjectIDExist(store, proid); err_check_pro_id != nil {
 		return err_check_pro_id
 	}
 
@@ -26,7 +26,7 @@ func (store *projectStore) MapPM(info *model.MapProPM) error {
 	}
 
 	deleteQuery := query.QueryDeleteMapProjectPM()
-	if _, err := tx.Exec(deleteQuery, info.ProjectId); err != nil {
+	if _, err := tx.Exec(deleteQuery, proid); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error when MapPM (delete mapping transaction) in store: %v", err)
 	}
@@ -36,7 +36,7 @@ func (store *projectStore) MapPM(info *model.MapProPM) error {
 		if i > 0 {
 			values += ","
 		}
-		values += fmt.Sprintf("('%s','%s')", info.ProjectId, info.ListManagerId[i])
+		values += fmt.Sprintf("('%s','%s')", proid, info.ListManagerId[i])
 	}
 
 	updateQuery := query.QueryMapProjectPM(values)

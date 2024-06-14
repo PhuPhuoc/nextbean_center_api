@@ -15,13 +15,13 @@ import (
 
 // @Summary		create new project
 // @Description	project creation information
-// @Tags			Project
+// @Tags			Projects
 // @Accept			json
 // @Produce		json
 // @Param			request	body		model.ProjectCreationInfo	true	"project creation request"
 // @Success		200		{object}	utils.success_response		"Successful create"
 // @Failure		400		{object}	utils.error_response		"create failure"
-// @Router			/api/v1/project [post]
+// @Router			/projects [post]
 func handleCreateProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		info := new(model.ProjectCreationInfo)

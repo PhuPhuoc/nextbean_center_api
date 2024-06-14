@@ -1,9 +1,7 @@
 package business
 
-import "github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
-
 type RemoveMapProMemStorage interface {
-	RemoveMemInPro(mapInfo *model.MapProMem) error
+	RemoveMemInPro(proid string, memid string) error
 }
 
 type removeMapProMemBiz struct {
@@ -14,8 +12,8 @@ func NewRemoveProMemBiz(store RemoveMapProMemStorage) *removeMapProMemBiz {
 	return &removeMapProMemBiz{store: store}
 }
 
-func (biz *removeMapProMemBiz) RemoveProMemBiz(info *model.MapProMem) error {
-	if err_query := biz.store.RemoveMemInPro(info); err_query != nil {
+func (biz *removeMapProMemBiz) RemoveProMemBiz(proid string, memid string) error {
+	if err_query := biz.store.RemoveMemInPro(proid, memid); err_query != nil {
 		return err_query
 	}
 	return nil

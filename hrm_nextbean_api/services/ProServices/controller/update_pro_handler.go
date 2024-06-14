@@ -12,19 +12,26 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
+	"github.com/gorilla/mux"
 )
 
-// @Summary		Update project
-// @Description	project update information
-// @Tags			Project
-// @Accept			json
-// @Produce		json
-// @Param			request	body		model.UpdateProjectInfo	true	"project update request"
-// @Success		200		{object}	utils.success_response	"Successful create"
-// @Failure		400		{object}	utils.error_response	"create failure"
-// @Router			/api/v1/project [put]
+//	@Summary		Update project
+//	@Description	project update information
+//	@Tags			Projects
+//	@Accept			json
+//	@Produce		json
+//	@Param			project-id	path		string					true	"Project ID"
+//	@Param			request		body		model.UpdateProjectInfo	true	"project update request"
+//	@Success		200			{object}	utils.success_response	"Successful create"
+//	@Failure		400			{object}	utils.error_response	"create failure"
+//	@Router			/projects/{project-id} [put]
 func handleUpdateProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		proid := mux.Vars(req)["project-id"]
+		if proid == "" {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing account ID", fmt.Errorf("missing account ID")))
+			return
+		}
 		info := new(model.UpdateProjectInfo)
 		var req_body_json map[string]interface{}
 
@@ -43,7 +50,7 @@ func handleUpdateProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		json.Unmarshal(body_data.Bytes(), info)
 		store := repository.NewProjectStore(db)
 		biz := business.NewUpdateProjectBiz(store)
-		if err_biz := biz.UpdateProjectBiz(info); err_biz != nil {
+		if err_biz := biz.UpdateProjectBiz(proid, info); err_biz != nil {
 			if strings.Contains(err_biz.Error(), "not exist in db") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
 			} else {
@@ -54,4 +61,3 @@ func handleUpdateProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		utils.WriteJSON(rw, utils.SuccessResponse_MessageUpdated("Project updated successfully!"))
 	}
 }
- 

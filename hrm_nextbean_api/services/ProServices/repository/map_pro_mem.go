@@ -8,8 +8,8 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-func (store *projectStore) MapProMem(mapInfo *model.MapProMem) error {
-	if err_check_pro_id := checkProjectIDExist(store, mapInfo.ProjectId); err_check_pro_id != nil {
+func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) error {
+	if err_check_pro_id := checkProjectIDExist(store, proid); err_check_pro_id != nil {
 		return err_check_pro_id
 	}
 
@@ -17,7 +17,7 @@ func (store *projectStore) MapProMem(mapInfo *model.MapProMem) error {
 		return err_check_mem_id
 	}
 
-	flag_idNotExistInTable, err_check := checkMemberExistInProject(store, mapInfo.ProjectId, mapInfo.MemId)
+	flag_idNotExistInTable, err_check := checkMemberExistInProject(store, proid, mapInfo.MemId)
 	if err_check != nil {
 		return err_check
 	}
@@ -25,7 +25,7 @@ func (store *projectStore) MapProMem(mapInfo *model.MapProMem) error {
 	if !flag_idNotExistInTable {
 		// create new map
 		rawsql := query.QueryAddMemberToProject()
-		result, err := store.db.Exec(rawsql, mapInfo.ProjectId, mapInfo.MemId, utils.CreateDateTimeCurrentFormated(), "inprogress")
+		result, err := store.db.Exec(rawsql, proid, mapInfo.MemId, utils.CreateDateTimeCurrentFormated(), "inprogress")
 		if err != nil {
 			return fmt.Errorf("error when MapProMem in store: %v", err)
 		}
@@ -40,14 +40,14 @@ func (store *projectStore) MapProMem(mapInfo *model.MapProMem) error {
 		}
 
 	} else {
-		flag_idExistButHasLeave, err_check_leave := checkMemberExistInProjectButHasLeave(store, mapInfo.ProjectId, mapInfo.MemId)
+		flag_idExistButHasLeave, err_check_leave := checkMemberExistInProjectButHasLeave(store, proid, mapInfo.MemId)
 		if err_check_leave != nil {
 			return err_check_leave
 		}
 
 		if flag_idExistButHasLeave {
 			rawsql := query.QueryReJoinProject()
-			result, err := store.db.Exec(rawsql, mapInfo.ProjectId, mapInfo.MemId)
+			result, err := store.db.Exec(rawsql, proid, mapInfo.MemId)
 			if err != nil {
 				return fmt.Errorf("error when Re-MapProMem in store: %v", err)
 			}
@@ -61,7 +61,7 @@ func (store *projectStore) MapProMem(mapInfo *model.MapProMem) error {
 				return fmt.Errorf("error when Re-MapProMem in store (No user re-mapped): %v", err)
 			}
 		} else {
-			return fmt.Errorf("member with id: %v already exist in project: %v", mapInfo.MemId, mapInfo.ProjectId)
+			return fmt.Errorf("member with id: %v already exist in project: %v", mapInfo.MemId, proid)
 		}
 	}
 }

@@ -12,19 +12,31 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
+	"github.com/gorilla/mux"
 )
 
-// @Summary		remove map project-member
-// @Description	remove member to project information
-// @Tags			Project
-// @Accept			json
-// @Produce		json
-// @Param			request	body		model.MapProMem			true	"add project-id and member-id to this json"
-// @Success		200		{object}	utils.success_response	"Successful mapping"
-// @Failure		400		{object}	utils.error_response	"mapping failure"
-// @Router			/api/v1/project/remove-member [put]
+//	@Summary		remove map project-member
+//	@Description	remove member to project information
+//	@Tags			Projects
+//	@Accept			json
+//	@Produce		json
+//	@Param			project-id	path		string					true	"Project ID"
+//	@Param			member-id	path		string					true	"Member ID"
+//	@Success		200			{object}	utils.success_response	"Successful mapping"
+//	@Failure		400			{object}	utils.error_response	"mapping failure"
+//	@Router			/projects/{project-id}/{member-id} [delete]
 func handleRemoveMemberInProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		proid := mux.Vars(req)["project-id"]
+		if proid == "" {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing project ID", fmt.Errorf("missing project ID")))
+			return
+		}
+		memid := mux.Vars(req)["member-id"]
+		if proid == "" {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing member ID", fmt.Errorf("missing member ID")))
+			return
+		}
 		map_info := new(model.MapProMem)
 		var req_body_json map[string]interface{}
 
@@ -44,7 +56,7 @@ func handleRemoveMemberInProject(db *sql.DB) func(rw http.ResponseWriter, req *h
 
 		store := repository.NewProjectStore(db)
 		biz := business.NewRemoveProMemBiz(store)
-		if err_biz := biz.RemoveProMemBiz(map_info); err_biz != nil {
+		if err_biz := biz.RemoveProMemBiz(proid, memid); err_biz != nil {
 			if strings.Contains(err_biz.Error(), "exist") || strings.Contains(err_biz.Error(), "remove") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("request execution failed", err_biz))
 			} else {
