@@ -15,16 +15,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//	@Summary		remove map project-member
-//	@Description	remove member to project information
-//	@Tags			Projects
-//	@Accept			json
-//	@Produce		json
-//	@Param			project-id	path		string					true	"Project ID"
-//	@Param			member-id	path		string					true	"Member ID"
-//	@Success		200			{object}	utils.success_response	"Successful mapping"
-//	@Failure		400			{object}	utils.error_response	"mapping failure"
-//	@Router			/projects/{project-id}/{member-id} [delete]
+// @Summary		remove map project-member
+// @Description	remove member to project information
+// @Tags			Projects
+// @Accept			json
+// @Produce		json
+// @Param			project-id	path		string					true	"Project ID"
+// @Param			member-id	path		string					true	"Member ID"
+// @Success		200			{object}	utils.success_response	"Successful mapping"
+// @Failure		400			{object}	utils.error_response	"mapping failure"
+// @Router			/projects/{project-id}/{member-id} [delete]
 func handleRemoveMemberInProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]
@@ -57,8 +57,8 @@ func handleRemoveMemberInProject(db *sql.DB) func(rw http.ResponseWriter, req *h
 		store := repository.NewProjectStore(db)
 		biz := business.NewRemoveProMemBiz(store)
 		if err_biz := biz.RemoveProMemBiz(proid, memid); err_biz != nil {
-			if strings.Contains(err_biz.Error(), "exist") || strings.Contains(err_biz.Error(), "remove") {
-				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("request execution failed", err_biz))
+			if strings.Contains(err_biz.Error(), "invalid-request") {
+				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
 			}

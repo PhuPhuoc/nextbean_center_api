@@ -15,16 +15,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//	@Summary		Update project
-//	@Description	project update information
-//	@Tags			Projects
-//	@Accept			json
-//	@Produce		json
-//	@Param			project-id	path		string					true	"Project ID"
-//	@Param			request		body		model.UpdateProjectInfo	true	"project update request"
-//	@Success		200			{object}	utils.success_response	"Successful create"
-//	@Failure		400			{object}	utils.error_response	"create failure"
-//	@Router			/projects/{project-id} [put]
+// @Summary		Update project
+// @Description	project update information
+// @Tags			Projects
+// @Accept			json
+// @Produce		json
+// @Param			project-id	path		string					true	"Project ID"
+// @Param			request		body		model.UpdateProjectInfo	true	"project update request"
+// @Success		200			{object}	utils.success_response	"Successful create"
+// @Failure		400			{object}	utils.error_response	"create failure"
+// @Router			/projects/{project-id} [put]
 func handleUpdateProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]
@@ -51,7 +51,7 @@ func handleUpdateProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		store := repository.NewProjectStore(db)
 		biz := business.NewUpdateProjectBiz(store)
 		if err_biz := biz.UpdateProjectBiz(proid, info); err_biz != nil {
-			if strings.Contains(err_biz.Error(), "not exist in db") {
+			if strings.Contains(err_biz.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))

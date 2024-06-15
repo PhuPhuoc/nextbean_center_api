@@ -2,60 +2,58 @@ package repository
 
 import (
 	"fmt"
-
-	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/project_query"
 )
 
-func checkProjectIDExist(store *projectStore, pro_id string) error {
+func checkProjectIDExists(store *projectStore, pro_id string) error {
 	var flag bool = false
-	rawsql := query.QueryCheckProjectIDExist()
+	rawsql := `select exists(select 1 from project where id = ? and deleted_at is null)`
 	if err_query := store.db.QueryRow(rawsql, pro_id).Scan(&flag); err_query != nil {
-		return fmt.Errorf("error in store (check project-id): %v", err_query)
+		return fmt.Errorf("error in checkProjectIDExists: %v", err_query)
 	}
 	if !flag {
-		return fmt.Errorf("project'id does not exist in db")
+		return fmt.Errorf("invalid-request: project'id '%v' does not exists", pro_id)
 	}
-	return nil // project'id exist in db => ready to update
+	return nil // project'id exist in d
 }
 
-func checkPMIDExist(store *projectStore, pm_id string) error {
+func checkPMIDExists(store *projectStore, pm_id string) error {
 	var flag bool = false
-	rawsql := query.QueryCheckPMIDExist()
+	rawsql := `select exists(select 1 from account where id = ? and role='pm' and deleted_at is null)`
 	if err_query := store.db.QueryRow(rawsql, pm_id).Scan(&flag); err_query != nil {
-		return fmt.Errorf("error in store (check pm-id): %v", err_query)
+		return fmt.Errorf("error in checkPMIDExist: %v", err_query)
 	}
 	if !flag {
-		return fmt.Errorf("account'id: %v does not exist, or this id does not have the role 'project-manager'", pm_id)
+		return fmt.Errorf("invalid-request: pm'id '%v' does not exists'", pm_id)
 	}
 	return nil // pm_id'id exist in db
 }
 
-func checkMemIDExist(store *projectStore, mem_id string) error {
+func checkMemIDExists(store *projectStore, mem_id string) error {
 	var flag bool = false
-	rawsql := query.QueryCheckMemIDExist()
+	rawsql := `select exists(select 1 from intern i join account acc on i.account_id=acc.id where i.id = ? and acc.deleted_at is null)`
 	if err_query := store.db.QueryRow(rawsql, mem_id).Scan(&flag); err_query != nil {
-		return fmt.Errorf("error in store (check mem_id): %v", err_query)
+		return fmt.Errorf("error in checkMemIDExist: %v", err_query)
 	}
 	if !flag {
-		return fmt.Errorf("intern'id: %v does not exist", mem_id)
+		return fmt.Errorf("invalid-request: intern'id '%v' does not exists", mem_id)
 	}
 	return nil // mem'id exist in db
 }
 
-func checkMemberExistInProject(store *projectStore, project_id, mem_id string) (bool, error) {
+func checkMemberExistsInProject(store *projectStore, project_id, mem_id string) (bool, error) {
 	var flag bool = false
-	rawsql := query.QueryCheckMemberInProjectNotExist()
+	rawsql := `select exists(select 1 from project_intern where project_id = ? and intern_id = ?)`
 	if err_query := store.db.QueryRow(rawsql, project_id, mem_id).Scan(&flag); err_query != nil {
-		return flag, fmt.Errorf("error in store (check mem_id exist in project-member): %v", err_query)
+		return flag, fmt.Errorf("error in checkMemberExistInProject: %v", err_query)
 	}
 	return flag, nil
 }
 
-func checkMemberExistInProjectButHasLeave(store *projectStore, project_id, mem_id string) (bool, error) {
+func checkMemberExistsInProjectButHasLeave(store *projectStore, project_id, mem_id string) (bool, error) {
 	var flag bool = false
-	rawsql := query.QueryCheckMemberInProjectSatusLeave()
+	rawsql := `select exists(select 1 from project_intern where project_id = ? and intern_id = ? and status = 'leave')`
 	if err_query := store.db.QueryRow(rawsql, project_id, mem_id).Scan(&flag); err_query != nil {
-		return flag, fmt.Errorf("error in store (check mem_id leave in project-member): %v", err_query)
+		return flag, fmt.Errorf("error in checkMemberExistInProjectButHasLeave: %v", err_query)
 	}
 	return flag, nil
 }

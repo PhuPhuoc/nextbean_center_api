@@ -15,22 +15,22 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//	@Summary		Get Memer not in project
-//	@Description	Get a list of Memer not in Project
-//	@Tags			Projects
-//	@Accept			json
-//	@Produce		json
-//	@Param			project-id		path		string										true	"enter project-id"
-//	@Param			page			query		int											false	"Page number"
-//	@Param			psize			query		int											false	"Number of records per page"
-//	@Param			user-name		query		string										false	"member'name"
-//	@Param			student-code	query		string										false	"student-code of member"
-//	@Param			semester		query		string										false	"member'semester"
-//	@Param			university		query		string										false	"member's university"
-//	@Success		200				{object}	utils.success_response{data=[]model.Member}	"OK"
-//	@Failure		400				{object}	utils.error_response						"Bad Request"
-//	@Failure		404				{object}	utils.error_response						"Not Found"
-//	@Router			/projects/{project-id}/member-outside-project [get]
+// @Summary		Get Memer not in project
+// @Description	Get a list of Memer not in Project
+// @Tags			Projects
+// @Accept			json
+// @Produce		json
+// @Param			project-id		path		string										true	"enter project-id"
+// @Param			page			query		int											false	"Page number"
+// @Param			psize			query		int											false	"Number of records per page"
+// @Param			user-name		query		string										false	"member'name"
+// @Param			student-code	query		string										false	"student-code of member"
+// @Param			semester		query		string										false	"member'semester"
+// @Param			university		query		string										false	"member's university"
+// @Success		200				{object}	utils.success_response{data=[]model.Member}	"OK"
+// @Failure		400				{object}	utils.error_response						"Bad Request"
+// @Failure		404				{object}	utils.error_response						"Not Found"
+// @Router			/projects/{project-id}/member-outside-project [get]
 func handleGetMemNotInPro(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]
@@ -47,7 +47,7 @@ func handleGetMemNotInPro(db *sql.DB) func(rw http.ResponseWriter, req *http.Req
 		biz := business.NewGetMemNotInProBiz(store)
 		data, err := biz.GetMemNotInProBiz(proid, pagin, filter)
 		if err != nil {
-			if strings.Contains(err.Error(), "not exist") {
+			if strings.Contains(err.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_CannotGetEntity("member", err))

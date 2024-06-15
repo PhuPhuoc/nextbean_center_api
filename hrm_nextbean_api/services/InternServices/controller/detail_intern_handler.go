@@ -30,7 +30,7 @@ func handleGetDetailIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Re
 		biz := business.NewGetDetailInternBiz(store)
 		data, err_biz := biz.GetDetailInternBiz(internID)
 		if err_biz != nil {
-			if strings.Contains(err_biz.Error(), "not exists") {
+			if strings.Contains(err_biz.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_CannotGetEntity("intern", err_biz))

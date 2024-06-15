@@ -48,7 +48,7 @@ func handleUpdateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Reque
 		store := repository.NewInternStore(db)
 		biz := business.NewUpdateInternBusiness(store)
 		if err_biz := biz.UpdateInternBiz(internID, intern_info); err_biz != nil {
-			if strings.Contains(err_biz.Error(), "duplicate data") || strings.Contains(err_biz.Error(), "exists") {
+			if strings.Contains(err_biz.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))

@@ -38,6 +38,7 @@ func handleGetProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 		biz := business.NewGetProBiz(store)
 		data, err := biz.GetProBiz(pagin, filter)
 		if err != nil {
+			
 			utils.WriteJSON(rw, utils.ErrorResponse_CannotGetEntity("project", err))
 			return
 		}

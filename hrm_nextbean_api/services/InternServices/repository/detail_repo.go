@@ -1,19 +1,18 @@
 package repository
 
 import (
-	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/intern_query"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/model"
 )
 
 func (store *internStore) GetDetailIntern(int_id string) (*model.InternDetailInfo, error) {
-	if err_check_accID_exist := checkInternIDExist(store, int_id); err_check_accID_exist != nil {
+	if err_check_accID_exist := checkInternIDExists(store, int_id); err_check_accID_exist != nil {
 		return nil, err_check_accID_exist
 	}
 
 	i_info := new(model.InternDetailInfo)
 
-	infoQuery := query.QueryGetInternDetailInfo()
-	skillQuery := query.QueryGetInternSkill()
+	infoQuery := `select i.id, acc.user_name, acc.email, i.student_code, i.avatar, i.gender, i.date_of_birth, i.phone_number, i.address from account acc join intern i on acc.id=i.account_id where i.id = ? and acc.deleted_at is null`
+	skillQuery := `select t.technical_skill, s.skill_level from intern_skill s join technical t on t.id = s.technical_id where s.intern_id = ?`
 
 	if err_query_info := store.db.QueryRow(infoQuery, int_id).Scan(&i_info.Id, &i_info.UserName, &i_info.Email, &i_info.StudentCode, &i_info.Avatar, &i_info.Gender, &i_info.DateOfBirth, &i_info.PhoneNumber, &i_info.Address); err_query_info != nil {
 		return nil, err_query_info

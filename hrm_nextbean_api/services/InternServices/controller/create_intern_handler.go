@@ -45,8 +45,8 @@ func handleCreateIntern(db *sql.DB) func(rw http.ResponseWriter, req *http.Reque
 		store := repository.NewInternStore(db)
 		biz := business.NewCreateInternBusiness(store)
 		if err_create := biz.CreateNewInternBiz(intern_info); err_create != nil {
-			if strings.Contains(err_create.Error(), "duplicate data") {
-				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("duplicate data, cannot create new intern", err_create))
+			if strings.Contains(err_create.Error(), "invalid-request") {
+				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("invalid data, cannot create new intern", err_create))
 				return
 			}
 			utils.WriteJSON(rw, utils.ErrorResponse_DB(err_create))

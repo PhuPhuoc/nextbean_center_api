@@ -15,16 +15,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//	@Summary		map project-member
-//	@Description	Add member to project information
-//	@Tags			Projects
-//	@Accept			json
-//	@Produce		json
-//	@Param			project-id	path		string					true	"Project ID"
-//	@Param			request		body		model.MapProMem			true	"Add project-id and member-id to this json"
-//	@Success		200			{object}	utils.success_response	"Successful mapping"
-//	@Failure		400			{object}	utils.error_response	"mapping failure"
-//	@Router			/projects/{project-id}/member [post]
+// @Summary		map project-member
+// @Description	Add member to project information
+// @Tags			Projects
+// @Accept			json
+// @Produce		json
+// @Param			project-id	path		string					true	"Project ID"
+// @Param			request		body		model.MapProMem			true	"Add project-id and member-id to this json"
+// @Success		200			{object}	utils.success_response	"Successful mapping"
+// @Failure		400			{object}	utils.error_response	"mapping failure"
+// @Router			/projects/{project-id}/member [post]
 func handleMapProjectMember(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]
@@ -52,8 +52,8 @@ func handleMapProjectMember(db *sql.DB) func(rw http.ResponseWriter, req *http.R
 		store := repository.NewProjectStore(db)
 		biz := business.NewMapProMemBiz(store)
 		if err_biz := biz.MapProMemBiz(proid, map_info); err_biz != nil {
-			if strings.Contains(err_biz.Error(), "exist") {
-				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("request execution failed", err_biz))
+			if strings.Contains(err_biz.Error(), "invalid-request") {
+				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
 			}

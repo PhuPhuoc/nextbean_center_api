@@ -34,7 +34,7 @@ func handleGetPMNotInPro(db *sql.DB) func(rw http.ResponseWriter, req *http.Requ
 		biz := business.NewGetPMNotInProBiz(store)
 		data, err := biz.GetPMNotInProBiz(proid)
 		if err != nil {
-			if strings.Contains(err.Error(), "not exist") {
+			if strings.Contains(err.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_CannotGetEntity("pm", err))

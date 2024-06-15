@@ -15,16 +15,16 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//	@Summary		map project-manager
-//	@Description	Add manager to project information
-//	@Tags			Projects
-//	@Accept			json
-//	@Produce		json
-//	@Param			project-id	path		string					true	"Project ID"
-//	@Param			request		body		model.MapProPM			true	"Required: Fill in the id of the project manager into this array"
-//	@Success		200			{object}	utils.success_response	"Successful mapping"
-//	@Failure		400			{object}	utils.error_response	"mapping failure"
-//	@Router			/projects/{project-id}/project-managers [post]
+// @Summary		map project-manager
+// @Description	Add manager to project information
+// @Tags			Projects
+// @Accept			json
+// @Produce		json
+// @Param			project-id	path		string					true	"Project ID"
+// @Param			request		body		model.MapProPM			true	"Required: Fill in the id of the project manager into this array"
+// @Success		200			{object}	utils.success_response	"Successful mapping"
+// @Failure		400			{object}	utils.error_response	"mapping failure"
+// @Router			/projects/{project-id}/project-managers [post]
 func handleMapProjectManager(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]
@@ -52,7 +52,7 @@ func handleMapProjectManager(db *sql.DB) func(rw http.ResponseWriter, req *http.
 		store := repository.NewProjectStore(db)
 		biz := business.NewMapPMBiz(store)
 		if err_biz := biz.MapPMBiz(proid, map_info); err_biz != nil {
-			if strings.Contains(err_biz.Error(), "not exist") {
+			if strings.Contains(err_biz.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("request execution failed", err_biz))
 			} else {
 				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
