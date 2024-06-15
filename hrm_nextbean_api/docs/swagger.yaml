@@ -774,7 +774,7 @@ paths:
         in: query
         name: psize
         type: integer
-      - description: Filter by account ID
+      - description: Filter by ojt'ID
         in: query
         name: id
         type: integer
@@ -1281,7 +1281,7 @@ paths:
         in: query
         name: psize
         type: integer
-      - description: Filter by account ID
+      - description: Filter by tecnical ID
         in: query
         name: id
         type: integer

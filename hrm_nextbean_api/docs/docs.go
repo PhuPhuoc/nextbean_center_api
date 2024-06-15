@@ -626,7 +626,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Filter by account ID",
+                        "description": "Filter by ojt'ID",
                         "name": "id",
                         "in": "query"
                     },
@@ -1419,7 +1419,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Filter by account ID",
+                        "description": "Filter by tecnical ID",
                         "name": "id",
                         "in": "query"
                     },

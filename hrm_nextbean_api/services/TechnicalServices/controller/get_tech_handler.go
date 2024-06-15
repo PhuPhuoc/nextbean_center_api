@@ -15,20 +15,20 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-//	@Summary		Get Technical
-//	@Description	Get a list of Technical with filtering, sorting, and pagination
-//	@Tags			Technicals
-//	@Accept			json
-//	@Produce		json
-//	@Param			page			query		int												false	"Page number"
-//	@Param			psize			query		int												false	"Number of records per page"
-//	@Param			id				query		int												false	"Filter by account ID"
-//	@Param			technical-skill	query		string											false	"Filter by technical-skill"
-//	@Param			order-by		query		string											false	"Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc"
-//	@Success		200				{object}	utils.success_response{data=[]model.Technical}	"OK"
-//	@Failure		400				{object}	utils.error_response							"Bad Request"
-//	@Failure		404				{object}	utils.error_response							"Not Found"
-//	@Router			/technicals [get]
+// @Summary		Get Technical
+// @Description	Get a list of Technical with filtering, sorting, and pagination
+// @Tags			Technicals
+// @Accept			json
+// @Produce		json
+// @Param			page			query		int												false	"Page number"
+// @Param			psize			query		int												false	"Number of records per page"
+// @Param			id				query		int												false	"Filter by tecnical ID"
+// @Param			technical-skill	query		string											false	"Filter by technical-skill"
+// @Param			order-by		query		string											false	"Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc"
+// @Success		200				{object}	utils.success_response{data=[]model.Technical}	"OK"
+// @Failure		400				{object}	utils.error_response							"Bad Request"
+// @Failure		404				{object}	utils.error_response							"Not Found"
+// @Router			/technicals [get]
 func handleGetTech(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		pagin := new(common.Pagination)

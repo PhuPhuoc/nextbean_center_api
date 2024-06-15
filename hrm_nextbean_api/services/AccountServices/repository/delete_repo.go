@@ -2,22 +2,17 @@ package repository
 
 import (
 	"fmt"
-	"strings"
 
-	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/account_query"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
 func (store *accountStore) DeleteAccount(id string) error {
-
-	if err_check_id_exist := store.checkIdExist(id); err_check_id_exist != nil {
-		if strings.Contains(err_check_id_exist.Error(), "not_exist_id") {
-			return fmt.Errorf("account'ID: %v not does exists", id)
-		}
-		return fmt.Errorf("error when DeleteAccount(checkIdExist) in store: %v", err_check_id_exist)
+	// todo 1: check account'id exists
+	if err_check_id_exist := store.checkAccountIdExists(id); err_check_id_exist != nil {
+		return err_check_id_exist
 	}
-
-	rawsql := query.QueryDeleteAccount()
+	// todo 2: delete account by account'id
+	rawsql := `update account set deleted_at = ? where id = ?`
 	result, err := store.db.Exec(rawsql, utils.CreateDateTimeCurrentFormated(), id)
 	if err != nil {
 		return fmt.Errorf("error when DeleteAccount in store: %v", err)

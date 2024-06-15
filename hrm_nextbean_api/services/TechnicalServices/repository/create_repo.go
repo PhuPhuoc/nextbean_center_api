@@ -3,13 +3,12 @@ package repository
 import (
 	"fmt"
 
-	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/tech_query"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TechnicalServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
 func (store *techStore) CreateTech(info *model.TechnicalCreationInfo) error {
-	rawsql := query.QueryCreateTechnical()
+	rawsql := `insert into technical(technical_skill, created_at) values (?,?)`
 	result, err := store.db.Exec(rawsql, info.TechnicalSkill, utils.CreateDateTimeCurrentFormated())
 	if err != nil {
 		return fmt.Errorf("error when CreateTech in store: %v", err)

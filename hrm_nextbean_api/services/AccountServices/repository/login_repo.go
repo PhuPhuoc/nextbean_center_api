@@ -3,13 +3,12 @@ package repository
 import (
 	"fmt"
 
-	query "github.com/PhuPhuoc/hrm_nextbean_api/rawsql/account_query"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
 func (store *accountStore) AccountLogin(email, password string, account *model.Account) error {
-	rawqsl := query.QueryGetAccountByEmailForLogin()
+	rawqsl := `select id, user_name, email, password, role from  account where email = ? and deleted_at is null`
 	rows, err := store.db.Query(rawqsl, email)
 	if err != nil {
 		return fmt.Errorf("DB error (query failed): %v", err)

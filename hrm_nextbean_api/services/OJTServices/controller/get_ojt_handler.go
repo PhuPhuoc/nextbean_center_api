@@ -20,7 +20,7 @@ import (
 // @Produce		json
 // @Param			page		query		int											false	"Page number"
 // @Param			psize		query		int											false	"Number of records per page"
-// @Param			id			query		int											false	"Filter by account ID"
+// @Param			id			query		int											false	"Filter by ojt'ID"
 // @Param			semester	query		string										false	"Filter by semester"
 // @Param			university	query		string										false	"Filter by university"
 // @Param			order-by	query		string										false	"Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc"

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/business"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/model"
@@ -14,21 +15,21 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//	@Summary		update ojt
-//	@Description	update ojt's information
-//	@Tags			OJTS
-//	@Accept			json
-//	@Produce		json
-//	@Param			ojt-id	path		int						true	"OJT ID"
-//	@Param			request	body		model.UpdateOJTInfo		true	"OJT update request"
-//	@Success		200		{object}	utils.success_response	"Successful update"
-//	@Failure		400		{object}	utils.error_response	"update failure"
-//	@Router			/ojts/{ojt-id} [put]
+// @Summary		update ojt
+// @Description	update ojt's information
+// @Tags			OJTS
+// @Accept			json
+// @Produce		json
+// @Param			ojt-id	path		int						true	"OJT ID"
+// @Param			request	body		model.UpdateOJTInfo		true	"OJT update request"
+// @Success		200		{object}	utils.success_response	"Successful update"
+// @Failure		400		{object}	utils.error_response	"update failure"
+// @Router			/ojts/{ojt-id} [put]
 func handleUpdateOJT(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		ojt_id := mux.Vars(req)["ojt-id"]
 		if ojt_id == "" {
-			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing account ID", fmt.Errorf("missing account ID")))
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("missing ojt'ID", fmt.Errorf("missing ojt'ID")))
 			return
 		}
 		info := new(model.UpdateOJTInfo)
@@ -51,10 +52,14 @@ func handleUpdateOJT(db *sql.DB) func(rw http.ResponseWriter, req *http.Request)
 		store := repository.NewOjtStore(db)
 		biz := business.NewUpdateOJTBiz(store)
 		if err_biz := biz.UpdateOJTBiz(ojt_id, info); err_biz != nil {
-			utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
+			if strings.Contains(err_biz.Error(), "invalid-request") {
+				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err_biz.Error(), err_biz))
+			} else {
+				utils.WriteJSON(rw, utils.ErrorResponse_DB(err_biz))
+			}
 			return
 		}
 
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageUpdated("OJT created successfully!"))
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageUpdated("OJT updated successfully!"))
 	}
 }
