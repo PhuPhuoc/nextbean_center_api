@@ -98,6 +98,14 @@ VALUES ('proj1', 'Project Alpha', 'not_start', 'This is the first project', '202
 ('proj2', 'Project Beta', 'doing', 'This project is currently in progress', '2024-05-01 09:00:00', '6 months'),
 ('proj3', 'Project Gamma', 'done', 'This project has been completed', '2023-12-01 10:00:00', '1 year');
 
+insert into project_manager (project_id, account_id)
+values
+('proj1','3'),
+('proj2','3'),
+('proj2','4'),
+('proj3','5'),
+('proj3','6');
+
 insert into project_intern (project_id, intern_id, join_at, status) 
 values 
 ('proj1', 'intern1', '2024-06-15 08:00:00', 'inprogress'),
