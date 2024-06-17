@@ -303,6 +303,19 @@ definitions:
     required:
     - technical-skill
     type: object
+  model.TimtableCreation:
+    properties:
+      est-end-at:
+        type: string
+      est-start-at:
+        type: string
+      office-time:
+        type: string
+    required:
+    - est-end-at
+    - est-start-at
+    - office-time
+    type: object
   model.UpdateAccountInfo:
     properties:
       email:
@@ -1364,6 +1377,37 @@ paths:
       summary: create new Technical
       tags:
       - Technicals
+  /timetables/{intern-id}:
+    post:
+      consumes:
+      - application/json
+      description: timetable creation information
+      parameters:
+      - description: enter intern-id
+        in: path
+        name: intern-id
+        required: true
+        type: string
+      - description: timetable creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.TimtableCreation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: create new intern timetable to work offline in office
+      tags:
+      - TimeTables
 securityDefinitions:
   ApiKeyAuth:
     in: header

@@ -6,3 +6,4 @@ type AccountCreationInfo struct {
 	Password string `json:"password" validate:"required,type=string,min=6"`
 	Role     string `json:"role" validate:"required,type=enum(admin or manager or pm)"`
 }
+

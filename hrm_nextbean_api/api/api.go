@@ -11,6 +11,7 @@ import (
 	ojt_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/controller"
 	pro_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/controller"
 	tech_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TechnicalServices/controller"
+	timetable_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TimetableServices/controller"
 
 	_ "github.com/PhuPhuoc/hrm_nextbean_api/docs"
 	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
@@ -51,16 +52,18 @@ func (sv *server) RunApp() error {
 	subrouter := router.PathPrefix("/api/v1").Subrouter()
 	subrouter.Use(middleware.LoggingMiddleware)
 
-	// router: /login vs /account
+	// router: /login vs /accounts
 	account_services_controller.RegisterAccountRouter(subrouter, sv.db)
-	// router: /intern
+	// router: /interns
 	intern_services_controller.RegisterInterntRouter(subrouter, sv.db)
-	// router: /ojt
+	// router: /ojts
 	ojt_services_controller.RegisterOJTRouter(subrouter, sv.db)
-	// router: /technical
+	// router: /technicals
 	tech_services_controller.RegisterTechnicalRouter(subrouter, sv.db)
-	// router: /project
+	// router: /projects
 	pro_services_controller.RegisterProRouter(subrouter, sv.db)
+	// router: /timetables
+	timetable_services_controller.RegisterTimetableRouter(subrouter, sv.db)
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),

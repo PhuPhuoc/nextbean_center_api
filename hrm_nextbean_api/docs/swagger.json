@@ -1554,6 +1554,53 @@
                     }
                 }
             }
+        },
+        "/timetables/{intern-id}": {
+            "post": {
+                "description": "timetable creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TimeTables"
+                ],
+                "summary": "create new intern timetable to work offline in office",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter intern-id",
+                        "name": "intern-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "timetable creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TimtableCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -2004,6 +2051,25 @@
             ],
             "properties": {
                 "technical-skill": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.TimtableCreation": {
+            "type": "object",
+            "required": [
+                "est-end-at",
+                "est-start-at",
+                "office-time"
+            ],
+            "properties": {
+                "est-end-at": {
+                    "type": "string"
+                },
+                "est-start-at": {
+                    "type": "string"
+                },
+                "office-time": {
                     "type": "string"
                 }
             }
