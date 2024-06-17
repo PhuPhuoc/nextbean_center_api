@@ -22,6 +22,7 @@ import (
 // @Success		200		{object}	utils.success_response		"Successful create"
 // @Failure		400		{object}	utils.error_response		"create failure"
 // @Router			/projects [post]
+//	@Security		ApiKeyAuth
 func handleCreateProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		info := new(model.ProjectCreationInfo)

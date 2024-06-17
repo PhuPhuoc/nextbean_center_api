@@ -30,11 +30,11 @@ func ErrorResponse_NewFull(status int, mess string, e error) *error_response {
 	}
 }
 
-func ErrorResponse_NoPermission() *error_response {
+func ErrorResponse_NoPermission(mess string) *error_response {
 	return &error_response{
 		StatusCode: http.StatusForbidden, // 403
 		Message:    "You have no permission",
-		Log:        "",
+		Log:        mess,
 	}
 }
 

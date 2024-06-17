@@ -43,7 +43,7 @@ func CreateJWT(payload map[string]interface{}) (string, error) {
 	return strings.Join([]string{encodedHeader, encodedPayload, signature}, "."), nil
 }
 
-func verifyJWT(token string) (map[string]interface{}, error) {
+func VerifyJWT(token string) (map[string]interface{}, error) {
 	secret := GetSecretKey()
 
 	parts := strings.Split(token, ".")

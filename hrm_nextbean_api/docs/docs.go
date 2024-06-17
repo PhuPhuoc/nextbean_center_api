@@ -809,6 +809,11 @@ const docTemplate = `{
         },
         "/projects": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of projects with filtering, sorting, and pagination",
                 "consumes": [
                     "application/json"
@@ -895,6 +900,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "project creation information",
                 "consumes": [
                     "application/json"
@@ -935,6 +945,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "project update information",
                 "consumes": [
                     "application/json"
@@ -982,6 +997,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}/member": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Add member to project information",
                 "consumes": [
                     "application/json"
@@ -1029,6 +1049,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}/member-in-project": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of Member in Project",
                 "consumes": [
                     "application/json"
@@ -1088,6 +1113,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}/member-outside-project": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of Memer not in Project",
                 "consumes": [
                     "application/json"
@@ -1183,6 +1213,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}/pm-in-project": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of PM in Project",
                 "consumes": [
                     "application/json"
@@ -1242,6 +1277,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}/pm-outside-project": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of PM not in Project",
                 "consumes": [
                     "application/json"
@@ -1301,6 +1341,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}/project-managers": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Add manager to project information",
                 "consumes": [
                     "application/json"
@@ -1348,6 +1393,11 @@ const docTemplate = `{
         },
         "/projects/{project-id}/{member-id}": {
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "remove member to project information",
                 "consumes": [
                     "application/json"

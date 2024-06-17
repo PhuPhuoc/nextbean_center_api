@@ -31,6 +31,7 @@ import (
 // @Failure		400				{object}	utils.error_response						"Bad Request"
 // @Failure		404				{object}	utils.error_response						"Not Found"
 // @Router			/projects/{project-id}/member-outside-project [get]
+//	@Security		ApiKeyAuth
 func handleGetMemNotInPro(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]

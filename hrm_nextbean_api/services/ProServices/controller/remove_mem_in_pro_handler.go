@@ -25,6 +25,8 @@ import (
 // @Success		200			{object}	utils.success_response	"Successful mapping"
 // @Failure		400			{object}	utils.error_response	"mapping failure"
 // @Router			/projects/{project-id}/{member-id} [delete]
+//
+//	@Security		ApiKeyAuth
 func handleRemoveMemberInProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]

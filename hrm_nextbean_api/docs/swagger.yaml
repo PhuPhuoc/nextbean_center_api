@@ -948,6 +948,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: Get projects
       tags:
       - Projects
@@ -973,6 +975,8 @@ paths:
           description: create failure
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: create new project
       tags:
       - Projects
@@ -1004,6 +1008,8 @@ paths:
           description: create failure
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: Update project
       tags:
       - Projects
@@ -1034,6 +1040,8 @@ paths:
           description: mapping failure
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: remove map project-member
       tags:
       - Projects
@@ -1065,6 +1073,8 @@ paths:
           description: mapping failure
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: map project-member
       tags:
       - Projects
@@ -1101,6 +1111,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: Get Member in Project
       tags:
       - Projects
@@ -1161,6 +1173,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: Get Memer not in project
       tags:
       - Projects
@@ -1197,6 +1211,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: Get PM
       tags:
       - Projects
@@ -1233,6 +1249,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: Get PM not in project
       tags:
       - Projects
@@ -1264,6 +1282,8 @@ paths:
           description: mapping failure
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: map project-manager
       tags:
       - Projects
