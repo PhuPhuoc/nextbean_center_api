@@ -1615,6 +1615,11 @@ const docTemplate = `{
         },
         "/timetables": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of timetables with filtering, sorting, and pagination",
                 "consumes": [
                     "application/json"
@@ -1717,10 +1722,13 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/timetables/{intern-id}": {
+            },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "timetable creation information",
                 "consumes": [
                     "application/json"
@@ -1733,13 +1741,6 @@ const docTemplate = `{
                 ],
                 "summary": "create new intern timetable to work offline in office",
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "enter intern-id",
-                        "name": "intern-id",
-                        "in": "path",
-                        "required": true
-                    },
                     {
                         "description": "timetable creation request",
                         "name": "request",
@@ -1768,6 +1769,11 @@ const docTemplate = `{
         },
         "/timetables/{timetable-id}/approve": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "admin approve intern'schedule",
                 "consumes": [
                     "application/json"

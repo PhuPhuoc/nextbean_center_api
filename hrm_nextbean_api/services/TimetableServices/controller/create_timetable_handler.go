@@ -8,26 +8,31 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TimetableServices/business"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TimetableServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TimetableServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
-	"github.com/gorilla/mux"
 )
 
-// @Summary		create new intern timetable to work offline in office
-// @Description	timetable creation information
-// @Tags			Timetables
-// @Accept			json
-// @Produce		json
-// @Param			intern-id	path		string					true	"enter intern-id"
-// @Param			request		body		model.TimtableCreation	true	"timetable creation request"
-// @Success		200			{object}	utils.success_response	"Successful create"
-// @Failure		400			{object}	utils.error_response	"create failure"
-// @Router			/timetables/{intern-id} [post]
+//	@Summary		create new intern timetable to work offline in office
+//	@Description	timetable creation information
+//	@Tags			Timetables
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		model.TimtableCreation	true	"timetable creation request"
+//	@Success		200		{object}	utils.success_response	"Successful create"
+//	@Failure		400		{object}	utils.error_response	"create failure"
+//	@Router			/timetables [post]
+// @Security		ApiKeyAuth
 func handleCreateTimeTable(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		inid := mux.Vars(req)["intern-id"]
+		ctx := req.Context()
+		var inid string
+		if v := ctx.Value(middleware.InternIDKey); v != nil {
+			inid = v.(string)
+		}
+
 		if inid == "" {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing intern's ID", fmt.Errorf("missing intern's ID")))
 			return

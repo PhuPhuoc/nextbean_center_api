@@ -1517,20 +1517,16 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: Get timetables
       tags:
       - Timetables
-  /timetables/{intern-id}:
     post:
       consumes:
       - application/json
       description: timetable creation information
       parameters:
-      - description: enter intern-id
-        in: path
-        name: intern-id
-        required: true
-        type: string
       - description: timetable creation request
         in: body
         name: request
@@ -1548,6 +1544,8 @@ paths:
           description: create failure
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: create new intern timetable to work offline in office
       tags:
       - Timetables
@@ -1579,6 +1577,8 @@ paths:
           description: create failure
           schema:
             $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
       summary: approve intern timetable to work offline in office
       tags:
       - Timetables

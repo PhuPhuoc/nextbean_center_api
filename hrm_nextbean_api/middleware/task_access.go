@@ -50,7 +50,7 @@ func TaskAccessMiddleware(db *sql.DB, acceptManager, acceptPM, acceptMem bool) f
 					return
 				}
 			case "user":
-				if acceptPM {
+				if acceptMem {
 					proid := mux.Vars(r)["project-id"]
 					if proid == "" {
 						utils.WriteJSON(w, utils.ErrorResponse_BadRequest("Missing project ID", fmt.Errorf("missing project ID")))

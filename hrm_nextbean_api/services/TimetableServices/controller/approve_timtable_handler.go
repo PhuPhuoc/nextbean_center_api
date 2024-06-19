@@ -25,6 +25,7 @@ import (
 // @Success		200				{object}	utils.success_response	"Successful create"
 // @Failure		400				{object}	utils.error_response	"create failure"
 // @Router			/timetables/{timetable-id}/approve [post]
+// @Security		ApiKeyAuth
 func handleApproveInternTimeTable(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		inid := mux.Vars(req)["timetable-id"]

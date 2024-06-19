@@ -15,6 +15,10 @@ func (store *timetableStore) CreateTimetable(inid string, info *model.TimtableCr
 	if err_date := checkDateTodayOrFuture(info.OfficeTime); err_date != nil {
 		return err_date
 	}
+	if err_date_exist := checkDateAlreadyRegister(store, inid, info.OfficeTime); err_date_exist != nil {
+		return err_date_exist
+	}
+
 	rawsql := `insert into timetable(intern_id, office_time, est_start, est_end, created_at) values (?,?,?,?,?)`
 	result, err := store.db.Exec(rawsql, inid, info.OfficeTime, info.EstStart, info.EstEnd, utils.CreateDateTimeCurrentFormated())
 	if err != nil {
@@ -29,6 +33,19 @@ func (store *timetableStore) CreateTimetable(inid string, info *model.TimtableCr
 	} else {
 		return fmt.Errorf("error in CreateTimetable (No user created): %v", err)
 	}
+}
+
+func checkDateAlreadyRegister(store *timetableStore, inid, dateStr string) error {
+	var flag bool
+	query := `select exists(select 1 from timetable where intern_id=? and office_time=?)`
+	err := store.db.QueryRow(query, inid, dateStr).Scan(&flag)
+	if err != nil {
+		return fmt.Errorf("error di in checkDateAlreadyRegister: %v", err)
+	}
+	if flag {
+		return fmt.Errorf("invalid-request: office-time (%v) is already applied", dateStr)
+	}
+	return nil
 }
 
 func checkDateTodayOrFuture(dateStr string) error {
