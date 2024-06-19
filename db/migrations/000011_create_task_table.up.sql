@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   `estimated_effort` varchar(255),
   `actual_effort` varchar(255),
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `deleted_ad` datetime
+  `deleted_at` datetime
 );
 
 ALTER TABLE `task`

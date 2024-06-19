@@ -15,25 +15,25 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary		create new intern timetable to work offline in office
-// @Description	timetable creation information
+// @Summary		approve intern timetable to work offline in office
+// @Description	admin approve intern'schedule
 // @Tags			Timetables
 // @Accept			json
 // @Produce		json
-// @Param			intern-id	path		string					true	"enter intern-id"
-// @Param			request		body		model.TimtableCreation	true	"timetable creation request"
-// @Success		200			{object}	utils.success_response	"Successful create"
-// @Failure		400			{object}	utils.error_response	"create failure"
-// @Router			/timetables/{intern-id} [post]
-func handleCreateTimeTable(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+// @Param			timetable-id	path		string					true	"enter timetable-id"
+// @Param			request			body		model.ApproveTimetable	true	"timetable creation request"
+// @Success		200				{object}	utils.success_response	"Successful create"
+// @Failure		400				{object}	utils.error_response	"create failure"
+// @Router			/timetables/{timetable-id}/approve [post]
+func handleApproveInternTimeTable(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		inid := mux.Vars(req)["intern-id"]
+		inid := mux.Vars(req)["timetable-id"]
 		if inid == "" {
-			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing intern's ID", fmt.Errorf("missing intern's ID")))
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing timetable's ID", fmt.Errorf("missing timetable's ID")))
 			return
 		}
 
-		cre_info := new(model.TimtableCreation)
+		info := new(model.ApproveTimetable)
 		var req_body_json map[string]interface{}
 
 		var body_data bytes.Buffer
@@ -43,16 +43,16 @@ func handleCreateTimeTable(db *sql.DB) func(rw http.ResponseWriter, req *http.Re
 		}
 		json.Unmarshal(body_data.Bytes(), &req_body_json)
 
-		check := utils.CreateValidateRequestBody(req_body_json, cre_info)
+		check := utils.CreateValidateRequestBody(req_body_json, info)
 		if flag, list_err := check.GetValidateStatus(); !flag {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest_ListError(list_err, fmt.Errorf("check request-body failed")))
 			return
 		}
-		json.Unmarshal(body_data.Bytes(), cre_info)
+		json.Unmarshal(body_data.Bytes(), info)
 
 		store := repository.NewTimeTableStore(db)
-		biz := business.NewCreateTimetableBiz(store)
-		if err := biz.CreateTimetabletBiz(inid, cre_info); err != nil {
+		biz := business.NewApproveTimetableBiz(store)
+		if err := biz.ApproveTimetabletBiz(inid, info); err != nil {
 			if strings.Contains(err.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
@@ -60,6 +60,7 @@ func handleCreateTimeTable(db *sql.DB) func(rw http.ResponseWriter, req *http.Re
 			}
 			return
 		}
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("timetable created successfully!"))
+		mess := fmt.Sprintf("%s intern's request (timetable) successfully", info.Status)
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated(mess))
 	}
 }

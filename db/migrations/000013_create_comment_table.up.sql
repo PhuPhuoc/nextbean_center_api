@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `to_report_id` int NOT NULL,
   `content` text NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `deleted_ad` datetime
+  `deleted_at` datetime
 );
 
 ALTER TABLE `comment`

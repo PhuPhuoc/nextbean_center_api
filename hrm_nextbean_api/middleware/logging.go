@@ -1,8 +1,7 @@
 package middleware
 
 import (
-	"context"
-	"log"
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -17,14 +16,6 @@ func (rw *responseWriter) WriteHeader(code int) {
 	rw.ResponseWriter.WriteHeader(code)
 }
 
-type contextKey string
-
-const (
-	accRoleKey  contextKey = "role"
-	accIDKey    contextKey = "accID"
-	internIDKey contextKey = "internID"
-)
-
 func LoggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		wrappedWriter := &responseWriter{ResponseWriter: w}
@@ -33,20 +24,13 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 		req_uri := r.RequestURI
 		start := time.Now()
 
-		ctx := context.WithValue(r.Context(), accRoleKey, "unknown_role")
-		ctx = context.WithValue(ctx, accIDKey, "unknown_acc_id")
-		ctx = context.WithValue(ctx, internIDKey, "unknown_intern_id")
-
 		// * Call the next handler
-		next.ServeHTTP(wrappedWriter, r.WithContext(ctx))
+		next.ServeHTTP(wrappedWriter, r)
 
-		accRole, ok := r.Context().Value(accRoleKey).(string)
-		if !ok {
-			accRole = "still_unknown"
-		}
 		// * response info
 		statusCode := wrappedWriter.statusCode
 		execution_time := time.Since(start)
-		log.Printf("{role: %s} -%s-   %s  ~  [stt/%v]  (exec_time: %v) \n", accRole, method, req_uri, statusCode, execution_time)
+		currentTime := time.Now().Format("2006-01-02 15:04:05")
+		fmt.Printf("-%s-  %s ~ [stt/%v] (exec_time: %v) -+- %s \n", method, req_uri, statusCode, execution_time, currentTime)
 	})
 }

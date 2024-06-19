@@ -206,6 +206,11 @@ func checkEnumValue(value interface{}, rule_value string) bool {
 	return false
 }
 
+func isValidTime(value string) bool {
+	re := regexp.MustCompile(`^(?:[01]?\d|2[0-3]):[0-5]\d$`)
+	return re.MatchString(value)
+}
+
 // ? 3. Check the validity of each field (in req-body)
 func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_value string) {
 	switch rule_value {
@@ -257,6 +262,16 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 			}
 		} else {
 			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be an array of strings", key)}
+			vrb.list_error = append(vrb.list_error, err_field)
+		}
+	case "time":
+		if v, ok := value.(string); ok {
+			if is_time := isValidTime(v); !is_time {
+				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a valid time (e.g., 8:00, 16:30)", key)}
+				vrb.list_error = append(vrb.list_error, err_field)
+			}
+		} else {
+			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a string representing time", key)}
 			vrb.list_error = append(vrb.list_error, err_field)
 		}
 	default:

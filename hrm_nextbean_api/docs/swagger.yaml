@@ -32,6 +32,13 @@ definitions:
     - role
     - user-name
     type: object
+  model.ApproveTimetable:
+    properties:
+      status:
+        type: string
+    required:
+    - status
+    type: object
   model.DetailProject:
     properties:
       join-at:
@@ -303,17 +310,38 @@ definitions:
     required:
     - technical-skill
     type: object
+  model.Timtable:
+    properties:
+      act_end:
+        type: string
+      act_start:
+        type: string
+      est_end:
+        type: string
+      est_start:
+        type: string
+      id:
+        type: string
+      intern_name:
+        type: string
+      office_time:
+        type: string
+      status:
+        type: string
+      student-code:
+        type: string
+    type: object
   model.TimtableCreation:
     properties:
-      est-end-at:
+      est-end:
         type: string
-      est-start-at:
+      est-start:
         type: string
       office-time:
         type: string
     required:
-    - est-end-at
-    - est-start-at
+    - est-end
+    - est-start
     - office-time
     type: object
   model.UpdateAccountInfo:
@@ -1377,6 +1405,74 @@ paths:
       summary: create new Technical
       tags:
       - Technicals
+  /timetables:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of timetables with filtering, sorting, and pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: Filter by account ID
+        in: query
+        name: id
+        type: integer
+      - description: Filter by intern name
+        in: query
+        name: intern-name
+        type: string
+      - description: Filter by student-code
+        in: query
+        name: student-code
+        type: string
+      - description: 'Filter by status ~ ex: denied-approved | processing-denied-approved'
+        in: query
+        name: status
+        type: string
+      - description: Filter by office-time from (YYYY-MM-DD) ~ ex:2024-05-29
+        in: query
+        name: office-time-from
+        type: string
+      - description: Filter by office-time to (YYYY-MM-DD)
+        in: query
+        name: office-time-to
+        type: string
+      - description: 'Order by field (created_at or name), prefix with - for descending
+          order ~ Ex: user_name desc'
+        in: query
+        name: order-by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Timtable'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Get timetables
+      tags:
+      - Timetables
   /timetables/{intern-id}:
     post:
       consumes:
@@ -1407,7 +1503,38 @@ paths:
             $ref: '#/definitions/utils.error_response'
       summary: create new intern timetable to work offline in office
       tags:
-      - TimeTables
+      - Timetables
+  /timetables/{timetable-id}/approve:
+    post:
+      consumes:
+      - application/json
+      description: admin approve intern'schedule
+      parameters:
+      - description: enter timetable-id
+        in: path
+        name: timetable-id
+        required: true
+        type: string
+      - description: timetable creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.ApproveTimetable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: approve intern timetable to work offline in office
+      tags:
+      - Timetables
 securityDefinitions:
   ApiKeyAuth:
     in: header

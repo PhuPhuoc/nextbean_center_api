@@ -1555,6 +1555,112 @@
                 }
             }
         },
+        "/timetables": {
+            "get": {
+                "description": "Get a list of timetables with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Timetables"
+                ],
+                "summary": "Get timetables",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by account ID",
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by intern name",
+                        "name": "intern-name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by student-code",
+                        "name": "student-code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by status ~ ex: denied-approved | processing-denied-approved",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by office-time from (YYYY-MM-DD) ~ ex:2024-05-29",
+                        "name": "office-time-from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by office-time to (YYYY-MM-DD)",
+                        "name": "office-time-to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Order by field (created_at or name), prefix with - for descending order ~ Ex: user_name desc",
+                        "name": "order-by",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Timtable"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/timetables/{intern-id}": {
             "post": {
                 "description": "timetable creation information",
@@ -1565,7 +1671,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "TimeTables"
+                    "Timetables"
                 ],
                 "summary": "create new intern timetable to work offline in office",
                 "parameters": [
@@ -1583,6 +1689,53 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/model.TimtableCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/timetables/{timetable-id}/approve": {
+            "post": {
+                "description": "admin approve intern'schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Timetables"
+                ],
+                "summary": "approve intern timetable to work offline in office",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter timetable-id",
+                        "name": "timetable-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "timetable creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ApproveTimetable"
                         }
                     }
                 ],
@@ -1647,6 +1800,17 @@
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 4
+                }
+            }
+        },
+        "model.ApproveTimetable": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string"
                 }
             }
         },
@@ -2055,18 +2219,50 @@
                 }
             }
         },
+        "model.Timtable": {
+            "type": "object",
+            "properties": {
+                "act_end": {
+                    "type": "string"
+                },
+                "act_start": {
+                    "type": "string"
+                },
+                "est_end": {
+                    "type": "string"
+                },
+                "est_start": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "intern_name": {
+                    "type": "string"
+                },
+                "office_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "student-code": {
+                    "type": "string"
+                }
+            }
+        },
         "model.TimtableCreation": {
             "type": "object",
             "required": [
-                "est-end-at",
-                "est-start-at",
+                "est-end",
+                "est-start",
                 "office-time"
             ],
             "properties": {
-                "est-end-at": {
+                "est-end": {
                     "type": "string"
                 },
-                "est-start-at": {
+                "est-start": {
                     "type": "string"
                 },
                 "office-time": {

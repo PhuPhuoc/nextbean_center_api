@@ -3,10 +3,19 @@ package middleware
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
+)
+
+type contextKey string
+
+const (
+	accRoleKey  contextKey = "role"
+	accIDKey    contextKey = "accID"
+	internIDKey contextKey = "internID"
 )
 
 func AuthMiddleware(db *sql.DB) func(http.Handler) http.Handler {
@@ -55,6 +64,11 @@ func AuthMiddleware(db *sql.DB) func(http.Handler) http.Handler {
 				}
 			}
 			next.ServeHTTP(w, r.WithContext(ctx))
+			if ok_role {
+				fmt.Printf("{role: %s}  ", accRole)
+			} else {
+				fmt.Printf("{role: unknown}  ")
+			}
 		})
 	}
 }
