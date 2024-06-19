@@ -1441,6 +1441,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/tasks/{project-id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "task creation information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "create new task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "task creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/technicals": {
             "get": {
                 "description": "Get a list of Technical with filtering, sorting, and pagination",
@@ -2203,6 +2255,27 @@ const docTemplate = `{
                 }
             }
         },
+        "model.TaskCreation": {
+            "type": "object",
+            "required": [
+                "assigned-to",
+                "name"
+            ],
+            "properties": {
+                "assigned-to": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "estimated-effort": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Technical": {
             "type": "object",
             "properties": {
@@ -2228,16 +2301,16 @@ const docTemplate = `{
         "model.Timtable": {
             "type": "object",
             "properties": {
-                "act_end": {
+                "act-end": {
                     "type": "string"
                 },
-                "act_start": {
+                "act-start": {
                     "type": "string"
                 },
-                "est_end": {
+                "est-end": {
                     "type": "string"
                 },
-                "est_start": {
+                "est-start": {
                     "type": "string"
                 },
                 "id": {
@@ -2246,7 +2319,7 @@ const docTemplate = `{
                 "intern_name": {
                     "type": "string"
                 },
-                "office_time": {
+                "office-time": {
                     "type": "string"
                 },
                 "status": {

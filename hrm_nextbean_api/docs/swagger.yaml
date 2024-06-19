@@ -296,6 +296,20 @@ definitions:
     - name
     - start-at
     type: object
+  model.TaskCreation:
+    properties:
+      assigned-to:
+        type: string
+      description:
+        type: string
+      estimated-effort:
+        type: string
+      name:
+        type: string
+    required:
+    - assigned-to
+    - name
+    type: object
   model.Technical:
     properties:
       Technical-skill:
@@ -312,19 +326,19 @@ definitions:
     type: object
   model.Timtable:
     properties:
-      act_end:
+      act-end:
         type: string
-      act_start:
+      act-start:
         type: string
-      est_end:
+      est-end:
         type: string
-      est_start:
+      est-start:
         type: string
       id:
         type: string
       intern_name:
         type: string
-      office_time:
+      office-time:
         type: string
       status:
         type: string
@@ -1328,6 +1342,39 @@ paths:
       summary: map project-manager
       tags:
       - Projects
+  /tasks/{project-id}:
+    post:
+      consumes:
+      - application/json
+      description: task creation information
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        required: true
+        type: string
+      - description: task creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.TaskCreation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: create new task
+      tags:
+      - Tasks
   /technicals:
     get:
       consumes:

@@ -1,7 +1,7 @@
 CREATE TABLE `timetable` (
   `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `intern_id` varchar(255) NOT NULL,
-  `office_time` varchar(255) NOT NULL,
+  `office_time` DATE NOT NULL,
   `est_start` time NOT NULL,
   `est_end` time NOT NULL,
   `act_start` time,

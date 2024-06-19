@@ -10,6 +10,7 @@ import (
 	intern_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/controller"
 	ojt_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/controller"
 	pro_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/controller"
+	task_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/controller"
 	tech_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TechnicalServices/controller"
 	timetable_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TimetableServices/controller"
 
@@ -64,6 +65,8 @@ func (sv *server) RunApp() error {
 	pro_services_controller.RegisterProRouter(subrouter, sv.db)
 	// router: /timetables
 	timetable_services_controller.RegisterTimetableRouter(subrouter, sv.db)
+	// router: /tasks
+	task_services_controller.RegisterTaskRouter(subrouter, sv.db)
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),

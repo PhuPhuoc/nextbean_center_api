@@ -13,9 +13,9 @@ import (
 type contextKey string
 
 const (
-	accRoleKey  contextKey = "role"
-	accIDKey    contextKey = "accID"
-	internIDKey contextKey = "internID"
+	AccRoleKey  contextKey = "role"
+	AccIDKey    contextKey = "accID"
+	InternIDKey contextKey = "internID"
 )
 
 func AuthMiddleware(db *sql.DB) func(http.Handler) http.Handler {
@@ -48,11 +48,11 @@ func AuthMiddleware(db *sql.DB) func(http.Handler) http.Handler {
 
 			accID, ok_id := payload["id"].(string)
 			if ok_id {
-				ctx = context.WithValue(ctx, accIDKey, accID)
+				ctx = context.WithValue(ctx, AccIDKey, accID)
 			}
 			accRole, ok_role := payload["role"].(string)
 			if ok_role {
-				ctx = context.WithValue(ctx, accRoleKey, accRole)
+				ctx = context.WithValue(ctx, AccRoleKey, accRole)
 				if accRole == "user" {
 					var internID *string
 					query := `select id from intern where account_id=?`
@@ -60,7 +60,7 @@ func AuthMiddleware(db *sql.DB) func(http.Handler) http.Handler {
 						utils.WriteJSON(w, utils.ErrorResponse_DB(err_query))
 						return
 					}
-					ctx = context.WithValue(ctx, internIDKey, internID)
+					ctx = context.WithValue(ctx, InternIDKey, *internID)
 				}
 			}
 			next.ServeHTTP(w, r.WithContext(ctx))

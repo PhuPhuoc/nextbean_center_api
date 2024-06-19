@@ -130,12 +130,12 @@ func createConditionClause(filter *model.TimeTableFilter) (string, []interface{}
 	}
 
 	if filter.OfficeTimeFrom != "" {
-		query.WriteString(`t.office_time > ? and `)
+		query.WriteString(`t.office_time >= ? and `)
 		param = append(param, filter.OfficeTimeFrom)
 	}
 
 	if filter.OfficeTimeTo != "" {
-		query.WriteString(`t.office_time < ? and `)
+		query.WriteString(`t.office_time <= ? and `)
 		param = append(param, filter.OfficeTimeTo)
 	}
 

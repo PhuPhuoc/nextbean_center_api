@@ -1,3 +1,4 @@
+DELETE FROM task;
 DELETE FROM project_intern;
 DELETE FROM project_manager;
 DELETE FROM project;
