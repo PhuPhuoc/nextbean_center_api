@@ -118,12 +118,12 @@ func whereClause(filter *model.InternFilter) (string, []interface{}) {
 	}
 
 	if filter.Dob_From != "" {
-		query.WriteString(`i.date_of_birth > ? and `)
+		query.WriteString(`i.date_of_birth >= ? and `)
 		param = append(param, filter.Dob_From)
 	}
 
 	if filter.Dob_To != "" {
-		query.WriteString(`i.date_of_birth < ? and `)
+		query.WriteString(`i.date_of_birth <= ? and `)
 		param = append(param, filter.Dob_To)
 	}
 

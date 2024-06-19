@@ -101,12 +101,12 @@ func createConditionClause(filter *model.AccountFilter) (string, []interface{}) 
 	}
 
 	if filter.CreatedAtFrom != "" {
-		query.WriteString(`created_at > ? and `)
+		query.WriteString(`created_at >= ? and `)
 		param = append(param, filter.CreatedAtFrom)
 	}
 
 	if filter.CreatedAtTo != "" {
-		query.WriteString(`created_at < ? and `)
+		query.WriteString(`created_at <= ? and `)
 		param = append(param, filter.CreatedAtTo)
 	}
 

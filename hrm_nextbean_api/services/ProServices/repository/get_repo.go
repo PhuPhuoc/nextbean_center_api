@@ -80,12 +80,12 @@ func whereClause(filter *model.ProjectFilter) (string, []interface{}) {
 	}
 
 	if filter.StartDateFrom != "" {
-		query.WriteString(`start_date > ? and `)
+		query.WriteString(`start_date >= ? and `)
 		param = append(param, filter.StartDateFrom)
 	}
 
 	if filter.StarttDateTo != "" {
-		query.WriteString(`start_date < ? and `)
+		query.WriteString(`start_date <= ? and `)
 		param = append(param, filter.StarttDateTo)
 	}
 
