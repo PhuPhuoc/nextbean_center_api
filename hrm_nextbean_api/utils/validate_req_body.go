@@ -132,7 +132,7 @@ func isValidEmail(email string) bool {
 	return re.MatchString(email)
 }
 
-func isValidDate(date string) bool {
+func IsValidDate(date string) bool {
 	// Định dạng regex để kiểm tra định dạng YYYY-MM-DD
 	dateRegex := `^(?P<Year>\d{4})-(?P<Month>0[1-9]|1[0-2])-(?P<Day>0[1-9]|[12]\d|3[01])$`
 	re := regexp.MustCompile(dateRegex)
@@ -228,7 +228,7 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 		}
 	case "date":
 		if v, ok := value.(string); ok {
-			if is_email := isValidDate(v); !is_email {
+			if is_date := IsValidDate(v); !is_date {
 				err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a date (YYYY-MM-DD)", key)}
 				vrb.list_error = append(vrb.list_error, err_field)
 			}

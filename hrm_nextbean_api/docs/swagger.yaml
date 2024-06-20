@@ -1582,6 +1582,43 @@ paths:
       summary: approve intern timetable to work offline in office
       tags:
       - Timetables
+  /timetables/weekly:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of timetables in week
+      parameters:
+      - description: enter current-date (YYYY-MM-DD) ~ ex:2024-05-29
+        in: query
+        name: date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Timtable'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get weekly timetables
+      tags:
+      - Timetables
 securityDefinitions:
   ApiKeyAuth:
     in: header
