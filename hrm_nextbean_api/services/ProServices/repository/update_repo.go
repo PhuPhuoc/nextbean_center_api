@@ -19,9 +19,8 @@ func (store *projectStore) UpdateProject(proid string, info *model.UpdateProject
 	if err != nil {
 		return fmt.Errorf("error when UpdateProject in store (check affect): %v", err)
 	}
-	if rowsAffected == 1 {
-		return nil // created sucessfully
-	} else {
-		return fmt.Errorf("error when UpdateProject in store (No user created): %v", err)
+	if rowsAffected == 0 {
+		return nil
 	}
+	return nil
 }

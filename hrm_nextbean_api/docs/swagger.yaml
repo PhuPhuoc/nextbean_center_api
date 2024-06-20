@@ -198,10 +198,10 @@ definitions:
     type: object
   model.MapProMem:
     properties:
-      mem-id:
+      member-id:
         type: string
     required:
-    - mem-id
+    - member-id
     type: object
   model.MapProPM:
     properties:

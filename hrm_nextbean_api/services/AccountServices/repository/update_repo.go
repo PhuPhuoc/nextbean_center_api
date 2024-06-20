@@ -25,9 +25,8 @@ func (store *accountStore) UpdateAccount(accountID string, acc_update_info *mode
 	if err != nil {
 		return fmt.Errorf("error when UpdateAccount in store (check affect): %v", err)
 	}
-	if rowsAffected == 1 {
-		return nil // created sucessfully
-	} else {
-		return fmt.Errorf("error when UpdateAccount in store (No user updated): %v", err)
+	if rowsAffected == 0 {
+		return nil
 	}
+	return nil
 }

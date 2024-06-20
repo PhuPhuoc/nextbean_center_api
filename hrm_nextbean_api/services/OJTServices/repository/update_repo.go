@@ -22,11 +22,10 @@ func (store *ojtStore) UpdateOJT(ojt_id string, info *model.UpdateOJTInfo) error
 	if err != nil {
 		return fmt.Errorf("error db in UpdateOJT (check affect): %v", err)
 	}
-	if rowsAffected == 1 {
-		return nil // update sucessfully
-	} else {
-		return fmt.Errorf("error db in UpdateOJT (No user created): %v", err)
+	if rowsAffected == 0 {
+		return nil
 	}
+	return nil
 }
 
 func checkOjtIDExists(store *ojtStore, ojt_id string) (int, error) {

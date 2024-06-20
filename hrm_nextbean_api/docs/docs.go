@@ -2113,10 +2113,10 @@ const docTemplate = `{
         "model.MapProMem": {
             "type": "object",
             "required": [
-                "mem-id"
+                "member-id"
             ],
             "properties": {
-                "mem-id": {
+                "member-id": {
                     "type": "string"
                 }
             }

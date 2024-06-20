@@ -1,5 +1,5 @@
 package model
 
 type MapProMem struct {
-	MemId string `json:"mem-id" validate:"required,type=string"`
+	MemberId string `json:"member-id" validate:"required,type=string"`
 }

@@ -12,11 +12,11 @@ func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) err
 		return err_check_pro_id
 	}
 
-	if err_check_mem_id := checkMemIDExists(store, mapInfo.MemId); err_check_mem_id != nil {
+	if err_check_mem_id := checkMemIDExists(store, mapInfo.MemberId); err_check_mem_id != nil {
 		return err_check_mem_id
 	}
 
-	flag_idNotExistInTable, err_check := checkMemberExistsInProject(store, proid, mapInfo.MemId)
+	flag_idNotExistInTable, err_check := checkMemberExistsInProject(store, proid, mapInfo.MemberId)
 	if err_check != nil {
 		return err_check
 	}
@@ -24,7 +24,7 @@ func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) err
 	if !flag_idNotExistInTable {
 		// create new map
 		rawsql := `insert into project_intern(project_id, intern_id, join_at, status) values (?,?,?,?)`
-		result, err := store.db.Exec(rawsql, proid, mapInfo.MemId, utils.CreateDateTimeCurrentFormated(), "inprogress")
+		result, err := store.db.Exec(rawsql, proid, mapInfo.MemberId, utils.CreateDateTimeCurrentFormated(), "inprogress")
 		if err != nil {
 			return fmt.Errorf("error in MapProMem add member to project: %v", err)
 		}
@@ -39,14 +39,14 @@ func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) err
 		}
 
 	} else {
-		flag_idExistButHasLeave, err_check_leave := checkMemberExistsInProjectButHasLeave(store, proid, mapInfo.MemId)
+		flag_idExistButHasLeave, err_check_leave := checkMemberExistsInProjectButHasLeave(store, proid, mapInfo.MemberId)
 		if err_check_leave != nil {
 			return err_check_leave
 		}
 
 		if flag_idExistButHasLeave {
 			rawsql := `update project_intern set leave_at=null, status='inprogress' where project_id=? and intern_id=?`
-			result, err := store.db.Exec(rawsql, proid, mapInfo.MemId)
+			result, err := store.db.Exec(rawsql, proid, mapInfo.MemberId)
 			if err != nil {
 				return fmt.Errorf("error in Re-MapProMem: %v", err)
 			}
@@ -60,7 +60,7 @@ func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) err
 				return fmt.Errorf("error in Re-MapProMem (No user re-mapped): %v", err)
 			}
 		} else {
-			return fmt.Errorf("invalid-request: member with id '%v' already exist in project: %v", mapInfo.MemId, proid)
+			return fmt.Errorf("invalid-request: member with id '%v' already exist in project: %v", mapInfo.MemberId, proid)
 		}
 	}
 }
