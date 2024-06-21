@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func ProjectAccessMiddleware(db *sql.DB, acceptManager, acceptPM bool) func(http.HandlerFunc) http.HandlerFunc {
+func ProjectAccessMiddleware(db *sql.DB, acceptManager, acceptPM, skipCheckPMInPro bool) func(http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
@@ -27,7 +27,9 @@ func ProjectAccessMiddleware(db *sql.DB, acceptManager, acceptPM bool) func(http
 					return
 				}
 			case "pm":
-				if acceptPM {
+				if skipCheckPMInPro {
+					next.ServeHTTP(w, r.WithContext(ctx))
+				} else if acceptPM {
 					proid := mux.Vars(r)["project-id"]
 					if proid == "" {
 						utils.WriteJSON(w, utils.ErrorResponse_BadRequest("Missing project ID", fmt.Errorf("missing project ID")))

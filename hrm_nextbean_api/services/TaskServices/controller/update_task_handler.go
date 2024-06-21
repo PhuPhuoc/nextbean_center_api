@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/business"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/repository"
@@ -16,38 +15,26 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary		create new task
-// @Description	task creation information
+// @Summary		update  task
+// @Description	update task with new information
 // @Tags			Tasks
 // @Accept			json
 // @Produce		json
 // @Param			project-id	path		string					true	"enter project-id"
-// @Param			request		body		model.TaskCreation		true	"task creation request"
-// @Success		200			{object}	utils.success_response	"Successful create"
-// @Failure		400			{object}	utils.error_response	"create failure"
-// @Router			/projects/{project-id}/tasks [post]
+// @Param			request		body		model.TaskUpdate		true	"task creation request"
+// @Success		201			{object}	utils.success_response	"Successful update"
+// @Failure		400			{object}	utils.error_response	"update failure"
+// @Router			/projects/{project-id}/tasks [put]
 // @Security		ApiKeyAuth
-func handleCreateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleUpdateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		ctx := req.Context()
-		var role string
-		var internIDWhoRegisteredTheTask string
-		if v := ctx.Value(middleware.AccRoleKey); v != nil {
-			role = v.(string)
-		}
-		if role == "user" {
-			if v := ctx.Value(middleware.InternIDKey); v != nil {
-				internIDWhoRegisteredTheTask = v.(string)
-			}
-		}
-
 		proid := mux.Vars(req)["project-id"]
 		if proid == "" {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing project's ID", fmt.Errorf("missing project's ID")))
 			return
 		}
 
-		cre_info := new(model.TaskCreation)
+		up_info := new(model.TaskUpdate)
 		var req_body_json map[string]interface{}
 
 		var body_data bytes.Buffer
@@ -57,16 +44,16 @@ func handleCreateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 		}
 		json.Unmarshal(body_data.Bytes(), &req_body_json)
 
-		check := utils.CreateValidateRequestBody(req_body_json, cre_info)
+		check := utils.CreateValidateRequestBody(req_body_json, up_info)
 		if flag, list_err := check.GetValidateStatus(); !flag {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest_ListError(list_err, fmt.Errorf("check request-body failed")))
 			return
 		}
-		json.Unmarshal(body_data.Bytes(), cre_info)
+		json.Unmarshal(body_data.Bytes(), up_info)
 
 		store := repository.NewTaskStore(db)
-		biz := business.NewCreateTaskBiz(store)
-		if err := biz.CreateTaskBiz(role, proid, internIDWhoRegisteredTheTask, cre_info); err != nil {
+		biz := business.NewUpdateTaskBiz(store)
+		if err := biz.UpdateTaskBiz(proid, up_info); err != nil {
 			if strings.Contains(err.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
@@ -74,6 +61,6 @@ func handleCreateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 			}
 			return
 		}
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("task created successfully!"))
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("task updated successfully!"))
 	}
 }

@@ -335,6 +335,26 @@ definitions:
     - assigned-to
     - name
     type: object
+  model.TaskUpdate:
+    properties:
+      assigned-to:
+        type: string
+      description:
+        type: string
+      estimated-effort:
+        type: string
+      is-approved:
+        type: string
+      name:
+        type: string
+      status:
+        type: string
+    required:
+    - assigned-to
+    - is-approved
+    - name
+    - status
+    type: object
   model.Technical:
     properties:
       Technical-skill:
@@ -1463,6 +1483,38 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: create new task
+      tags:
+      - Tasks
+    put:
+      consumes:
+      - application/json
+      description: update task with new information
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        required: true
+        type: string
+      - description: task creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.TaskUpdate'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful update
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: update failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: update  task
       tags:
       - Tasks
   /projects/{project-id}/tasks/my-task:

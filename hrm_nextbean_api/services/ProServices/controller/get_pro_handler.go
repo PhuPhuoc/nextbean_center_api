@@ -6,40 +6,53 @@ import (
 	"strconv"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/common"
+	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/business"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-//	@Summary		Get projects
-//	@Description	Get a list of projects with filtering, sorting, and pagination
-//	@Tags			Projects
-//	@Accept			json
-//	@Produce		json
-//	@Param			page			query		int												false	"Page number"
-//	@Param			psize			query		int												false	"Number of records per page"
-//	@Param			name			query		string											false	"Project's Name"
-//	@Param			status			query		string											false	"Project's Status"
-//	@Param			start-date-from	query		string											false	"get project which have start date from this date"
-//	@Param			start-date-to	query		string											false	"get project which have start date to this date"
-//	@Success		200				{object}	utils.success_response{data=[]model.Project}	"OK"
-//	@Failure		400				{object}	utils.error_response							"Bad Request"
-//	@Failure		404				{object}	utils.error_response							"Not Found"
-//	@Router			/projects [get]
-//	@Security		ApiKeyAuth
+// @Summary		Get projects
+// @Description	Get a list of projects with filtering, sorting, and pagination
+// @Tags			Projects
+// @Accept			json
+// @Produce		json
+// @Param			page			query		int												false	"Page number"
+// @Param			psize			query		int												false	"Number of records per page"
+// @Param			name			query		string											false	"Project's Name"
+// @Param			status			query		string											false	"Project's Status"
+// @Param			start-date-from	query		string											false	"get project which have start date from this date"
+// @Param			start-date-to	query		string											false	"get project which have start date to this date"
+// @Success		200				{object}	utils.success_response{data=[]model.Project}	"OK"
+// @Failure		400				{object}	utils.error_response							"Bad Request"
+// @Failure		404				{object}	utils.error_response							"Not Found"
+// @Router			/projects [get]
+// @Security		ApiKeyAuth
 func handleGetProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		ctx := req.Context()
+		var role string
+		if v := ctx.Value(middleware.AccRoleKey); v != nil {
+			role = v.(string)
+		}
+		var accID string
+		if v := ctx.Value(middleware.AccIDKey); v != nil {
+			accID = v.(string)
+		}
+
 		pagin := new(common.Pagination)
 		filter := new(model.ProjectFilter)
 
 		getRequestQuery(req, pagin, filter)
+		filter.Role = role
+		filter.AccId = accID
 
 		store := repository.NewProjectStore(db)
 		biz := business.NewGetProBiz(store)
 		data, err := biz.GetProBiz(pagin, filter)
 		if err != nil {
-			
+
 			utils.WriteJSON(rw, utils.ErrorResponse_CannotGetEntity("project", err))
 			return
 		}

@@ -68,6 +68,10 @@ func whereClause(filter *model.ProjectFilter) (string, []interface{}) {
 	var query strings.Builder
 	query.WriteString(` where `)
 
+	if filter.Role == "pm" {
+		query.WriteString(`id in (select project_id from project_manager where account_id='` + filter.AccId + `') and `)
+	}
+
 	if filter.Name != "" {
 		query.WriteString(`name like ? and `)
 		p := `%` + filter.Name + `%`
