@@ -1385,14 +1385,14 @@
                 }
             }
         },
-        "/projects/{project-id}/{member-id}": {
-            "delete": {
+        "/projects/{project-id}/tasks": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "remove member to project information",
+                "description": "Get a list of tasks in project with filtering, sorting, and pagination",
                 "consumes": [
                     "application/json"
                 ],
@@ -1400,42 +1400,96 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Projects"
+                    "Tasks"
                 ],
-                "summary": "remove map project-member",
+                "summary": "Get tasks",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Project ID",
+                        "description": "enter project-id",
                         "name": "project-id",
                         "in": "path",
                         "required": true
                     },
                     {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
-                        "description": "Member ID",
-                        "name": "member-id",
-                        "in": "path",
-                        "required": true
+                        "description": "Project's Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Project's Status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get task that belong to this assignee'name",
+                        "name": "assginee-name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get task that belong to this assignee'code",
+                        "name": "assginee-code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get tasks were approved or not -\u003e enter true or false",
+                        "name": "is-approved",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful mapping",
+                        "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/utils.success_response"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Task"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
-                        "description": "mapping failure",
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
                     }
                 }
-            }
-        },
-        "/tasks/{project-id}": {
+            },
             "post": {
                 "security": [
                     {
@@ -1480,6 +1534,132 @@
                     },
                     "400": {
                         "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/tasks/my-task": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of my tasks in project with filtering, sorting, and pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Get my tasks",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Task"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/{member-id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "remove member to project information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "remove map project-member",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Project ID",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Member ID",
+                        "name": "member-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful mapping",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "mapping failure",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -2314,6 +2494,44 @@
                     "type": "string"
                 },
                 "start-at": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Task": {
+            "type": "object",
+            "properties": {
+                "Actual-effort": {
+                    "type": "string"
+                },
+                "assigned-code": {
+                    "type": "string"
+                },
+                "assigned-name": {
+                    "type": "string"
+                },
+                "assigned-to": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "estimated-effort": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is-approved": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "project-id": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }

@@ -15,4 +15,5 @@ func RegisterTimetableRouter(r *mux.Router, db *sql.DB) {
 	timetable_router.HandleFunc("", middleware.TimetableAccessMiddleware(db, false, true)(handleCreateTimeTable(db))).Methods("POST")
 	timetable_router.HandleFunc("/{timetable-id}/approve", middleware.TimetableAccessMiddleware(db, true, false)(handleApproveInternTimeTable(db))).Methods("POST")
 	// for intern: checkin checkout - update
+	// for intern: get my-timetable
 }

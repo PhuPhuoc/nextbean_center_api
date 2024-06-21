@@ -63,11 +63,12 @@ func AuthMiddleware(db *sql.DB) func(http.Handler) http.Handler {
 					ctx = context.WithValue(ctx, InternIDKey, *internID)
 				}
 			}
+			accName, ok_name := payload["username"].(string)
 			next.ServeHTTP(w, r.WithContext(ctx))
-			if ok_role {
-				fmt.Printf("{role: %s}  ", accRole)
+			if ok_role && ok_name {
+				fmt.Printf("[-%s|%s-]  ", accRole, accName)
 			} else {
-				fmt.Printf("{role: unknown}  ")
+				fmt.Printf("[-unknown-]  ")
 			}
 		})
 	}

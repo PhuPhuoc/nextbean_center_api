@@ -296,6 +296,31 @@ definitions:
     - name
     - start-at
     type: object
+  model.Task:
+    properties:
+      Actual-effort:
+        type: string
+      assigned-code:
+        type: string
+      assigned-name:
+        type: string
+      assigned-to:
+        type: string
+      description:
+        type: string
+      estimated-effort:
+        type: string
+      id:
+        type: string
+      is-approved:
+        type: string
+      name:
+        type: string
+      project-id:
+        type: string
+      status:
+        type: string
+    type: object
   model.TaskCreation:
     properties:
       assigned-to:
@@ -1342,7 +1367,72 @@ paths:
       summary: map project-manager
       tags:
       - Projects
-  /tasks/{project-id}:
+  /projects/{project-id}/tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of tasks in project with filtering, sorting, and pagination
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: Project's Name
+        in: query
+        name: name
+        type: string
+      - description: Project's Status
+        in: query
+        name: status
+        type: string
+      - description: get task that belong to this assignee'name
+        in: query
+        name: assginee-name
+        type: string
+      - description: get task that belong to this assignee'code
+        in: query
+        name: assginee-code
+        type: string
+      - description: get tasks were approved or not -> enter true or false
+        in: query
+        name: is-approved
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Task'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get tasks
+      tags:
+      - Tasks
     post:
       consumes:
       - application/json
@@ -1373,6 +1463,53 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: create new task
+      tags:
+      - Tasks
+  /projects/{project-id}/tasks/my-task:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of my tasks in project with filtering, sorting, and
+        pagination
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Task'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get my tasks
       tags:
       - Tasks
   /technicals:

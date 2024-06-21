@@ -31,9 +31,10 @@ func (biz *loginBuisiness) Login(login_form *model.LoginForm, data_response map[
 	expUnix := expirationTime.Unix()
 
 	payload_jwt := map[string]interface{}{
-		"id":       account.Id,
-		"role":     account.Role,
-		"exp_date": expUnix,
+		"id":        account.Id,
+		"role":      account.Role,
+		"username": account.UserName,
+		"exp_date":  expUnix,
 	}
 	token, err_create_jwt := utils.CreateJWT(payload_jwt)
 	if err_create_jwt != nil {
