@@ -22,7 +22,7 @@ func checkProjectIDExists(store *taskStore, proid string) error {
 		return fmt.Errorf("error in checkProjectIDExists: %v", err)
 	}
 	if !flag {
-		return fmt.Errorf("invalid-request: project'id %v is not exists", proid)
+		return fmt.Errorf("invalid-request: project'id %v is not exists or this project has been deleted", proid)
 	}
 	return nil
 }
@@ -35,7 +35,43 @@ func checkTaskIDExistsInProject(store *taskStore, proid, taskid string) error {
 		return fmt.Errorf("error in checkTaskIDExistsInProject: %v", err)
 	}
 	if !flag {
-		return fmt.Errorf("invalid-request: task'id %v is not exists in project (id: %v)", taskid, proid)
+		return fmt.Errorf("invalid-request: task'id %v is not exists in project or this project has been deleted", taskid)
 	}
 	return nil
+}
+
+func checkAssigneeIDExistsInTask(store *taskStore, taskid, inid string) error {
+	var flag bool = false
+	rawsql := `select exists(select 1 from task where id=? and assigned_to=? and deleted_at is null)`
+	if err_query := store.db.QueryRow(rawsql, taskid, inid).Scan(&flag); err_query != nil {
+		return fmt.Errorf("error in checkInternIDExistsInProject: %v", err_query)
+	}
+	if !flag {
+		return fmt.Errorf("invalid-request: member (id: %v) is not the person who assigned this task or this task has been deleted", inid)
+	}
+	return nil
+}
+
+func isTaskHasBeenApproved(store *taskStore, taskid string) error {
+	var flag bool = false
+	rawsql := `select exists(select 1 from task where is_approved=1 and id=? and deleted_at is null)`
+	if err_query := store.db.QueryRow(rawsql, taskid).Scan(&flag); err_query != nil {
+		return fmt.Errorf("error in isTaskHasBeenApproved: %v", err_query)
+	}
+	if flag {
+		return nil
+	}
+	return fmt.Errorf("invalid-request: This task has not been approved by PM")
+}
+
+func isTaskHasBeenStartedOrDone(store *taskStore, taskid string) error {
+	var flag bool = false
+	rawsql := `select exists(select 1 from task where (status='inprogress' or status='done') and id=? and deleted_at is null)`
+	if err_query := store.db.QueryRow(rawsql, taskid).Scan(&flag); err_query != nil {
+		return fmt.Errorf("error in isTaskHasBeenApproved: %v", err_query)
+	}
+	if !flag {
+		return nil
+	}
+	return fmt.Errorf("invalid-request: This task has been started or done")
 }

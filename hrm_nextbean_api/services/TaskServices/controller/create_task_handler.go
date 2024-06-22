@@ -16,7 +16,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary		create new task
+// @Summary		create new task (for pm vs member)
 // @Description	task creation information
 // @Tags			Tasks
 // @Accept			json

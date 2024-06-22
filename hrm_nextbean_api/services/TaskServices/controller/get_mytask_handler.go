@@ -14,19 +14,19 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-//	@Summary		Get my tasks
-//	@Description	Get a list of my tasks in project with filtering, sorting, and pagination
-//	@Tags			Tasks
-//	@Accept			json
-//	@Produce		json
-//	@Param			project-id	path		string										true	"enter project-id"
-//	@Param			page		query		int											false	"Page number"
-//	@Param			psize		query		int											false	"Number of records per page"
-//	@Success		200			{object}	utils.success_response{data=[]model.Task}	"OK"
-//	@Failure		400			{object}	utils.error_response						"Bad Request"
-//	@Failure		404			{object}	utils.error_response						"Not Found"
-//	@Router			/projects/{project-id}/tasks/my-task [get]
-//	@Security		ApiKeyAuth
+// @Summary		Get my tasks (for member)
+// @Description	Get a list of my tasks in project with filtering, sorting, and pagination
+// @Tags			Tasks
+// @Accept			json
+// @Produce		json
+// @Param			project-id	path		string										true	"enter project-id"
+// @Param			page		query		int											false	"Page number"
+// @Param			psize		query		int											false	"Number of records per page"
+// @Success		200			{object}	utils.success_response{data=[]model.Task}	"OK"
+// @Failure		400			{object}	utils.error_response						"Bad Request"
+// @Failure		404			{object}	utils.error_response						"Not Found"
+// @Router			/projects/{project-id}/tasks/my-task [get]
+// @Security		ApiKeyAuth
 func handleGetMyTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		ctx := req.Context()

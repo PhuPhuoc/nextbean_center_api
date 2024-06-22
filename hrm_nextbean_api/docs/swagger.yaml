@@ -57,6 +57,11 @@ definitions:
       technical-skill:
         type: string
     type: object
+  model.DoneTask:
+    properties:
+      actual-effort:
+        type: string
+    type: object
   model.Intern:
     properties:
       account-id:
@@ -347,13 +352,10 @@ definitions:
         type: boolean
       name:
         type: string
-      status:
-        type: string
     required:
     - assigned-to
     - is-approved
     - name
-    - status
     type: object
   model.Technical:
     properties:
@@ -1474,7 +1476,7 @@ paths:
             $ref: '#/definitions/utils.error_response'
       security:
       - ApiKeyAuth: []
-      summary: Get tasks
+      summary: Get tasks (for manager vs pm)
       tags:
       - Tasks
     post:
@@ -1506,7 +1508,7 @@ paths:
             $ref: '#/definitions/utils.error_response'
       security:
       - ApiKeyAuth: []
-      summary: create new task
+      summary: create new task (for pm vs member)
       tags:
       - Tasks
   /projects/{project-id}/tasks/{task-id}:
@@ -1544,7 +1546,77 @@ paths:
             $ref: '#/definitions/utils.error_response'
       security:
       - ApiKeyAuth: []
-      summary: update  task
+      summary: update task (for pm)
+      tags:
+      - Tasks
+  /projects/{project-id}/tasks/{task-id}/done-task:
+    put:
+      consumes:
+      - application/json
+      description: done task with new information
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        required: true
+        type: string
+      - description: enter task-id
+        in: path
+        name: task-id
+        required: true
+        type: string
+      - description: info to done the task
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.DoneTask'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful done my task
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: done my task failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: done my task (for member)
+      tags:
+      - Tasks
+  /projects/{project-id}/tasks/{task-id}/start-task:
+    put:
+      consumes:
+      - application/json
+      description: start task with new information
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        required: true
+        type: string
+      - description: enter task-id
+        in: path
+        name: task-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successful start my task
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: start my task failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: start my task (for member)
       tags:
       - Tasks
   /projects/{project-id}/tasks/my-task:
@@ -1591,7 +1663,7 @@ paths:
             $ref: '#/definitions/utils.error_response'
       security:
       - ApiKeyAuth: []
-      summary: Get my tasks
+      summary: Get my tasks (for member)
       tags:
       - Tasks
   /technicals:

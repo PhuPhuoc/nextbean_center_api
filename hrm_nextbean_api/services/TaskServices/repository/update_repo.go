@@ -16,16 +16,27 @@ func (store *taskStore) UpdateTask(proid, taskid string, info *model.TaskUpdate)
 		return err_check
 	}
 
-	status := info.Status
 	if newAssignee {
-		status = "todo"
 		if err_exist := checkInternIDExistsInProject(store, proid, info.AssignedTo); err_exist != nil {
 			return err_exist
 		}
+		rawsql := `update task set assigned_to=?, is_approved=?, status='todo', name=?, description=?, estimated_effort=?, start_date=null where id=?`
+		result, err := store.db.Exec(rawsql, info.AssignedTo, info.IsApproved, info.Name, info.Description, info.EstimatedEffort, taskid)
+		if err != nil {
+			return fmt.Errorf("error when UpdateTask in store: %v", err)
+		}
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			return fmt.Errorf("error when UpdateTask in store (check affect): %v", err)
+		}
+		if rowsAffected == 0 {
+			return nil
+		}
+		return nil
 	}
 
-	rawsql := `update task set assigned_to=?, is_approved=?, status=?, name=?, description=?, estimated_effort=? where id=?`
-	result, err := store.db.Exec(rawsql, info.AssignedTo, info.IsApproved, status, info.Name, info.Description, info.EstimatedEffort, taskid)
+	rawsql := `update task set is_approved=?, name=?, description=?, estimated_effort=? where id=?`
+	result, err := store.db.Exec(rawsql, info.IsApproved, info.Name, info.Description, info.EstimatedEffort, taskid)
 	if err != nil {
 		return fmt.Errorf("error when UpdateTask in store: %v", err)
 	}

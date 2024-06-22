@@ -1444,7 +1444,7 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Get tasks",
+                "summary": "Get tasks (for manager vs pm)",
                 "parameters": [
                     {
                         "type": "string",
@@ -1548,7 +1548,7 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "create new task",
+                "summary": "create new task (for pm vs member)",
                 "parameters": [
                     {
                         "type": "string",
@@ -1600,7 +1600,7 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "Get my tasks",
+                "summary": "Get my tasks (for member)",
                 "parameters": [
                     {
                         "type": "string",
@@ -1676,7 +1676,7 @@ const docTemplate = `{
                 "tags": [
                     "Tasks"
                 ],
-                "summary": "update  task",
+                "summary": "update task (for pm)",
                 "parameters": [
                     {
                         "type": "string",
@@ -1711,6 +1711,115 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "update failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/tasks/{task-id}/done-task": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "done task with new information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "done my task (for member)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "enter task-id",
+                        "name": "task-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "info to done the task",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DoneTask"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful done my task",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "done my task failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/tasks/{task-id}/start-task": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "start task with new information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "start my task (for member)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "enter task-id",
+                        "name": "task-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful start my task",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "start my task failure",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -2244,6 +2353,14 @@ const docTemplate = `{
                 }
             }
         },
+        "model.DoneTask": {
+            "type": "object",
+            "properties": {
+                "actual-effort": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Intern": {
             "type": "object",
             "properties": {
@@ -2663,8 +2780,7 @@ const docTemplate = `{
             "required": [
                 "assigned-to",
                 "is-approved",
-                "name",
-                "status"
+                "name"
             ],
             "properties": {
                 "assigned-to": {
@@ -2680,9 +2796,6 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 }
             }

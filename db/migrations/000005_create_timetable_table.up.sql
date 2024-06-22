@@ -7,7 +7,7 @@ CREATE TABLE `timetable` (
   `act_start` time,
   `act_end` time,
   `status` ENUM('processing', 'denied', 'approved') DEFAULT 'processing',
-  `status_check_attendance` ENUM('not-yet', 'absent', 'authen-by-ip', 'admin-approve') DEFAULT 'not-yet',
+  `status_check_attendance` ENUM('not-yet', 'absent', 'authen-by-ip', 'wait-for_admin', 'admin-approve') DEFAULT 'not-yet',
   `created_at` datetime  DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime
 );

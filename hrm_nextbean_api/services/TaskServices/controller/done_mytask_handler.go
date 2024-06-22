@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/PhuPhuoc/hrm_nextbean_api/middleware"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/business"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/repository"
@@ -15,20 +16,31 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary		update task (for pm)
-// @Description	update task with new information
+// @Summary		done my task (for member)
+// @Description	done task with new information
 // @Tags			Tasks
 // @Accept			json
 // @Produce		json
 // @Param			project-id	path		string					true	"enter project-id"
 // @Param			task-id		path		string					true	"enter task-id"
-// @Param			request		body		model.TaskUpdate		true	"task creation request"
-// @Success		201			{object}	utils.success_response	"Successful update"
-// @Failure		400			{object}	utils.error_response	"update failure"
-// @Router			/projects/{project-id}/tasks/{task-id} [put]
+// @Param			request		body		model.DoneTask			true	"info to done the task"
+// @Success		201			{object}	utils.success_response	"Successful done my task"
+// @Failure		400			{object}	utils.error_response	"done my task failure"
+// @Router			/projects/{project-id}/tasks/{task-id}/done-task [put]
 // @Security		ApiKeyAuth
-func handleUpdateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
+func handleDoneMyTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		ctx := req.Context()
+		var role string
+		var internIDWhoAssignedTheTask string
+		if v := ctx.Value(middleware.AccRoleKey); v != nil {
+			role = v.(string)
+		}
+		if role == "user" {
+			if v := ctx.Value(middleware.InternIDKey); v != nil {
+				internIDWhoAssignedTheTask = v.(string)
+			}
+		}
 		proid := mux.Vars(req)["project-id"]
 		if proid == "" {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing project's ID", fmt.Errorf("missing project's ID")))
@@ -41,7 +53,7 @@ func handleUpdateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 			return
 		}
 
-		up_info := new(model.TaskUpdate)
+		info := new(model.DoneTask)
 		var req_body_json map[string]interface{}
 
 		var body_data bytes.Buffer
@@ -51,16 +63,16 @@ func handleUpdateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 		}
 		json.Unmarshal(body_data.Bytes(), &req_body_json)
 
-		check := utils.CreateValidateRequestBody(req_body_json, up_info)
+		check := utils.CreateValidateRequestBody(req_body_json, info)
 		if flag, list_err := check.GetValidateStatus(); !flag {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest_ListError(list_err, fmt.Errorf("check request-body failed")))
 			return
 		}
-		json.Unmarshal(body_data.Bytes(), up_info)
+		json.Unmarshal(body_data.Bytes(), info)
 
 		store := repository.NewTaskStore(db)
-		biz := business.NewUpdateTaskBiz(store)
-		if err := biz.UpdateTaskBiz(proid, taskid, up_info); err != nil {
+		biz := business.NewEndTaskBiz(store)
+		if err := biz.EndTaskBiz(proid, taskid, internIDWhoAssignedTheTask, info); err != nil {
 			if strings.Contains(err.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {
@@ -68,6 +80,6 @@ func handleUpdateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 			}
 			return
 		}
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("task updated successfully!"))
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("start my task successfully!"))
 	}
 }

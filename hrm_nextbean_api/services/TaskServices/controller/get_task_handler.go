@@ -12,7 +12,7 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-// @Summary		Get tasks
+// @Summary		Get tasks (for manager vs pm)
 // @Description	Get a list of tasks in project with filtering, sorting, and pagination
 // @Tags			Tasks
 // @Accept			json
