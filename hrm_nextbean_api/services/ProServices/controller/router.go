@@ -22,6 +22,6 @@ func RegisterProRouter(r *mux.Router, db *sql.DB) {
 	project_router.HandleFunc("/{project-id}/project-managers", middleware.ProjectAccessMiddleware(db, false, false, false)(handleMapProjectManager(db))).Methods("POST")
 	project_router.HandleFunc("/{project-id}/member", middleware.ProjectAccessMiddleware(db, false, false, false)(handleMapProjectMember(db))).Methods("POST")
 	project_router.HandleFunc("/{project-id}/{member-id}", middleware.ProjectAccessMiddleware(db, false, false, false)(handleRemoveMemberInProject(db))).Methods("DELETE")
-	// pm : get project that this pm with id ... in
-	// ...
+
+	
 }

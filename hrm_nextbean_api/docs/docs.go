@@ -1072,6 +1072,42 @@ const docTemplate = `{
                         "name": "project-id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "member'name",
+                        "name": "user-name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "student-code of member",
+                        "name": "student-code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "member'semester",
+                        "name": "semester",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "member's university",
+                        "name": "university",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1496,56 +1532,6 @@ const docTemplate = `{
                     }
                 }
             },
-            "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "update task with new information",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Tasks"
-                ],
-                "summary": "update  task",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "enter project-id",
-                        "name": "project-id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "task creation request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.TaskUpdate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Successful update",
-                        "schema": {
-                            "$ref": "#/definitions/utils.success_response"
-                        }
-                    },
-                    "400": {
-                        "description": "update failure",
-                        "schema": {
-                            "$ref": "#/definitions/utils.error_response"
-                        }
-                    }
-                }
-            },
             "post": {
                 "security": [
                     {
@@ -1666,6 +1652,65 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{project-id}/tasks/{task-id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "update task with new information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "update  task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter project-id",
+                        "name": "project-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "enter task-id",
+                        "name": "task-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "task creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.TaskUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful update",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "update failure",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -2632,7 +2677,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "is-approved": {
-                    "type": "string"
+                    "type": "boolean"
                 },
                 "name": {
                     "type": "string"

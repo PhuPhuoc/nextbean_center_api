@@ -93,6 +93,28 @@ VALUES
 ('intern11', 2, 'advanced'), 
 ('intern11', 3, 'basic');
 
+
+insert into timetable(intern_id, office_time, est_start, est_end)
+values
+("intern1", "2024-07-01", "8:00", "17:00"),
+("intern2", "2024-07-01", "8:00", "17:00"),
+("intern3", "2024-07-01", "8:00", "17:00"),
+("intern4", "2024-07-01", "8:00", "17:00"),
+("intern5", "2024-07-01", "8:00", "17:00"),
+("intern6", "2024-07-01", "8:00", "17:00"),
+("intern1", "2024-07-02", "8:00", "17:00"),
+("intern2", "2024-07-02", "8:00", "17:00"),
+("intern3", "2024-07-02", "8:00", "17:00"),
+("intern4", "2024-07-02", "8:00", "17:00"),
+("intern5", "2024-07-02", "8:00", "17:00"),
+("intern6", "2024-07-02", "8:00", "17:00"),
+("intern1", "2024-07-03", "8:00", "17:00"),
+("intern2", "2024-07-03", "8:00", "17:00"),
+("intern3", "2024-07-03", "8:00", "17:00"),
+("intern4", "2024-07-03", "8:00", "17:00"),
+("intern5", "2024-07-03", "8:00", "17:00");
+
+
 INSERT INTO `project` (`id`, `name`, `status`, `description`, `start_date`, `duration`)
 VALUES ('proj1', 'Project Alpha', 'not_start', 'This is the first project', '2024-06-15 08:00:00', '3 months'),
 ('proj2', 'Project Beta', 'doing', 'This project is currently in progress', '2024-05-01 09:00:00', '6 months'),
@@ -118,3 +140,18 @@ values
 ('proj3', 'intern7', '2024-06-15 08:00:00', 'inprogress'),
 ('proj3', 'intern3', '2024-06-15 08:00:00', 'inprogress'),
 ('proj3', 'intern2', '2024-06-15 08:00:00', 'inprogress');
+
+
+insert into task(id, project_id, assigned_to, is_approved, name, description, estimated_effort, created_at)
+values
+('task1', 'proj1' , 'intern1', 1, 'task 1', "description task 1", "1 days", '2024-06-16 00:00:00'),
+('task2', 'proj1' , 'intern2', 1, 'task 2', "description task 2", "2 days", '2024-06-16 00:00:00'),
+('task3', 'proj1' , 'intern3', 1, 'task 3', "description task 3", "1 days", '2024-06-16 00:00:00'),
+('task4', 'proj2' , 'intern3', 1, 'task 4', "description task 4", "2 days", '2024-06-16 00:00:00'),
+('task5', 'proj2' , 'intern4', 1, 'task 5', "description task 5", "1 days", '2024-06-16 00:00:00'),
+('task6', 'proj2' , 'intern5', 1, 'task 6', "description task 6", "4 days", '2024-06-16 00:00:00'),
+('task7', 'proj3' , 'intern3', 1, 'task 7', "description task 7", "3 days", '2024-06-16 00:00:00'),
+('task8', 'proj3' , 'intern6', 1, 'task 8', "description task 8", "1 days", '2024-06-16 00:00:00'),
+('task9', 'proj3' , 'intern7', 1, 'task 9', "description task 9", "2 days", '2024-06-16 00:00:00');
+
+

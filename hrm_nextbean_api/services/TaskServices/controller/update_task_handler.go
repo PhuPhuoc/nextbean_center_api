@@ -15,22 +15,29 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary		update  task
-// @Description	update task with new information
-// @Tags			Tasks
-// @Accept			json
-// @Produce		json
-// @Param			project-id	path		string					true	"enter project-id"
-// @Param			request		body		model.TaskUpdate		true	"task creation request"
-// @Success		201			{object}	utils.success_response	"Successful update"
-// @Failure		400			{object}	utils.error_response	"update failure"
-// @Router			/projects/{project-id}/tasks [put]
-// @Security		ApiKeyAuth
+//	@Summary		update  task
+//	@Description	update task with new information
+//	@Tags			Tasks
+//	@Accept			json
+//	@Produce		json
+//	@Param			project-id	path		string					true	"enter project-id"
+//	@Param			task-id		path		string					true	"enter task-id"
+//	@Param			request		body		model.TaskUpdate		true	"task creation request"
+//	@Success		201			{object}	utils.success_response	"Successful update"
+//	@Failure		400			{object}	utils.error_response	"update failure"
+//	@Router			/projects/{project-id}/tasks/{task-id} [put]
+//	@Security		ApiKeyAuth
 func handleUpdateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]
 		if proid == "" {
 			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing project's ID", fmt.Errorf("missing project's ID")))
+			return
+		}
+
+		taskid := mux.Vars(req)["task-id"]
+		if taskid == "" {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing task's ID", fmt.Errorf("missing task's ID")))
 			return
 		}
 
@@ -53,7 +60,7 @@ func handleUpdateTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 
 		store := repository.NewTaskStore(db)
 		biz := business.NewUpdateTaskBiz(store)
-		if err := biz.UpdateTaskBiz(proid, up_info); err != nil {
+		if err := biz.UpdateTaskBiz(proid, taskid, up_info); err != nil {
 			if strings.Contains(err.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
 			} else {

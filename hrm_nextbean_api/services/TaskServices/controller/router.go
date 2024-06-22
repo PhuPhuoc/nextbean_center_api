@@ -17,6 +17,6 @@ func RegisterTaskRouter(r *mux.Router, db *sql.DB) {
 	// intern -> get all my task in project
 	task_router.HandleFunc("/my-task", middleware.TaskAccessMiddleware(db, false, false, true)(handleGetMyTask(db))).Methods("GET")
 	// pm -> update task'details
-	task_router.HandleFunc("", middleware.TaskAccessMiddleware(db, false, true, false)(handleUpdateTask(db))).Methods("PUT")
+	task_router.HandleFunc("/{task-id}", middleware.TaskAccessMiddleware(db, false, true, false)(handleUpdateTask(db))).Methods("PUT")
 	// intern -> update task'status vs actual_effort
 }

@@ -219,6 +219,11 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a string", key)}
 			vrb.list_error = append(vrb.list_error, err_field)
 		}
+	case "bool":
+		if _, ok := value.(bool); !ok {
+			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a boolean", key)}
+			vrb.list_error = append(vrb.list_error, err_field)
+		}
 	case "email":
 		if v, ok := value.(string); ok {
 			if is_email := isValidEmail(v); !is_email {

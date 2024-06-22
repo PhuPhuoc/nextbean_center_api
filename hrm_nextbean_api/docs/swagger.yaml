@@ -344,7 +344,7 @@ definitions:
       estimated-effort:
         type: string
       is-approved:
-        type: string
+        type: boolean
       name:
         type: string
       status:
@@ -1189,6 +1189,30 @@ paths:
         name: project-id
         required: true
         type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: member'name
+        in: query
+        name: user-name
+        type: string
+      - description: student-code of member
+        in: query
+        name: student-code
+        type: string
+      - description: member'semester
+        in: query
+        name: semester
+        type: string
+      - description: member's university
+        in: query
+        name: university
+        type: string
       produces:
       - application/json
       responses:
@@ -1485,6 +1509,7 @@ paths:
       summary: create new task
       tags:
       - Tasks
+  /projects/{project-id}/tasks/{task-id}:
     put:
       consumes:
       - application/json
@@ -1493,6 +1518,11 @@ paths:
       - description: enter project-id
         in: path
         name: project-id
+        required: true
+        type: string
+      - description: enter task-id
+        in: path
+        name: task-id
         required: true
         type: string
       - description: task creation request

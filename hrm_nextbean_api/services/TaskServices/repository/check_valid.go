@@ -26,3 +26,16 @@ func checkProjectIDExists(store *taskStore, proid string) error {
 	}
 	return nil
 }
+
+func checkTaskIDExistsInProject(store *taskStore, proid, taskid string) error {
+	var flag bool
+	query := `select exists(select 1 from task where project_id=? and id = ? and deleted_at is null)`
+	err := store.db.QueryRow(query, proid, taskid).Scan(&flag)
+	if err != nil {
+		return fmt.Errorf("error in checkTaskIDExistsInProject: %v", err)
+	}
+	if !flag {
+		return fmt.Errorf("invalid-request: task'id %v is not exists in project (id: %v)", taskid, proid)
+	}
+	return nil
+}

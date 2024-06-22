@@ -6,22 +6,30 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/PhuPhuoc/hrm_nextbean_api/common"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/business"
+	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 	"github.com/gorilla/mux"
 )
 
-// @Summary		Get Member in Project
-// @Description	Get a list of Member in Project
-// @Tags			Projects
-// @Accept			json
-// @Produce		json
-// @Param			project-id	path		string										true	"enter project-id"
-// @Success		200			{object}	utils.success_response{data=[]model.Member}	"OK"
-// @Failure		400			{object}	utils.error_response						"Bad Request"
-// @Failure		404			{object}	utils.error_response						"Not Found"
-// @Router			/projects/{project-id}/member-in-project [get]
+//	@Summary		Get Member in Project
+//	@Description	Get a list of Member in Project
+//	@Tags			Projects
+//	@Accept			json
+//	@Produce		json
+//	@Param			project-id		path		string										true	"enter project-id"
+//	@Param			page			query		int											false	"Page number"
+//	@Param			psize			query		int											false	"Number of records per page"
+//	@Param			user-name		query		string										false	"member'name"
+//	@Param			student-code	query		string										false	"student-code of member"
+//	@Param			semester		query		string										false	"member'semester"
+//	@Param			university		query		string										false	"member's university"
+//	@Success		200				{object}	utils.success_response{data=[]model.Member}	"OK"
+//	@Failure		400				{object}	utils.error_response						"Bad Request"
+//	@Failure		404				{object}	utils.error_response						"Not Found"
+//	@Router			/projects/{project-id}/member-in-project [get]
 //	@Security		ApiKeyAuth
 func handleGetMember(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
@@ -31,9 +39,13 @@ func handleGetMember(db *sql.DB) func(rw http.ResponseWriter, req *http.Request)
 			return
 		}
 
+		pagin := new(common.Pagination)
+		filter := new(model.MemberFilter)
+		getRequestQueryForMemberOutsideProject(req, pagin, filter)
+
 		store := repository.NewProjectStore(db)
 		biz := business.NewGetProMemBiz(store)
-		data, err := biz.GetProMemBiz(proid)
+		data, err := biz.GetProMemBiz(proid, pagin, filter)
 		if err != nil {
 			if strings.Contains(err.Error(), "invalid-request") {
 				utils.WriteJSON(rw, utils.ErrorResponse_BadRequest(err.Error(), err))
