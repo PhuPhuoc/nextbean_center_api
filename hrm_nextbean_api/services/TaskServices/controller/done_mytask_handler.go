@@ -80,6 +80,6 @@ func handleDoneMyTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request
 			}
 			return
 		}
-		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("start my task successfully!"))
+		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated("task completed successfully"))
 	}
 }

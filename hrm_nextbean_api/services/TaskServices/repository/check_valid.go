@@ -75,3 +75,27 @@ func isTaskHasBeenStartedOrDone(store *taskStore, taskid string) error {
 	}
 	return fmt.Errorf("invalid-request: This task has been started or done")
 }
+
+func isTaskHasBeenDone(store *taskStore, taskid string) error {
+	var flag bool = false
+	rawsql := `select exists(select 1 from task where status='done' and id=? and deleted_at is null)`
+	if err_query := store.db.QueryRow(rawsql, taskid).Scan(&flag); err_query != nil {
+		return fmt.Errorf("error in isTaskHasBeenDone: %v", err_query)
+	}
+	if !flag {
+		return nil
+	}
+	return fmt.Errorf("invalid-request: This task has been completed")
+}
+
+func isTaskHasBeenStart(store *taskStore, taskid string) error {
+	var flag bool = false
+	rawsql := `select exists(select 1 from task where status='inprogress' and id=? and deleted_at is null)`
+	if err_query := store.db.QueryRow(rawsql, taskid).Scan(&flag); err_query != nil {
+		return fmt.Errorf("error in isTaskHasBeenDone: %v", err_query)
+	}
+	if flag {
+		return nil
+	}
+	return fmt.Errorf("invalid-request: This task has not started, so completion cannot be confirmed")
+}
