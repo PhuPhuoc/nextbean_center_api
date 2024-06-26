@@ -29,6 +29,10 @@ func (store *projectStore) MapPM(proid string, info *model.MapProPM) error {
 		return fmt.Errorf("error in MapPM transaction-delete mapping: %v", err)
 	}
 
+	if len(info.ListManagerId) == 0 {
+		return nil
+	}
+
 	values := ""
 	for i := range info.ListManagerId {
 		if i > 0 {

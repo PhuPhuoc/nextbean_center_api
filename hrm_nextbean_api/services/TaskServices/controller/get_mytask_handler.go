@@ -43,7 +43,7 @@ func handleGetMyTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request)
 		filter := new(model.TaskFilter)
 
 		getRequestQuery_mytask(req, pagin)
-		filter.AssgineeId = inid
+		filter.AssigneeId = inid
 
 		store := repository.NewTaskStore(db)
 		biz := business.NewGetTaskBiz(store)

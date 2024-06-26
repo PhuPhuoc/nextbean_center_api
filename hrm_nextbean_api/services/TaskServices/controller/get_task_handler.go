@@ -22,8 +22,8 @@ import (
 // @Param			psize			query		int											false	"Number of records per page"
 // @Param			name			query		string										false	"Project's Name"
 // @Param			status			query		string										false	"Project's Status"
-// @Param			assginee-name	query		string										false	"get task that belong to this assignee'name"
-// @Param			assginee-code	query		string										false	"get task that belong to this assignee'code"
+// @Param			assignee-name	query		string										false	"get task that belong to this assignee'name"
+// @Param			assignee-code	query		string										false	"get task that belong to this assignee'code"
 // @Param			is-approved		query		string										false	"get tasks were approved or not -> enter true or false"
 // @Success		200				{object}	utils.success_response{data=[]model.Task}	"OK"
 // @Failure		400				{object}	utils.error_response						"Bad Request"
@@ -61,8 +61,8 @@ func getRequestQuery(req *http.Request, pagin *common.Pagination, filter *model.
 	pagin.PSize = psize
 	pagin.Process()
 
-	filter.AssgineeName = req.URL.Query().Get("assginee-name")
-	filter.AssgineeCode = req.URL.Query().Get("assginee-code")
+	filter.AssigneeName = req.URL.Query().Get("assignee-name")
+	filter.AssigneeCode = req.URL.Query().Get("assignee-code")
 	filter.Status = req.URL.Query().Get("status")
 	filter.IsApproved = req.URL.Query().Get("is-approved")
 	filter.Name = req.URL.Query().Get("name")

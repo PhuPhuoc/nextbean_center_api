@@ -26,6 +26,10 @@ func (store *internStore) MapInternSkill(internID string, info *model.MapInternS
 		return fmt.Errorf("error in MapInternSkill transaction-delete mapping: %v", err)
 	}
 
+	if len(info.Skills) == 0 {
+		return nil	
+	}
+
 	values := ""
 	for i := range info.Skills {
 		if i > 0 {

@@ -142,8 +142,8 @@ definitions:
         type: string
       id:
         type: string
-      ojt-semester:
-        type: string
+      ojt-id:
+        type: integer
       phone-number:
         type: string
       student-code:
@@ -303,7 +303,7 @@ definitions:
     type: object
   model.Task:
     properties:
-      Actual-effort:
+      actual-effort:
         type: string
       assigned-code:
         type: string
@@ -1442,11 +1442,11 @@ paths:
         type: string
       - description: get task that belong to this assignee'name
         in: query
-        name: assginee-name
+        name: assignee-name
         type: string
       - description: get task that belong to this assignee'code
         in: query
-        name: assginee-code
+        name: assignee-code
         type: string
       - description: get tasks were approved or not -> enter true or false
         in: query

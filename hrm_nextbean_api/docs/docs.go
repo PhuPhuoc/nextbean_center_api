@@ -1480,13 +1480,13 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "get task that belong to this assignee'name",
-                        "name": "assginee-name",
+                        "name": "assignee-name",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "get task that belong to this assignee'code",
-                        "name": "assginee-code",
+                        "name": "assignee-code",
                         "in": "query"
                     },
                     {
@@ -2478,8 +2478,8 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "ojt-semester": {
-                    "type": "string"
+                "ojt-id": {
+                    "type": "integer"
                 },
                 "phone-number": {
                     "type": "string"
@@ -2719,7 +2719,7 @@ const docTemplate = `{
         "model.Task": {
             "type": "object",
             "properties": {
-                "Actual-effort": {
+                "actual-effort": {
                     "type": "string"
                 },
                 "assigned-code": {

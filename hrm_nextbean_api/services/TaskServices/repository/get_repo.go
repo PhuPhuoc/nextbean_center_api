@@ -106,19 +106,19 @@ func whereClause(filter *model.TaskFilter) (string, []interface{}) {
 	var query strings.Builder
 	query.WriteString(` where `)
 
-	if filter.AssgineeId != "" {
+	if filter.AssigneeId != "" {
 		query.WriteString(`t.assigned_to = ? and `)
-		param = append(param, filter.AssgineeId)
+		param = append(param, filter.AssigneeId)
 	}
 
-	if filter.AssgineeName != "" {
+	if filter.AssigneeName != "" {
 		query.WriteString(`a.user_name like ? and `)
-		param = append(param, filter.AssgineeName)
+		param = append(param, filter.AssigneeName)
 	}
 
-	if filter.AssgineeCode != "" {
+	if filter.AssigneeCode != "" {
 		query.WriteString(`i.student_code like ? and `)
-		param = append(param, filter.AssgineeCode)
+		param = append(param, filter.AssigneeCode)
 	}
 
 	if filter.IsApproved != "" {

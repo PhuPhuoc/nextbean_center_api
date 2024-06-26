@@ -11,5 +11,5 @@ type Task struct {
 	Name            string `json:"name"`
 	Description     string `json:"description"`
 	EstimatedEffort string `json:"estimated-effort"`
-	ActualEffort    string `json:"Actual-effort"`
+	ActualEffort    string `json:"actual-effort"`
 }

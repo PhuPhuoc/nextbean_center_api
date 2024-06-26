@@ -1,9 +1,9 @@
 package model
 
 type TaskFilter struct {
-	AssgineeId   string `json:"assginee-id,omitempty"`
-	AssgineeName string `json:"assginee-name,omitempty"`
-	AssgineeCode string `json:"assginee-code,omitempty"`
+	AssigneeId   string `json:"assignee-id,omitempty"`
+	AssigneeName string `json:"assignee-name,omitempty"`
+	AssigneeCode string `json:"assignee-code,omitempty"`
 	Status       string `json:"status,omitempty"`
 	IsApproved   string `json:"is-approved,omitempty"`
 	Name         string `json:"name,omitempty"`

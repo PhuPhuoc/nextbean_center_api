@@ -4,13 +4,13 @@ type InternDetailInfo struct {
 	Id            string          `json:"id"`
 	UserName      string          `json:"user-name"`
 	Email         string          `json:"email"`
+	OjtId         int             `json:"ojt-id,omitempty"`
 	StudentCode   string          `json:"student-code"`
 	Avatar        string          `json:"avatar,omitempty"`
 	Gender        string          `json:"gender,omitempty"`
 	DateOfBirth   string          `json:"date-of-birth,omitempty"`
 	PhoneNumber   string          `json:"phone-number,omitempty"`
 	Address       string          `json:"address,omitempty"`
-	Ojt_semester  string          `json:"ojt-semester,omitempty"`
 	InternSkill   []DetailSkill   `json:"detail-skill,omitempty"`
 	InternProject []DetailProject `json:"detail-project,omitempty"`
 }
