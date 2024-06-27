@@ -106,6 +106,11 @@ func whereClause(filter *model.TaskFilter) (string, []interface{}) {
 	var query strings.Builder
 	query.WriteString(` where `)
 
+	if filter.ProjectId != "" {
+		query.WriteString(`t.project_id = ? and `)
+		param = append(param, filter.ProjectId)
+	}
+
 	if filter.AssigneeId != "" {
 		query.WriteString(`t.assigned_to = ? and `)
 		param = append(param, filter.AssigneeId)

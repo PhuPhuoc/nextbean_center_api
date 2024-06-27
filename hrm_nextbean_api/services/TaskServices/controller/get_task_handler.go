@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/model"
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/repository"
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
+	"github.com/gorilla/mux"
 )
 
 // @Summary		Get tasks (for manager vs pm)
@@ -32,10 +34,16 @@ import (
 // @Security		ApiKeyAuth
 func handleGetTask(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		proid := mux.Vars(req)["project-id"]
+		if proid == "" {
+			utils.WriteJSON(rw, utils.ErrorResponse_BadRequest("Missing project's ID", fmt.Errorf("missing project's ID")))
+			return
+		}
 		pagin := new(common.Pagination)
 		filter := new(model.TaskFilter)
 
 		getRequestQuery(req, pagin, filter)
+		filter.ProjectId = proid
 
 		store := repository.NewTaskStore(db)
 		biz := business.NewGetTaskBiz(store)

@@ -1,6 +1,7 @@
 package model
 
 type TaskFilter struct {
+	ProjectId    string `json:"-"`
 	AssigneeId   string `json:"assignee-id,omitempty"`
 	AssigneeName string `json:"assignee-name,omitempty"`
 	AssigneeCode string `json:"assignee-code,omitempty"`
