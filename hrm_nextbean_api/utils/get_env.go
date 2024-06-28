@@ -41,3 +41,18 @@ func GetConnStr(flag bool) string {
 	log.Println("|util| + connection string: ", conn_str)
 	return conn_str
 }
+
+func GetClientID() string {
+	secret := os.Getenv("CLIENT_ID")
+	return secret
+}
+
+func GetClientSecret() string {
+	secret := os.Getenv("CLIENT_SECRET")
+	return secret
+}
+
+func GetURLCallback() string {
+	secret := os.Getenv("URL_CALLBACK_OAUTH")
+	return secret
+}
