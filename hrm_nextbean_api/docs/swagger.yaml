@@ -62,15 +62,9 @@ definitions:
       actual-effort:
         type: string
     type: object
-  model.GoogleToken:
+  model.GoogleCode:
     properties:
-      access_token:
-        type: string
-      expiry:
-        type: string
-      refresh_token:
-        type: string
-      token_type:
+      code:
         type: string
     type: object
   model.Intern:
@@ -654,7 +648,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/model.GoogleToken'
+          $ref: '#/definitions/model.GoogleCode'
       produces:
       - application/json
       responses:

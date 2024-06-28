@@ -28,7 +28,7 @@ func (store *loginGGStore) AccountGoogleLogin(email string, account *model.Accou
 		}
 	}
 	if count == 0 {
-		return fmt.Errorf("email: %v not exists", email)
+		return fmt.Errorf("account with email: %v is not exists", email)
 	}
 
 	return nil

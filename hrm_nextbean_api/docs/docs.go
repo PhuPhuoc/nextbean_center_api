@@ -262,7 +262,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.GoogleToken"
+                            "$ref": "#/definitions/model.GoogleCode"
                         }
                     }
                 ],
@@ -2401,19 +2401,10 @@ const docTemplate = `{
                 }
             }
         },
-        "model.GoogleToken": {
+        "model.GoogleCode": {
             "type": "object",
             "properties": {
-                "access_token": {
-                    "type": "string"
-                },
-                "expiry": {
-                    "type": "string"
-                },
-                "refresh_token": {
-                    "type": "string"
-                },
-                "token_type": {
+                "code": {
                     "type": "string"
                 }
             }
