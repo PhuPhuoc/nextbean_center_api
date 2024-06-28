@@ -1,5 +1,5 @@
 INSERT INTO account (id, user_name, email, password, role, created_at) 
-VALUES ('1', 'phuoc', 'phuoc@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2024-06-01 00:00:00'),
+VALUES ('1', 'phuoc', 'blessforwork@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2024-06-01 00:00:00'),
 ('2', 'thu', 'thu@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2024-05-01 00:00:00'),
 ('3', 'tam', 'tam@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'pm', '2024-04-01 00:00:00'),
 ('4', 'danh', 'danh@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'pm', '2024-05-01 00:00:00'),
