@@ -9,7 +9,6 @@ import (
 
 func RegisterOauthGGRouter(r *mux.Router, db *sql.DB, a *model.OauthApp) {
 	auth_router := r.PathPrefix("/auth").Subrouter()
-	//auth_router.HandleFunc("/oauth", HandleOauth(a)).Methods("GET")
-	//auth_router.HandleFunc("/callback", HandleCallback(a)).Methods("GET")
-	auth_router.HandleFunc("/login-google", HandleGoogleLogin(a, db)).Methods("GET")
+	auth_router.HandleFunc("/get-token", HandleGetGoogleToken(a)).Methods("GET")
+	auth_router.HandleFunc("/login-google", HandleGoogleLogin(a, db)).Methods("POST")
 }

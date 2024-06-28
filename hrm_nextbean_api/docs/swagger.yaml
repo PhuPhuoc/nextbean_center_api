@@ -62,6 +62,17 @@ definitions:
       actual-effort:
         type: string
     type: object
+  model.GoogleToken:
+    properties:
+      access_token:
+        type: string
+      expiry:
+        type: string
+      refresh_token:
+        type: string
+      token_type:
+        type: string
+    type: object
   model.Intern:
     properties:
       account-id:
@@ -632,6 +643,32 @@ paths:
       summary: update account
       tags:
       - Accounts
+  /auth/login-google:
+    post:
+      consumes:
+      - application/json
+      description: login in using google email account
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.GoogleToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful login
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: login failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: login by google email account
+      tags:
+      - Authentication
   /interns:
     get:
       consumes:
