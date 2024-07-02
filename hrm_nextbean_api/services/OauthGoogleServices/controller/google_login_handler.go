@@ -15,15 +15,15 @@ import (
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
 )
 
-// @Summary		login by google email account
-// @Description	login in using google email account
-// @Tags			Authentication
-// @Accept			json
-// @Produce			json
-// @Param			request	body		model.GoogleCode	 true	"Login request"
-// @Success		200		{object}	utils.success_response	"Successful login"
-// @Failure		400		{object}	utils.error_response	"login failure"
-// @Router			/auth/login-google [post]
+//	@Summary		login by google email account
+//	@Description	login in using google email account
+//	@Tags			Authentication
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body		model.GoogleCode		true	"Login request"
+//	@Success		200		{object}	utils.success_response	"Successful login"
+//	@Failure		400		{object}	utils.error_response	"login failure"
+//	@Router			/auth/login-google [post]
 func HandleGoogleLogin(a *model.OauthApp, db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var body_data bytes.Buffer
@@ -62,6 +62,7 @@ func HandleGoogleLogin(a *model.OauthApp, db *sql.DB) func(w http.ResponseWriter
 			return
 		}
 
+		fmt.Printf("account email login: %v", email)
 		store := repository.NewLoginGGStore(db)
 		biz := business.NewLoginBusiness(store)
 		if err_login := biz.Login(email.(string), data_response); err_login != nil {

@@ -3,7 +3,6 @@ package api
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -84,7 +83,6 @@ func (sv *server) RunApp() error {
 		handlers.AllowedMethods([]string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 	)
-	url_login_google := fmt.Sprintf("http://localhost%v/api/v1/auth/get-token", sv.address)
-	log.Printf("|api|\n  -+-  Server is listening at port |%v|\n  -+-  URL swagger: http://localhost%v/swagger/index.html\n  -+-  URL login with Google -  %v\n", sv.address, sv.address, url_login_google)
+	log.Printf("|api|\n  -+-  Server is listening at port |%v|\n  -+-  URL swagger: http://localhost%v/swagger/index.html\n", sv.address, sv.address)
 	return http.ListenAndServe(sv.address, corsHandler(router))
 }

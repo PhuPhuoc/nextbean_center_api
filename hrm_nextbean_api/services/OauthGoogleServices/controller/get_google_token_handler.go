@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/OauthGoogleServices/model"
@@ -14,15 +15,10 @@ func HandleGetGoogleToken(a *model.OauthApp) func(w http.ResponseWriter, r *http
 
 		if code == "" {
 			url := a.Conf.AuthCodeURL("nextbean-center", oauth2.AccessTypeOffline)
+			fmt.Println("url: ", url)
 			http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 			return
 		}
-
-		// token, err := a.Conf.Exchange(context.Background(), code)
-		// if err != nil {
-		// 	utils.WriteJSON(w, utils.ErrorResponse_BadRequest("cannot login with google account (s1)", err))
-		// 	return
-		// }
 
 		utils.WriteJSON(w, utils.SuccessResponse_Data(code))
 	}

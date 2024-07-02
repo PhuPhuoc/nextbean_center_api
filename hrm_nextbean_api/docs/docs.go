@@ -684,6 +684,12 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "description": "Filter by ojt'status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc",
                         "name": "order-by",
                         "in": "query"
@@ -2676,6 +2682,9 @@ const docTemplate = `{
                 "start-at": {
                     "type": "string"
                 },
+                "status": {
+                    "type": "string"
+                },
                 "university": {
                     "type": "string"
                 }
@@ -2948,6 +2957,7 @@ const docTemplate = `{
                 "end-at",
                 "semester",
                 "start-at",
+                "status",
                 "university"
             ],
             "properties": {
@@ -2958,6 +2968,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "start-at": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "university": {

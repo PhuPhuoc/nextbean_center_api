@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `project_intern` (
   `intern_id` varchar(255) NOT NULL,
   `join_at` datetime NOT NULL,
   `leave_at` datetime,
-  `status` ENUM('inprogress', 'leave') DEFAULT 'inprogress',
+  `status` ENUM('in_progress', 'terminated ') DEFAULT 'in_progress',
   PRIMARY KEY (`project_id`, `intern_id`)
 );
 

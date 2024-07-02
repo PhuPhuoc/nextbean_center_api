@@ -23,6 +23,7 @@ import (
 // @Param			id			query		int											false	"Filter by ojt'ID"
 // @Param			semester	query		string										false	"Filter by semester"
 // @Param			university	query		string										false	"Filter by university"
+// @Param			status		query		string										false	"Filter by ojt'status"
 // @Param			order-by	query		string										false	"Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc"
 // @Success		200			{object}	utils.success_response{data=[]model.OJT}	"OK"
 // @Failure		400			{object}	utils.error_response						"Bad Request"
@@ -72,6 +73,7 @@ func getRequestQuery(req *http.Request, pagin *common.Pagination, filter *model.
 	}
 	filter.Semester = req.URL.Query().Get("semester")
 	filter.University = req.URL.Query().Get("university")
+	filter.Status = req.URL.Query().Get("status")
 	filter.OrderBy = req.URL.Query().Get("order-by")
 	return nil
 }

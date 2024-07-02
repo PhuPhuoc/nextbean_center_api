@@ -21,7 +21,7 @@ func (store *ojtStore) GetOJT(pagin *common.Pagination, filter *model.FilterOJT)
 
 	for rows.Next() {
 		ojt := new(model.OJT)
-		if err_scan := rows.Scan(&ojt.Id, &ojt.Semester, &ojt.University, &ojt.StartAt, &ojt.EndAt, &total_record); err_scan != nil {
+		if err_scan := rows.Scan(&ojt.Id, &ojt.Semester, &ojt.University, &ojt.StartAt, &ojt.EndAt, &ojt.Status, &total_record); err_scan != nil {
 			return data, err_scan
 		}
 		data = append(data, *ojt)
@@ -67,7 +67,10 @@ func whereClause(filter *model.FilterOJT) (string, []interface{}) {
 		query.WriteString(`university like ? and `)
 		p := `%` + filter.University + `%`
 		param = append(param, p)
-
+	}
+	if filter.Status != "" {
+		query.WriteString(`status = ? and `)
+		param = append(param, filter.Status)
 	}
 
 	query.WriteString(`deleted_at is null `)
@@ -80,7 +83,7 @@ func mainClause(where, order string, pagin *common.Pagination) string {
 	}
 	var query strings.Builder
 	query.WriteString(`with cte as ( select count(*) as total_record from ojt` + where + `) `)
-	query.WriteString(`select id, semester, university, start_at, end_at, cte.total_record from ojt join cte`)
+	query.WriteString(`select id, semester, university, start_at, end_at, status, cte.total_record from ojt join cte`)
 	query.WriteString(where)
 	query.WriteString(`order by ` + order)
 	query.WriteString(` limit ` + strconv.Itoa(pagin.PSize))

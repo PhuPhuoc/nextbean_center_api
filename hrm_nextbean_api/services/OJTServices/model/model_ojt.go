@@ -6,4 +6,5 @@ type OJT struct {
 	University string `json:"university"`
 	StartAt    string `json:"start-at"`
 	EndAt      string `json:"end-at"`
+	Status     string `json:"status"`
 }

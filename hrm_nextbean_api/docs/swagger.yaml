@@ -247,6 +247,8 @@ definitions:
         type: string
       start-at:
         type: string
+      status:
+        type: string
       university:
         type: string
     type: object
@@ -433,12 +435,15 @@ definitions:
         type: string
       start-at:
         type: string
+      status:
+        type: string
       university:
         type: string
     required:
     - end-at
     - semester
     - start-at
+    - status
     - university
     type: object
   model.UpdateProjectInfo:
@@ -918,6 +923,10 @@ paths:
       - description: Filter by university
         in: query
         name: university
+        type: string
+      - description: Filter by ojt'status
+        in: query
+        name: status
         type: string
       - description: 'Order by field (created_at or name), prefix with - for descending
           order ~ Ex: university desc'

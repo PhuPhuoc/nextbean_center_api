@@ -42,5 +42,6 @@ func (biz *googleLoginBuisiness) Login(email string, data_response map[string]in
 	}
 	data_response["account_info"] = account
 	data_response["token"] = token
+	fmt.Printf("login google email: %v\n", account.Email)
 	return nil
 }

@@ -13,8 +13,8 @@ func (store *ojtStore) UpdateOJT(ojt_id string, info *model.UpdateOJTInfo) error
 		return err_exist
 	}
 
-	rawsql := `update ojt set semester = ?, university = ?, start_at = ?, end_at = ? where id = ?`
-	result, err := store.db.Exec(rawsql, info.Semester, info.University, info.StartAt, info.EndAt, id)
+	rawsql := `update ojt set semester=?, university=?, start_at=?, end_at=?, status=? where id = ?`
+	result, err := store.db.Exec(rawsql, info.Semester, info.University, info.StartAt, info.EndAt, info.Status, id)
 	if err != nil {
 		return fmt.Errorf("error db in UpdateOJT: %v", err)
 	}

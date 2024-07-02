@@ -678,6 +678,12 @@
                     },
                     {
                         "type": "string",
+                        "description": "Filter by ojt'status",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "Order by field (created_at or name), prefix with - for descending order ~ Ex: university desc",
                         "name": "order-by",
                         "in": "query"
@@ -2670,6 +2676,9 @@
                 "start-at": {
                     "type": "string"
                 },
+                "status": {
+                    "type": "string"
+                },
                 "university": {
                     "type": "string"
                 }
@@ -2942,6 +2951,7 @@
                 "end-at",
                 "semester",
                 "start-at",
+                "status",
                 "university"
             ],
             "properties": {
@@ -2952,6 +2962,9 @@
                     "type": "string"
                 },
                 "start-at": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "university": {

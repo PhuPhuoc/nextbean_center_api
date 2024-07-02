@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   `project_id` varchar(255) NOT NULL,
   `assigned_to` varchar(255) NOT NULL,
   `is_approved` TINYINT(1) NOT NULL DEFAULT 0,
-  `status` enum('todo','inprogress','done') NOT NULL DEFAULT 'todo',
+  `status` enum('todo','in_progress','completed') NOT NULL DEFAULT 'todo',
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `start_date` datetime,
