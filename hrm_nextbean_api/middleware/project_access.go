@@ -9,7 +9,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func ProjectAccessMiddleware(db *sql.DB, acceptManager, acceptPM, skipCheckPMInPro bool) func(http.HandlerFunc) http.HandlerFunc {
+func ProjectAccessMiddleware(db *sql.DB, acceptManager, acceptPM, skipCheckPMInPro, acceptUser bool) func(http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
@@ -44,7 +44,15 @@ func ProjectAccessMiddleware(db *sql.DB, acceptManager, acceptPM, skipCheckPMInP
 					utils.WriteJSON(w, utils.ErrorResponse_NoPermission("account's role (pm) is not allowed to access this api"))
 					return
 				}
+			case "user":
+				if acceptUser {
+					next.ServeHTTP(w, r.WithContext(ctx))
+				} else {
+					utils.WriteJSON(w, utils.ErrorResponse_NoPermission("account's role (user) is not allowed to access this api"))
+					return
+				}
 			}
+
 		}
 	}
 }

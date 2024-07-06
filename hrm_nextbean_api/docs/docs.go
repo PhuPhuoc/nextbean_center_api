@@ -899,13 +899,25 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "get project which have start date from this date",
-                        "name": "start-date-from",
+                        "name": "est-start-time-from",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "get project which have start date to this date",
-                        "name": "start-date-to",
+                        "name": "est-start-time-to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get project which have completed date from this date",
+                        "name": "est-completion-time-from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get project which have completed date to this date",
+                        "name": "est-completion-time-to",
                         "in": "query"
                     }
                 ],
@@ -2076,7 +2088,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "Filter by account ID",
+                        "description": "Filter by timetable ID",
                         "name": "id",
                         "in": "query"
                     },
@@ -2094,8 +2106,14 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Filter by status ~ ex: denied-approved | processing-denied-approved",
-                        "name": "status",
+                        "description": "Filter by verified ~ ex: denied-approved | processing-denied-approved",
+                        "name": "verified",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by status-attendance ~ ex: denied-approved | processing-denied-approved",
+                        "name": "status-attendance",
                         "in": "query"
                     },
                     {
@@ -2363,10 +2381,10 @@ const docTemplate = `{
         "model.ApproveTimetable": {
             "type": "object",
             "required": [
-                "status"
+                "verified"
             ],
             "properties": {
-                "status": {
+                "verified": {
                     "type": "string"
                 }
             }
@@ -2733,16 +2751,16 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "duration": {
+                "est-completion-time": {
+                    "type": "string"
+                },
+                "est-start-time": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "start-date": {
                     "type": "string"
                 },
                 "status": {
@@ -2754,21 +2772,21 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "description",
-                "duration",
-                "name",
-                "start-at"
+                "est-completion-time",
+                "est-start-time",
+                "name"
             ],
             "properties": {
                 "description": {
                     "type": "string"
                 },
-                "duration": {
+                "est-completion-time": {
+                    "type": "string"
+                },
+                "est-start-time": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "start-at": {
                     "type": "string"
                 }
             }
@@ -2804,6 +2822,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "project-id": {
+                    "type": "string"
+                },
+                "project-name": {
                     "type": "string"
                 },
                 "status": {
@@ -2882,16 +2903,22 @@ const docTemplate = `{
         "model.Timtable": {
             "type": "object",
             "properties": {
-                "act-end": {
+                "act-clockin": {
                     "type": "string"
                 },
-                "act-start": {
+                "act-clockout": {
                     "type": "string"
                 },
-                "est-end": {
+                "clockin-validated": {
                     "type": "string"
                 },
-                "est-start": {
+                "clockout-validated": {
+                    "type": "string"
+                },
+                "est-end-time": {
+                    "type": "string"
+                },
+                "est-start-time": {
                     "type": "string"
                 },
                 "id": {
@@ -2903,10 +2930,13 @@ const docTemplate = `{
                 "office-time": {
                     "type": "string"
                 },
-                "status": {
+                "status-attendance": {
                     "type": "string"
                 },
                 "student-code": {
+                    "type": "string"
+                },
+                "verified": {
                     "type": "string"
                 }
             }
@@ -2982,22 +3012,22 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "description",
-                "duration",
+                "est-completion-time",
+                "est-start-time",
                 "name",
-                "start-date",
                 "status"
             ],
             "properties": {
                 "description": {
                     "type": "string"
                 },
-                "duration": {
+                "est-completion-time": {
+                    "type": "string"
+                },
+                "est-start-time": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "start-date": {
                     "type": "string"
                 },
                 "status": {

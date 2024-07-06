@@ -53,9 +53,9 @@ func queryGetDetailOfWeekDay(store *timetableStore, data []model.Daily) error {
 
 func rawsqlGetRecord() string {
 	var query strings.Builder
-	query.WriteString(`select sum(case when status='approved' then 1 else 0 end) as app_re,`)
-	query.WriteString(`sum(case when status='processing' then 1 else 0 end) as pro_re,`)
-	query.WriteString(`sum(case when status='denied' then 1 else 0 end) as den_re`)
+	query.WriteString(`select sum(case when verified='approved' then 1 else 0 end) as app_re,`)
+	query.WriteString(`sum(case when verified='processing' then 1 else 0 end) as pro_re,`)
+	query.WriteString(`sum(case when verified='denied' then 1 else 0 end) as den_re`)
 	query.WriteString(` from timetable where office_time=?`)
 	return query.String()
 }

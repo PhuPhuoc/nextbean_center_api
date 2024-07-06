@@ -61,7 +61,7 @@ func handleApproveInternTimeTable(db *sql.DB) func(rw http.ResponseWriter, req *
 			}
 			return
 		}
-		mess := fmt.Sprintf("%s intern's request (timetable) successfully", info.Status)
+		mess := fmt.Sprintf("%s intern's request (timetable) successfully", info.Verified)
 		utils.WriteJSON(rw, utils.SuccessResponse_MessageCreated(mess))
 	}
 }

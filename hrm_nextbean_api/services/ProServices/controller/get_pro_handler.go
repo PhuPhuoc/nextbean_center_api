@@ -18,15 +18,17 @@ import (
 // @Tags			Projects
 // @Accept			json
 // @Produce		json
-// @Param			page			query		int												false	"Page number"
-// @Param			psize			query		int												false	"Number of records per page"
-// @Param			name			query		string											false	"Project's Name"
-// @Param			status			query		string											false	"Project's Status"
-// @Param			start-date-from	query		string											false	"get project which have start date from this date"
-// @Param			start-date-to	query		string											false	"get project which have start date to this date"
-// @Success		200				{object}	utils.success_response{data=[]model.Project}	"OK"
-// @Failure		400				{object}	utils.error_response							"Bad Request"
-// @Failure		404				{object}	utils.error_response							"Not Found"
+// @Param			page						query		int												false	"Page number"
+// @Param			psize						query		int												false	"Number of records per page"
+// @Param			name						query		string											false	"Project's Name"
+// @Param			status						query		string											false	"Project's Status"
+// @Param			est-start-time-from			query		string											false	"get project which have start date from this date"
+// @Param			est-start-time-to			query		string											false	"get project which have start date to this date"
+// @Param			est-completion-time-from	query		string											false	"get project which have completed date from this date"
+// @Param			est-completion-time-to		query		string											false	"get project which have completed date to this date"
+// @Success		200							{object}	utils.success_response{data=[]model.Project}	"OK"
+// @Failure		400							{object}	utils.error_response							"Bad Request"
+// @Failure		404							{object}	utils.error_response							"Not Found"
 // @Router			/projects [get]
 // @Security		ApiKeyAuth
 func handleGetProject(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
@@ -76,7 +78,9 @@ func getRequestQuery(req *http.Request, pagin *common.Pagination, filter *model.
 
 	filter.Name = req.URL.Query().Get("name")
 	filter.Status = req.URL.Query().Get("status")
-	filter.StartDateFrom = req.URL.Query().Get("start-date-from")
-	filter.StarttDateTo = req.URL.Query().Get("start-date-to")
+	filter.EstStartTimeFrom = req.URL.Query().Get("est-start-time-from")
+	filter.EstStartTimeTo = req.URL.Query().Get("est-start-time-to")
+	filter.EstCompletionTimeFrom = req.URL.Query().Get("est-completion-time-from")
+	filter.EstCompletionTimeTo = req.URL.Query().Get("est-completion-time-to")
 	filter.OrderBy = req.URL.Query().Get("order-by")
 }

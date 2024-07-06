@@ -10,8 +10,8 @@ func (store *timetableStore) ApproveTimetable(timetable_id string, info *model.A
 	if err_check_id := checkTimetableIDExists(store, timetable_id); err_check_id != nil {
 		return err_check_id
 	}
-	rawsql := `update timetable set status=? where id=?`
-	result, err := store.db.Exec(rawsql, info.Status, timetable_id)
+	rawsql := `update timetable set verified=? where id=?`
+	result, err := store.db.Exec(rawsql, info.Verified, timetable_id)
 	if err != nil {
 		return fmt.Errorf("error in ApproveTimetable: %v", err)
 	}

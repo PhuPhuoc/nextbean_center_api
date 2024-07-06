@@ -21,39 +21,27 @@ func (store *timetableStore) GetTimetable(pagin *common.Pagination, filter *mode
 	defer rows.Close()
 
 	for rows.Next() {
-		acc := new(model.Timtable)
+		t := new(model.Timtable)
 
 		var (
-			estStart sql.NullString
-			estEnd   sql.NullString
-			actStart sql.NullString
-			actEnd   sql.NullString
+			actClockin  sql.NullString
+			actClockout sql.NullString
 		)
-		if err_scan := rows.Scan(&acc.Id, &acc.InternName, &acc.StudentCode, &acc.OfficeTime, &estStart, &estEnd, &actStart, &actEnd, &acc.Status, &total_record); err_scan != nil {
+		if err_scan := rows.Scan(&t.Id, &t.InternName, &t.StudentCode, &t.OfficeTime, &t.Verified, &t.EstStartTime, &t.EstEndTime, &actClockin, &t.ClockinValidated, &actClockout, &t.ClockoutValidated, &t.StatusAttendance, &total_record); err_scan != nil {
 			return data, err_scan
 		}
 
-		if estStart.Valid {
-			acc.EstStart = estStart.String
+		if actClockin.Valid {
+			t.ActClockin = actClockin.String
 		} else {
-			acc.EstStart = ""
+			t.ActClockin = ""
 		}
-		if estEnd.Valid {
-			acc.EstEnd = estEnd.String
+		if actClockout.Valid {
+			t.ActClockout = actClockout.String
 		} else {
-			acc.EstEnd = ""
+			t.ActClockout = ""
 		}
-		if actStart.Valid {
-			acc.ActStart = actStart.String
-		} else {
-			acc.ActStart = ""
-		}
-		if actEnd.Valid {
-			acc.ActEnd = actEnd.String
-		} else {
-			acc.ActEnd = ""
-		}
-		data = append(data, *acc)
+		data = append(data, *t)
 	}
 
 	pagin.Items = total_record
@@ -82,13 +70,13 @@ func queryGetTimetable(pagin *common.Pagination, filter *model.TimeTableFilter) 
 func rawSqlSelectAccount(where string, order string, pagin *common.Pagination) string {
 	var query strings.Builder
 	if order == "" {
-		order = "t.created_at desc"
+		order = "t.office_time desc"
 	} else {
 		order = "t." + order
 	}
 	join := ` from timetable t join intern i on t.intern_id=i.id join account a on i.account_id=a.id `
 	query.WriteString(`with cte as (select count(*) as total_record` + join + where + `) `)
-	query.WriteString(`select t.id, a.user_name, i.student_code, t.office_time, t.est_start, t.est_end, t.act_start, t.act_end, t.status, cte.total_record`)
+	query.WriteString(`select t.id, a.user_name, i.student_code, t.office_time, t.verified, t.est_start_time, t.est_end_time, t.act_clockin, t.clockin_validated, t.act_clockout, t.clockout_validated, t.status_attendance ,cte.total_record`)
 	query.WriteString(join + ` join cte`)
 	query.WriteString(where)
 	query.WriteString(` order by ` + order)
@@ -101,6 +89,11 @@ func createConditionClause(filter *model.TimeTableFilter) (string, []interface{}
 	param := []interface{}{}
 	var query strings.Builder
 	query.WriteString(` where `)
+
+	if filter.Role == "user" {
+		query.WriteString(`a.id = ? and `)
+		param = append(param, filter.Account_id)
+	}
 
 	if filter.Id != "" {
 		query.WriteString(`t.id = ? and `)
@@ -116,9 +109,22 @@ func createConditionClause(filter *model.TimeTableFilter) (string, []interface{}
 		p := `%` + filter.InternName + `%`
 		param = append(param, p)
 	}
-	if filter.Status != "" {
-		query.WriteString(`t.status in (`)
-		parts := strings.Split(filter.Status, "-")
+	if filter.Verified != "" {
+		query.WriteString(`t.verified in (`)
+		parts := strings.Split(filter.Verified, "-")
+		for i, part := range parts {
+			if i > 0 {
+				query.WriteString(`,`)
+			}
+			query.WriteString(`?`)
+			param = append(param, part)
+		}
+		query.WriteString(`) and `)
+	}
+
+	if filter.StatusAttendance != "" {
+		query.WriteString(`t.status-attendance in (`)
+		parts := strings.Split(filter.StatusAttendance, "-")
 		for i, part := range parts {
 			if i > 0 {
 				query.WriteString(`,`)

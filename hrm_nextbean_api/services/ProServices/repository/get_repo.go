@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -13,6 +14,8 @@ func (store *projectStore) GetProject(pagin *common.Pagination, filter *model.Pr
 	data := []model.Project{}
 	rawsql, param := rawSqlGetProject(pagin, filter)
 
+	fmt.Println("rawsql: ", rawsql)
+
 	rows, err_query := store.db.Query(rawsql, param...)
 	if err_query != nil {
 		return data, err_query
@@ -20,11 +23,12 @@ func (store *projectStore) GetProject(pagin *common.Pagination, filter *model.Pr
 	defer rows.Close()
 
 	for rows.Next() {
-		acc := new(model.Project)
-		if err_scan := rows.Scan(&acc.Id, &acc.Name, &acc.Status, &acc.Description, &acc.Duration, &acc.StartDate, &total_record); err_scan != nil {
+		p := new(model.Project)
+		if err_scan := rows.Scan(&p.Id, &p.Name, &p.Status, &p.Description, &p.EstStartTime, &p.EstCompletionTime, &total_record); err_scan != nil {
 			return data, err_scan
 		}
-		data = append(data, *acc)
+		fmt.Println("time: ", p.EstStartTime)
+		data = append(data, *p)
 	}
 
 	pagin.Items = total_record
@@ -52,11 +56,11 @@ func rawSqlGetProject(pagin *common.Pagination, filter *model.ProjectFilter) (st
 
 func mainClause(where, order string, pagin *common.Pagination) string {
 	if order == "" {
-		order = "created_at desc"
+		order = "est_start_time desc"
 	}
 	var query strings.Builder
 	query.WriteString(`with cte as ( select count(*) as total_record from project` + where + `) `)
-	query.WriteString(`select id, name, status, description, duration, start_date, cte.total_record from project join cte` + where)
+	query.WriteString(`select id, name, status, description, est_start_time, est_completion_time, cte.total_record from project join cte` + where)
 	query.WriteString(`order by ` + order)
 	query.WriteString(` limit ` + strconv.Itoa(pagin.PSize))
 	query.WriteString(` offset ` + strconv.Itoa((pagin.Page-1)*pagin.PSize))
@@ -72,6 +76,10 @@ func whereClause(filter *model.ProjectFilter) (string, []interface{}) {
 		query.WriteString(`id in (select project_id from project_manager where account_id='` + filter.AccId + `') and `)
 	}
 
+	if filter.Role == "user" {
+		query.WriteString(`id in (select project_id from project_intern where intern_id=(select id from intern where account_id ='` + filter.AccId + `')) and `)
+	}
+
 	if filter.Name != "" {
 		query.WriteString(`name like ? and `)
 		p := `%` + filter.Name + `%`
@@ -83,14 +91,24 @@ func whereClause(filter *model.ProjectFilter) (string, []interface{}) {
 		param = append(param, filter.Status)
 	}
 
-	if filter.StartDateFrom != "" {
-		query.WriteString(`start_date >= ? and `)
-		param = append(param, filter.StartDateFrom)
+	if filter.EstStartTimeFrom != "" {
+		query.WriteString(`est_start_time >= ? and `)
+		param = append(param, filter.EstStartTimeFrom)
 	}
 
-	if filter.StarttDateTo != "" {
-		query.WriteString(`start_date <= ? and `)
-		param = append(param, filter.StarttDateTo)
+	if filter.EstStartTimeTo != "" {
+		query.WriteString(`est_start_time <= ? and `)
+		param = append(param, filter.EstStartTimeTo)
+	}
+
+	if filter.EstCompletionTimeFrom != "" {
+		query.WriteString(`est_completion_time >= ? and `)
+		param = append(param, filter.EstCompletionTimeFrom)
+	}
+
+	if filter.EstCompletionTimeTo != "" {
+		query.WriteString(`est_completion_time <= ? and `)
+		param = append(param, filter.EstCompletionTimeTo)
 	}
 
 	query.WriteString(`deleted_at is null `)

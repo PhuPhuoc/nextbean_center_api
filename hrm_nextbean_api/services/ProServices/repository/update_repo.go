@@ -10,8 +10,8 @@ func (store *projectStore) UpdateProject(proid string, info *model.UpdateProject
 	if err_check_id := checkProjectIDExists(store, proid); err_check_id != nil {
 		return err_check_id
 	}
-	rawsql := `update project set name=?, status=?, description=?, start_date=?, duration=? where id=?`
-	result, err := store.db.Exec(rawsql, info.Name, info.Status, info.Description, info.StartDate, info.Duration, proid)
+	rawsql := `update project set name=?, status=?, description=?, est_start_time=?, est_completion_time=? where id=?`
+	result, err := store.db.Exec(rawsql, info.Name, info.Status, info.Description, info.EstStartTime, info.EstCompletionTime, proid)
 	if err != nil {
 		return fmt.Errorf("error when UpdateProject in store: %v", err)
 	}

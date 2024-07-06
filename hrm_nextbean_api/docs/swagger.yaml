@@ -34,10 +34,10 @@ definitions:
     type: object
   model.ApproveTimetable:
     properties:
-      status:
+      verified:
         type: string
     required:
-    - status
+    - verified
     type: object
   model.DetailProject:
     properties:
@@ -281,13 +281,13 @@ definitions:
     properties:
       description:
         type: string
-      duration:
+      est-completion-time:
+        type: string
+      est-start-time:
         type: string
       id:
         type: string
       name:
-        type: string
-      start-date:
         type: string
       status:
         type: string
@@ -296,17 +296,17 @@ definitions:
     properties:
       description:
         type: string
-      duration:
+      est-completion-time:
+        type: string
+      est-start-time:
         type: string
       name:
         type: string
-      start-at:
-        type: string
     required:
     - description
-    - duration
+    - est-completion-time
+    - est-start-time
     - name
-    - start-at
     type: object
   model.Task:
     properties:
@@ -329,6 +329,8 @@ definitions:
       name:
         type: string
       project-id:
+        type: string
+      project-name:
         type: string
       status:
         type: string
@@ -380,13 +382,17 @@ definitions:
     type: object
   model.Timtable:
     properties:
-      act-end:
+      act-clockin:
         type: string
-      act-start:
+      act-clockout:
         type: string
-      est-end:
+      clockin-validated:
         type: string
-      est-start:
+      clockout-validated:
+        type: string
+      est-end-time:
+        type: string
+      est-start-time:
         type: string
       id:
         type: string
@@ -394,9 +400,11 @@ definitions:
         type: string
       office-time:
         type: string
-      status:
+      status-attendance:
         type: string
       student-code:
+        type: string
+      verified:
         type: string
     type: object
   model.TimtableCreation:
@@ -450,19 +458,19 @@ definitions:
     properties:
       description:
         type: string
-      duration:
+      est-completion-time:
+        type: string
+      est-start-time:
         type: string
       name:
-        type: string
-      start-date:
         type: string
       status:
         type: string
     required:
     - description
-    - duration
+    - est-completion-time
+    - est-start-time
     - name
-    - start-date
     - status
     type: object
   utils.error_response:
@@ -1062,11 +1070,19 @@ paths:
         type: string
       - description: get project which have start date from this date
         in: query
-        name: start-date-from
+        name: est-start-time-from
         type: string
       - description: get project which have start date to this date
         in: query
-        name: start-date-to
+        name: est-start-time-to
+        type: string
+      - description: get project which have completed date from this date
+        in: query
+        name: est-completion-time-from
+        type: string
+      - description: get project which have completed date to this date
+        in: query
+        name: est-completion-time-to
         type: string
       produces:
       - application/json
@@ -1797,7 +1813,7 @@ paths:
         in: query
         name: psize
         type: integer
-      - description: Filter by account ID
+      - description: Filter by timetable ID
         in: query
         name: id
         type: integer
@@ -1809,9 +1825,13 @@ paths:
         in: query
         name: student-code
         type: string
-      - description: 'Filter by status ~ ex: denied-approved | processing-denied-approved'
+      - description: 'Filter by verified ~ ex: denied-approved | processing-denied-approved'
         in: query
-        name: status
+        name: verified
+        type: string
+      - description: 'Filter by status-attendance ~ ex: denied-approved | processing-denied-approved'
+        in: query
+        name: status-attendance
         type: string
       - description: Filter by office-time from (YYYY-MM-DD) ~ ex:2024-05-29
         in: query

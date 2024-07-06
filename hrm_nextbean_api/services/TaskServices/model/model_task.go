@@ -3,6 +3,7 @@ package model
 type Task struct {
 	Id              string `json:"id"`
 	ProjectId       string `json:"project-id"`
+	ProjectName     string `json:"project-name"`
 	AssignedTo      string `json:"assigned-to"`
 	AssignedName    string `json:"assigned-name"`
 	AssignedCode    string `json:"assigned-code"`

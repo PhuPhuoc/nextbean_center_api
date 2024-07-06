@@ -19,7 +19,7 @@ func (store *timetableStore) CreateTimetable(inid string, info *model.TimtableCr
 		return err_date_exist
 	}
 
-	rawsql := `insert into timetable(intern_id, office_time, est_start, est_end, created_at) values (?,?,?,?,?)`
+	rawsql := `insert into timetable(intern_id, office_time, est_start_time, est_end_time, created_at) values (?,?,?,?,?)`
 	result, err := store.db.Exec(rawsql, inid, info.OfficeTime, info.EstStart, info.EstEnd, utils.CreateDateTimeCurrentFormated())
 	if err != nil {
 		return fmt.Errorf("error in CreateTimetable: %v", err)

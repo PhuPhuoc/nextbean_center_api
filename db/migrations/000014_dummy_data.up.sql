@@ -119,11 +119,11 @@ values
 ("intern5", "2024-07-03", "8:00", "17:00");
 
 
-INSERT INTO `project` (`id`, `name`, `status`, `description`, `Est_start_time`, `Est_completion_time`)
+INSERT INTO `project` (`id`, `name`, `status`, `description`, `est_start_time`, `est_completion_time`)
 VALUES 
-('proj1', 'Project Alpha', 'not_started', 'This is the first project', '2024-07-15 08:00:00', '2024-012-15 08:00:00'),
-('proj2', 'Project Beta', 'in_progress', 'This project is currently in progress', '2024-05-01 09:00:00', '2024-06-15 08:00:00'),
-('proj3', 'Project Gamma', 'completed', 'This project has been completed', '2023-12-01 10:00:00', '2024-04-15 08:00:00');
+('proj1', 'Project Alpha', 'not_started', 'This is the first project', '2024-07-15', '2024-012-15'),
+('proj2', 'Project Beta', 'in_progress', 'This project is currently in progress', '2024-05-01', '2024-06-15'),
+('proj3', 'Project Gamma', 'completed', 'This project has been completed', '2023-12-01', '2024-04-15');
 
 insert into project_manager (project_id, account_id)
 values
