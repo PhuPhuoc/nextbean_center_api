@@ -1160,6 +1160,12 @@
                         "description": "member's university",
                         "name": "university",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "status of member in project",
+                        "name": "status",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2666,6 +2672,9 @@
                     "type": "string"
                 },
                 "ojt-semester-university": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "student-code": {

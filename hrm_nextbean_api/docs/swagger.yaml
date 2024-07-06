@@ -230,6 +230,8 @@ definitions:
         type: string
       ojt-semester-university:
         type: string
+      status:
+        type: string
       student-code:
         type: string
       technical_skills:
@@ -1270,6 +1272,10 @@ paths:
       - description: member's university
         in: query
         name: university
+        type: string
+      - description: status of member in project
+        in: query
+        name: status
         type: string
       produces:
       - application/json

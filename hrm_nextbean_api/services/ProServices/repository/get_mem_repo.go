@@ -30,7 +30,7 @@ func (store *projectStore) GetMem(pro_id string, pagin *common.Pagination, filte
 		var ojt_semester sql.NullString
 		var ojt_uni sql.NullString
 
-		if err_scan := rows.Scan(&mem.Id, &mem.UserName, &mem.StudentCode, &mem.Avatar, &ojt_semester, &ojt_uni, &technicalSkills, &total_record); err_scan != nil {
+		if err_scan := rows.Scan(&mem.Id, &mem.UserName, &mem.StudentCode, &mem.Avatar, &ojt_semester, &ojt_uni, &mem.Status, &technicalSkills, &total_record); err_scan != nil {
 			return data, err_scan
 		}
 
@@ -86,7 +86,7 @@ func cte_in(where string) string {
 
 func sel_in(where string, pagin *common.Pagination) string {
 	var query strings.Builder
-	query.WriteString(`select i.id, acc.user_name, i.student_code, i.avatar, o.semester, o.university, GROUP_CONCAT(tech.technical_skill SEPARATOR ', ') AS technical_skills, cte.total_record`)
+	query.WriteString(`select i.id, acc.user_name, i.student_code, i.avatar, o.semester, o.university, proi.status, GROUP_CONCAT(tech.technical_skill SEPARATOR ', ') AS technical_skills, cte.total_record`)
 	query.WriteString(` from intern i `)
 	query.WriteString(` join account acc on i.account_id=acc.id `)
 	query.WriteString(` join project_intern proi on proi.intern_id = i.id `)
@@ -95,7 +95,7 @@ func sel_in(where string, pagin *common.Pagination) string {
 	query.WriteString(` join ojt o on o.id=i.ojt_id `)
 	query.WriteString(` join cte `)
 	query.WriteString(where)
-	query.WriteString(` group by i.id, acc.user_name, i.student_code, i.avatar, o.semester, o.university, cte.total_record `)
+	query.WriteString(` group by i.id, acc.user_name, i.student_code, i.avatar, o.semester, o.university, proi.status, cte.total_record `)
 	query.WriteString(` order by acc.created_at desc `)
 	query.WriteString(`limit ` + strconv.Itoa(pagin.PSize))
 	query.WriteString(` offset ` + strconv.Itoa((pagin.Page-1)*pagin.PSize))
@@ -121,29 +121,22 @@ func queryWhere_in(proid string, filter *model.MemberFilter) (string, []interfac
 	}
 
 	if filter.Semester != "" {
-		query.WriteString(`o.semester = ? and `)
-		param = append(param, filter.Semester)
+		query.WriteString(`o.semester like ? and `)
+		p := `%` + filter.Semester + `%`
+		param = append(param, p)
 	}
 
 	if filter.University != "" {
-		query.WriteString(`o.university = ? and `)
-		param = append(param, filter.University)
+		query.WriteString(`o.university like ? and `)
+		p := `%` + filter.University + `%`
+		param = append(param, p)
+	}
+
+	if filter.Status != "" {
+		query.WriteString(`proi.status = ? and `)
+		param = append(param, filter.Status)
 	}
 
 	query.WriteString(`acc.deleted_at is null `)
 	return query.String(), param
 }
-
-// func rawSqlGetAllMemberInProject() string {
-// 	fields := `i.id, acc.user_name, i.student_code, i.avatar, o.semester, o.university`
-// 	sel := `select ` + fields + ` , GROUP_CONCAT(tech.technical_skill SEPARATOR ', ') AS technical_skills `
-// 	from := `from intern i`
-// 	join1 := ` join account acc on i.account_id=acc.id `
-// 	join2 := ` join project_intern proi on proi.intern_id = i.id `
-// 	join3 := ` join intern_skill ins on ins.intern_id = i.id `
-// 	join4 := ` join technical tech on tech.id=ins.technical_id `
-// 	join5 := ` join ojt o on o.id=i.ojt_id `
-// 	where := `where proi.project_id = ? and acc.deleted_at is null`
-// 	groupby := ` group by ` + fields
-// 	return sel + from + join1 + join2 + join3 + join4 + join5 + where + groupby
-// }

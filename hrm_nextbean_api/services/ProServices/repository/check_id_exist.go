@@ -49,11 +49,11 @@ func checkMemberExistsInProject(store *projectStore, project_id, mem_id string) 
 	return flag, nil
 }
 
-func checkMemberExistsInProjectButHasLeave(store *projectStore, project_id, mem_id string) (bool, error) {
+func checkMemberExistsInProjectButHasTerminated(store *projectStore, project_id, mem_id string) (bool, error) {
 	var flag bool = false
-	rawsql := `select exists(select 1 from project_intern where project_id = ? and intern_id = ? and status = 'leave')`
+	rawsql := `select exists(select 1 from project_intern where project_id = ? and intern_id = ? and status = 'terminated')`
 	if err_query := store.db.QueryRow(rawsql, project_id, mem_id).Scan(&flag); err_query != nil {
-		return flag, fmt.Errorf("error in checkMemberExistInProjectButHasLeave: %v", err_query)
+		return flag, fmt.Errorf("error in checkMemberExistInProjectButHasTerminated: %v", err_query)
 	}
 	return flag, nil
 }

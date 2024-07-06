@@ -5,4 +5,5 @@ type MemberFilter struct {
 	StudentCode string `json:"student-code,omitempty"`
 	Semester    string `json:"semester,omitempty"`
 	University  string `json:"university,omitempty"`
+	Status      string `json:"status,omitempty"`
 }

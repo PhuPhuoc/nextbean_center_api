@@ -7,4 +7,5 @@ type Member struct {
 	Avatar                string `json:"avatar"`
 	OjtSemesterUniversity string `json:"ojt-semester-university"`
 	TechnicalSkills       string `json:"technical_skills"`
+	Status                string `json:"status,omitempty"`
 }

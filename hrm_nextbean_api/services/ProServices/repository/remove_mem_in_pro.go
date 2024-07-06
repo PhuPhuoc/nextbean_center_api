@@ -24,7 +24,7 @@ func (store *projectStore) RemoveMemInPro(proid string, memid string) error {
 		return fmt.Errorf("invalid-request: intern'id '%v' is not exists in project", memid)
 
 	} else {
-		flag_idExistButHasLeave, err_check_leave := checkMemberExistsInProjectButHasLeave(store, proid, memid)
+		flag_idExistButHasLeave, err_check_leave := checkMemberExistsInProjectButHasTerminated(store, proid, memid)
 		if err_check_leave != nil {
 			return err_check_leave
 		}
@@ -35,7 +35,7 @@ func (store *projectStore) RemoveMemInPro(proid string, memid string) error {
 			if err_check_task := checkMemHasTask(store, proid, memid); err_check_task != nil {
 				return err_check_task
 			}
-			rawsql := `update project_intern set leave_at=?, status='leave' where project_id=? and intern_id=?`
+			rawsql := `update project_intern set leave_at=?, status='terminated' where project_id=? and intern_id=?`
 			result, err := store.db.Exec(rawsql, utils.CreateDateTimeCurrentFormated(), proid, memid)
 			if err != nil {
 				return fmt.Errorf("error in RemoveMemInPro: delete member in project: %v", err)
@@ -55,7 +55,7 @@ func (store *projectStore) RemoveMemInPro(proid string, memid string) error {
 
 func checkMemHasTask(store *projectStore, pro_id, mem_id string) error {
 	var flag bool = false
-	rawsql := `select exists(select 1 from task where project_id=? and assigned_to=? and status!='done')`
+	rawsql := `select exists(select 1 from task where project_id=? and assigned_to=? and status!='completed')`
 	if err_query := store.db.QueryRow(rawsql, pro_id, mem_id).Scan(&flag); err_query != nil {
 		return fmt.Errorf("error in checkMemHasTask: %v", err_query)
 	}

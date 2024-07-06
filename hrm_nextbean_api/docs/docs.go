@@ -1166,6 +1166,12 @@ const docTemplate = `{
                         "description": "member's university",
                         "name": "university",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "status of member in project",
+                        "name": "status",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2672,6 +2678,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ojt-semester-university": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "student-code": {

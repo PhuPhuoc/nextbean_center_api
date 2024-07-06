@@ -39,7 +39,7 @@ func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) err
 		}
 
 	} else {
-		flag_idExistButHasLeave, err_check_leave := checkMemberExistsInProjectButHasLeave(store, proid, mapInfo.MemberId)
+		flag_idExistButHasLeave, err_check_leave := checkMemberExistsInProjectButHasTerminated(store, proid, mapInfo.MemberId)
 		if err_check_leave != nil {
 			return err_check_leave
 		}
