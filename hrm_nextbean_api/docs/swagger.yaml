@@ -39,6 +39,13 @@ definitions:
     required:
     - verified
     type: object
+  model.Attendance:
+    properties:
+      clockin:
+        type: string
+      clockout:
+        type: string
+    type: object
   model.DetailProject:
     properties:
       join-at:
@@ -1937,6 +1944,39 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: approve intern timetable to work offline in office
+      tags:
+      - Timetables
+  /timetables/{timetable-id}/attendance:
+    patch:
+      consumes:
+      - application/json
+      description: actual intern's working hours
+      parameters:
+      - description: enter timetable-id
+        in: path
+        name: timetable-id
+        required: true
+        type: string
+      - description: timetable creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.Attendance'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: intern declares actual working hours
       tags:
       - Timetables
   /timetables/weekly:

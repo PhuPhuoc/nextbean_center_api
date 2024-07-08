@@ -10,9 +10,15 @@ import (
 func RegisterTimetableRouter(r *mux.Router, db *sql.DB) {
 	timetable_router := r.PathPrefix("/timetables").Subrouter()
 	timetable_router.Use(middleware.AuthMiddleware(db))
-	timetable_router.HandleFunc("", middleware.TimetableAccessMiddleware(db, true, true)(handleGetTimetable(db))).Methods("GET")
-	timetable_router.HandleFunc("/weekly", middleware.TimetableAccessMiddleware(db, true, false)(handleGetWeeklyTimetable(db))).Methods("GET")
-	timetable_router.HandleFunc("", middleware.TimetableAccessMiddleware(db, false, true)(handleCreateTimeTable(db))).Methods("POST")
-	timetable_router.HandleFunc("/{timetable-id}/approve", middleware.TimetableAccessMiddleware(db, true, false)(handleApproveInternTimeTable(db))).Methods("POST")
-	// for intern: checkin checkout - update
+	// for admin: get all timetable in db
+	timetable_router.HandleFunc("", middleware.TimetableAccessMiddleware(db, true, true, false)(handleGetTimetable(db))).Methods("GET")
+	// for admin: get timetable in a week
+	timetable_router.HandleFunc("/weekly", middleware.TimetableAccessMiddleware(db, true, false, false)(handleGetWeeklyTimetable(db))).Methods("GET")
+	// for intern: create timetable
+	timetable_router.HandleFunc("", middleware.TimetableAccessMiddleware(db, false, true, false)(handleCreateTimeTable(db))).Methods("POST")
+	// for admin: approve intern's timetable
+	timetable_router.HandleFunc("/{timetable-id}/approve", middleware.TimetableAccessMiddleware(db, true, false, false)(handleApproveInternTimeTable(db))).Methods("POST")
+	// for intern: checkin checkout
+	timetable_router.HandleFunc("/{timetable-id}/attendance", middleware.TimetableAccessMiddleware(db, false, true, true)(handleClockinClockout(db))).Methods("PATCH")
+
 }

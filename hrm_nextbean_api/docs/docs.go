@@ -2335,6 +2335,58 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/timetables/{timetable-id}/attendance": {
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "actual intern's working hours",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Timetables"
+                ],
+                "summary": "intern declares actual working hours",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter timetable-id",
+                        "name": "timetable-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "timetable creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Attendance"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -2391,6 +2443,17 @@ const docTemplate = `{
             ],
             "properties": {
                 "verified": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Attendance": {
+            "type": "object",
+            "properties": {
+                "clockin": {
+                    "type": "string"
+                },
+                "clockout": {
                     "type": "string"
                 }
             }

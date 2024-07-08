@@ -6,13 +6,18 @@ import (
 	"net/http"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/utils"
+	"github.com/gorilla/mux"
 )
 
-func TimetableAccessMiddleware(db *sql.DB, acceptAdmin, acceptMem bool) func(http.HandlerFunc) http.HandlerFunc {
+func TimetableAccessMiddleware(db *sql.DB, acceptAdmin, acceptMem, needCheckTimetableBelongToMem bool) func(http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
 			accRole := ctx.Value(AccRoleKey).(string)
+			inid := ""
+			if accRole == "user" {
+				inid = ctx.Value(InternIDKey).(string)
+			}
 			switch accRole {
 			case "admin":
 				if acceptAdmin {
@@ -23,7 +28,20 @@ func TimetableAccessMiddleware(db *sql.DB, acceptAdmin, acceptMem bool) func(htt
 				}
 			case "user":
 				if acceptMem {
-					next.ServeHTTP(w, r.WithContext(ctx))
+					if needCheckTimetableBelongToMem {
+						tid := mux.Vars(r)["timetable-id"]
+						if tid == "" {
+							utils.WriteJSON(w, utils.ErrorResponse_BadRequest("Missing project ID", fmt.Errorf("missing project ID")))
+							return
+						}
+						if err_pm := checkInternIDBelongToTimeTable(db, tid, inid); err_pm != nil {
+							utils.WriteJSON(w, utils.ErrorResponse_NoPermission(err_pm.Error()))
+							return
+						}
+						next.ServeHTTP(w, r.WithContext(ctx))
+					} else {
+						next.ServeHTTP(w, r.WithContext(ctx))
+					}
 				} else {
 					utils.WriteJSON(w, utils.ErrorResponse_NoPermission("account's role (user) is not allowed to access this api"))
 					return

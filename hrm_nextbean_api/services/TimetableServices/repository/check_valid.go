@@ -10,7 +10,7 @@ func checkInternIDExists(store *timetableStore, inid string) error {
 		return fmt.Errorf("error in checkInternIDExists: %v", err)
 	}
 	if !flag {
-		return fmt.Errorf("invalid-request: intern'id %v is not exists", inid)
+		return fmt.Errorf("invalid-request: intern'id (%v) is not exists", inid)
 	}
 	return nil
 }
@@ -23,7 +23,33 @@ func checkTimetableIDExists(store *timetableStore, timetable_id string) error {
 		return fmt.Errorf("error in checkTimetableIDExists: %v", err)
 	}
 	if !flag {
-		return fmt.Errorf("invalid-request: intern'id %v is not exists", timetable_id)
+		return fmt.Errorf("invalid-request: timetable'id %v is not exists", timetable_id)
+	}
+	return nil
+}
+
+func checkStatusVerified(store *timetableStore, timetable_id string) error {
+	var flag bool
+	query := `select exists(select 1 from timetable where id=? and verified='approved' and deleted_at is null)`
+	err := store.db.QueryRow(query, timetable_id).Scan(&flag)
+	if err != nil {
+		return fmt.Errorf("error in checkStatusVerified: %v", err)
+	}
+	if !flag {
+		return fmt.Errorf("invalid-request: Application not approved or has been rejected")
+	}
+	return nil
+}
+
+func checkStatusAttendanceIsAbsentOrPresent(store *timetableStore, timetable_id string) error {
+	var flag bool
+	query := `select exists(select 1 from timetable where id=? and status_attendance in ('absent','present') and deleted_at is null)`
+	err := store.db.QueryRow(query, timetable_id).Scan(&flag)
+	if err != nil {
+		return fmt.Errorf("error in checkStatusAttendanceIsAbsentOrPresent: %v", err)
+	}
+	if flag {
+		return fmt.Errorf("invalid-request: Status has been recorded, no further editing is possible")
 	}
 	return nil
 }
