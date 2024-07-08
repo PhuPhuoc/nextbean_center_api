@@ -24,7 +24,7 @@ func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) err
 	if !flag_idNotExistInTable {
 		// create new map
 		rawsql := `insert into project_intern(project_id, intern_id, join_at, status) values (?,?,?,?)`
-		result, err := store.db.Exec(rawsql, proid, mapInfo.MemberId, utils.CreateDateTimeCurrentFormated(), "inprogress")
+		result, err := store.db.Exec(rawsql, proid, mapInfo.MemberId, utils.CreateDateTimeCurrentFormated(), "in_progress")
 		if err != nil {
 			return fmt.Errorf("error in MapProMem add member to project: %v", err)
 		}
@@ -45,7 +45,7 @@ func (store *projectStore) MapProMem(proid string, mapInfo *model.MapProMem) err
 		}
 
 		if flag_idExistButHasLeave {
-			rawsql := `update project_intern set leave_at=null, status='inprogress' where project_id=? and intern_id=?`
+			rawsql := `update project_intern set leave_at=null, status='in_progress' where project_id=? and intern_id=?`
 			result, err := store.db.Exec(rawsql, proid, mapInfo.MemberId)
 			if err != nil {
 				return fmt.Errorf("error in Re-MapProMem: %v", err)
