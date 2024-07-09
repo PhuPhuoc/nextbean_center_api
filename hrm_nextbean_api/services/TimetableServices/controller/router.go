@@ -20,5 +20,9 @@ func RegisterTimetableRouter(r *mux.Router, db *sql.DB) {
 	timetable_router.HandleFunc("/{timetable-id}/approve", middleware.TimetableAccessMiddleware(db, true, false, false)(handleApproveInternTimeTable(db))).Methods("POST")
 	// for intern: checkin checkout
 	timetable_router.HandleFunc("/{timetable-id}/attendance", middleware.TimetableAccessMiddleware(db, false, true, true)(handleClockinClockout(db))).Methods("PATCH")
+	// for admin: clockin-clockout validated
+	timetable_router.HandleFunc("/{timetable-id}/validated", middleware.TimetableAccessMiddleware(db, true, false, false)(handleAttendanceValidated(db))).Methods("PATCH")
+	// for admin: set status attendence to absent or not-yet
+	timetable_router.HandleFunc("/{timetable-id}/absent", middleware.TimetableAccessMiddleware(db, true, false, false)(handleStatusAbsentInTimetable(db))).Methods("PATCH")
 
 }

@@ -2284,6 +2284,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/timetables/{timetable-id}/absent": {
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Admins will mark intern absent when they don't see the student updating their work hours - or they can also remove the absent status.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Timetables"
+                ],
+                "summary": "The admin marked the intern absent from timetable.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter timetable-id",
+                        "name": "timetable-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "clockin/clockout validated request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.StatusAbsent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful validate",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "validate failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/timetables/{timetable-id}/approve": {
             "post": {
                 "security": [
@@ -2356,7 +2408,7 @@ const docTemplate = `{
                 "summary": "intern declares actual working hours",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "enter timetable-id",
                         "name": "timetable-id",
                         "in": "path",
@@ -2381,6 +2433,58 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/timetables/{timetable-id}/validated": {
+            "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "admin approve clockin or clockout intern'schedule",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Timetables"
+                ],
+                "summary": "validate intern timetable to work offline in office",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter timetable-id",
+                        "name": "timetable-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "clockin/clockout validated request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AttendanceValidated"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful validate",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "validate failure",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -2454,6 +2558,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "clockout": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.AttendanceValidated": {
+            "type": "object",
+            "required": [
+                "validate-field"
+            ],
+            "properties": {
+                "validate-field": {
                     "type": "string"
                 }
             }
@@ -2859,6 +2974,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.StatusAbsent": {
+            "type": "object",
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
                     "type": "string"
                 }
             }

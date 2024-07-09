@@ -46,6 +46,13 @@ definitions:
       clockout:
         type: string
     type: object
+  model.AttendanceValidated:
+    properties:
+      validate-field:
+        type: string
+    required:
+    - validate-field
+    type: object
   model.DetailProject:
     properties:
       join-at:
@@ -316,6 +323,13 @@ definitions:
     - est-completion-time
     - est-start-time
     - name
+    type: object
+  model.StatusAbsent:
+    properties:
+      status:
+        type: string
+    required:
+    - status
     type: object
   model.Task:
     properties:
@@ -1913,6 +1927,40 @@ paths:
       summary: create new intern timetable to work offline in office
       tags:
       - Timetables
+  /timetables/{timetable-id}/absent:
+    patch:
+      consumes:
+      - application/json
+      description: Admins will mark intern absent when they don't see the student
+        updating their work hours - or they can also remove the absent status.
+      parameters:
+      - description: enter timetable-id
+        in: path
+        name: timetable-id
+        required: true
+        type: string
+      - description: clockin/clockout validated request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.StatusAbsent'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful validate
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: validate failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: The admin marked the intern absent from timetable.
+      tags:
+      - Timetables
   /timetables/{timetable-id}/approve:
     post:
       consumes:
@@ -1956,7 +2004,7 @@ paths:
         in: path
         name: timetable-id
         required: true
-        type: string
+        type: integer
       - description: timetable creation request
         in: body
         name: request
@@ -1977,6 +2025,39 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: intern declares actual working hours
+      tags:
+      - Timetables
+  /timetables/{timetable-id}/validated:
+    patch:
+      consumes:
+      - application/json
+      description: admin approve clockin or clockout intern'schedule
+      parameters:
+      - description: enter timetable-id
+        in: path
+        name: timetable-id
+        required: true
+        type: string
+      - description: clockin/clockout validated request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.AttendanceValidated'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful validate
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: validate failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: validate intern timetable to work offline in office
       tags:
       - Timetables
   /timetables/weekly:
