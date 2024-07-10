@@ -1749,6 +1749,31 @@ paths:
       summary: Get my tasks (for member)
       tags:
       - Tasks
+  /reports/{ojt-id}/project-intern:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint return file Excel
+      parameters:
+      - description: OJT ID
+        in: path
+        name: ojt-id
+        required: true
+        type: integer
+      produces:
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      responses:
+        "200":
+          description: Excel file
+          schema:
+            type: file
+        "400":
+          description: Download failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      summary: Download Excel file about intern'task report in an ojt
+      tags:
+      - Reports
   /technicals:
     get:
       consumes:

@@ -12,6 +12,7 @@ import (
 	oauthgoogleservices "github.com/PhuPhuoc/hrm_nextbean_api/services/OauthGoogleServices"
 	oauthgoogleservices_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/OauthGoogleServices/controller"
 	pro_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/ProServices/controller"
+	report_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/ReportServices/controller"
 	task_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TaskServices/controller"
 	tech_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TechnicalServices/controller"
 	timetable_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/TimetableServices/controller"
@@ -77,6 +78,8 @@ func (sv *server) RunApp() error {
 	timetable_services_controller.RegisterTimetableRouter(subrouter, sv.db)
 	// router: /tasks
 	task_services_controller.RegisterTaskRouter(subrouter, sv.db)
+	// router: /reports
+	report_services_controller.RegisterReportRouter(subrouter, sv.db)
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),

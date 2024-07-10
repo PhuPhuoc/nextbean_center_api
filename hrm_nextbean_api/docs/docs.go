@@ -1941,6 +1941,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/reports/{ojt-id}/project-intern": {
+            "get": {
+                "description": "Endpoint return file Excel",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ],
+                "tags": [
+                    "Reports"
+                ],
+                "summary": "Download Excel file about intern'task report in an ojt",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "OJT ID",
+                        "name": "ojt-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Excel file",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Download failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/technicals": {
             "get": {
                 "description": "Get a list of Technical with filtering, sorting, and pagination",
