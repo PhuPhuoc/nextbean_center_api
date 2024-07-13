@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS `task` (
   `description` text NOT NULL,
   `start_date` datetime,
   `end_date` datetime,
-  `estimated_effort` varchar(255),
-  `actual_effort` varchar(255),
+  `estimated_effort` INT NOT NULL,
+  `actual_effort` INT,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime
 );
