@@ -74,7 +74,7 @@ definitions:
   model.DoneTask:
     properties:
       actual-effort:
-        type: string
+        type: integer
     type: object
   model.GoogleCode:
     properties:
@@ -334,7 +334,7 @@ definitions:
   model.Task:
     properties:
       actual-effort:
-        type: string
+        type: integer
       assigned-code:
         type: string
       assigned-name:
@@ -344,7 +344,7 @@ definitions:
       description:
         type: string
       estimated-effort:
-        type: string
+        type: integer
       id:
         type: string
       is-approved:
@@ -365,7 +365,7 @@ definitions:
       description:
         type: string
       estimated-effort:
-        type: string
+        type: integer
       name:
         type: string
     required:
@@ -379,7 +379,7 @@ definitions:
       description:
         type: string
       estimated-effort:
-        type: string
+        type: integer
       is-approved:
         type: boolean
       name:

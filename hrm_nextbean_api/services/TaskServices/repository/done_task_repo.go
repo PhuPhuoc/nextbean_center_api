@@ -26,7 +26,7 @@ func (store *taskStore) EndTask(proid, taskid, assigneeid string, info *model.Do
 		return err_status
 	}
 
-	if info.ActualEffort == "" {
+	if info.ActualEffort <= 0 {
 		return fmt.Errorf("you need to fill in the number of hours the task was performed")
 	}
 

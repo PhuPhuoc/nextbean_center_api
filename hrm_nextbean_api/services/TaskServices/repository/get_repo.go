@@ -21,35 +21,23 @@ func (store *taskStore) GetTask(pagin *common.Pagination, filter *model.TaskFilt
 	defer rows.Close()
 
 	var (
-		des     sql.NullString
-		est_eff sql.NullString
-		act_eff sql.NullString
-		is_app  sql.NullBool
+		act_eff     sql.NullInt64
+		is_approved sql.NullBool
 	)
 
 	for rows.Next() {
 		task := new(model.Task)
-		if err_scan := rows.Scan(&task.Id, &task.ProjectId, &task.AssignedTo, &task.AssignedName, &task.AssignedCode, &is_app, &task.Status, &task.Name, &des, &est_eff, &act_eff, &total_record); err_scan != nil {
+		if err_scan := rows.Scan(&task.Id, &task.ProjectId, &task.AssignedTo, &task.AssignedName, &task.AssignedCode, &is_approved, &task.Status, &task.Name, &task.Description, &task.EstimatedEffort, &act_eff, &total_record); err_scan != nil {
 			return data, err_scan
 		}
 
-		if des.Valid {
-			task.Description = des.String
-		} else {
-			task.Description = ""
-		}
-		if est_eff.Valid {
-			task.EstimatedEffort = est_eff.String
-		} else {
-			task.EstimatedEffort = ""
-		}
 		if act_eff.Valid {
-			task.ActualEffort = act_eff.String
+			task.ActualEffort = int(act_eff.Int64)
 		} else {
-			task.ActualEffort = ""
+			task.ActualEffort = 0
 		}
-		if is_app.Valid {
-			if is_app.Bool {
+		if is_approved.Valid {
+			if is_approved.Bool {
 				task.IsApproved = "approved"
 			} else {
 				task.IsApproved = "waiting"
@@ -68,7 +56,6 @@ func (store *taskStore) GetTask(pagin *common.Pagination, filter *model.TaskFilt
 	} else {
 		pagin.Pages = pagin.Items / int64(pagin.PSize)
 	}
-
 	return data, nil
 }
 

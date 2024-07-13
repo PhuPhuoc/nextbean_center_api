@@ -2643,7 +2643,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "actual-effort": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
@@ -3031,7 +3031,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "actual-effort": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "assigned-code": {
                     "type": "string"
@@ -3046,7 +3046,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "estimated-effort": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "id": {
                     "type": "string"
@@ -3082,7 +3082,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "estimated-effort": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
@@ -3104,7 +3104,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "estimated-effort": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "is-approved": {
                     "type": "boolean"
