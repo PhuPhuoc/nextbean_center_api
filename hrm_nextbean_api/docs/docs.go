@@ -1979,6 +1979,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/tasks/{task-id}/comments": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "member vs manager/pm comment something in task or member can send daily report to manager/pm of project",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "create new comment/report",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter task-id",
+                        "name": "task-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "comment creation request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CommentCreation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful create",
+                        "schema": {
+                            "$ref": "#/definitions/utils.success_response"
+                        }
+                    },
+                    "400": {
+                        "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
         "/technicals": {
             "get": {
                 "description": "Get a list of Technical with filtering, sorting, and pagination",
@@ -2252,6 +2304,61 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "create failure",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/timetables/today": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Intern check if there is any work scheduled today",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Timetables"
+                ],
+                "summary": "Intern get today timetables",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Today"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/utils.error_response"
                         }
@@ -2607,6 +2714,21 @@ const docTemplate = `{
             ],
             "properties": {
                 "validate-field": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.CommentCreation": {
+            "type": "object",
+            "required": [
+                "content",
+                "type"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
@@ -3192,6 +3314,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "office-time": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Today": {
+            "type": "object",
+            "properties": {
+                "checkin": {
+                    "type": "string"
+                },
+                "checkout": {
                     "type": "string"
                 }
             }

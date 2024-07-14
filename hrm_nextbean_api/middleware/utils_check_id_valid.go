@@ -40,3 +40,27 @@ func checkInternIDBelongToTimeTable(db *sql.DB, tid string, inid string) error {
 	}
 	return nil
 }
+
+func checkPMInTask(db *sql.DB, taskid string, pmID string) error {
+	var flag bool = false
+	rawsql := `select exists(select 1 from task t join project p on t.project_id=p.id join project_manager pm on pm.project_id=p.id where t.id=? and pm.account_id=? and t.deleted_at is NULL)`
+	if err_query := db.QueryRow(rawsql, taskid, pmID).Scan(&flag); err_query != nil {
+		return err_query
+	}
+	if !flag {
+		return fmt.Errorf("this pm (id: %v) does not belong to the project this task belongs to", pmID)
+	}
+	return nil
+}
+
+func checkMemInTask(db *sql.DB, taskid string, inid string) error {
+	var flag bool = false
+	rawsql := `select exists(select 1 from task t where t.id=? and t.assigned_to=? and t.deleted_at is null)`
+	if err_query := db.QueryRow(rawsql, taskid, inid).Scan(&flag); err_query != nil {
+		return err_query
+	}
+	if !flag {
+		return fmt.Errorf("this user is not part of this task so cannot comment")
+	}
+	return nil
+}

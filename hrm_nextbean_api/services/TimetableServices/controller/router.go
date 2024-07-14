@@ -24,5 +24,6 @@ func RegisterTimetableRouter(r *mux.Router, db *sql.DB) {
 	timetable_router.HandleFunc("/{timetable-id}/validated", middleware.TimetableAccessMiddleware(db, true, false, false)(handleAttendanceValidated(db))).Methods("PATCH")
 	// for admin: set status attendence to absent or not-yet
 	timetable_router.HandleFunc("/{timetable-id}/absent", middleware.TimetableAccessMiddleware(db, true, false, false)(handleStatusAbsentInTimetable(db))).Methods("PATCH")
-
+	// for intern: check if there is any work scheduled today
+	timetable_router.HandleFunc("/today", middleware.TimetableAccessMiddleware(db, false, true, false)(handleGetTodayTimetable(db))).Methods("GET")
 }

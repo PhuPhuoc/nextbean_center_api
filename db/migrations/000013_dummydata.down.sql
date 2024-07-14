@@ -11,5 +11,3 @@ DELETE FROM account;
 
 
 
-
-

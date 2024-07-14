@@ -53,6 +53,16 @@ definitions:
     required:
     - validate-field
     type: object
+  model.CommentCreation:
+    properties:
+      content:
+        type: string
+      type:
+        type: string
+    required:
+    - content
+    - type
+    type: object
   model.DetailProject:
     properties:
       join-at:
@@ -442,6 +452,13 @@ definitions:
     - est-end
     - est-start
     - office-time
+    type: object
+  model.Today:
+    properties:
+      checkin:
+        type: string
+      checkout:
+        type: string
     type: object
   model.UpdateAccountInfo:
     properties:
@@ -1774,6 +1791,40 @@ paths:
       summary: Download Excel file about intern'task report in an ojt
       tags:
       - Reports
+  /tasks/{task-id}/comments:
+    post:
+      consumes:
+      - application/json
+      description: member vs manager/pm comment something in task or member can send
+        daily report to manager/pm of project
+      parameters:
+      - description: enter task-id
+        in: path
+        name: task-id
+        required: true
+        type: string
+      - description: comment creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CommentCreation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful create
+          schema:
+            $ref: '#/definitions/utils.success_response'
+        "400":
+          description: create failure
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: create new comment/report
+      tags:
+      - Comments
   /technicals:
     get:
       consumes:
@@ -2083,6 +2134,38 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: validate intern timetable to work offline in office
+      tags:
+      - Timetables
+  /timetables/today:
+    get:
+      consumes:
+      - application/json
+      description: Intern check if there is any work scheduled today
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Today'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Intern get today timetables
       tags:
       - Timetables
   /timetables/weekly:

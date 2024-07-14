@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	account_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/AccountServices/controller"
+	comment_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/CommentServices/controller"
 	intern_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/InternServices/controller"
 	ojt_services_controller "github.com/PhuPhuoc/hrm_nextbean_api/services/OJTServices/controller"
 	oauthgoogleservices "github.com/PhuPhuoc/hrm_nextbean_api/services/OauthGoogleServices"
@@ -80,6 +81,8 @@ func (sv *server) RunApp() error {
 	task_services_controller.RegisterTaskRouter(subrouter, sv.db)
 	// router: /reports
 	report_services_controller.RegisterReportRouter(subrouter, sv.db)
+	// router: /comments
+	comment_services_controller.RegisterCommentRouter(subrouter, sv.db)
 
 	corsHandler := handlers.CORS(
 		handlers.AllowedOrigins([]string{"*"}),
