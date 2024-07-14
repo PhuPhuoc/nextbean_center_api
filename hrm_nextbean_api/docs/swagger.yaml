@@ -53,6 +53,23 @@ definitions:
     required:
     - validate-field
     type: object
+  model.Comment:
+    properties:
+      avatar:
+        type: string
+      content:
+        type: string
+      created-at:
+        type: string
+      id:
+        type: string
+      is-owner:
+        type: boolean
+      type:
+        type: string
+      user-name:
+        type: string
+    type: object
   model.CommentCreation:
     properties:
       content:
@@ -1792,6 +1809,55 @@ paths:
       tags:
       - Reports
   /tasks/{task-id}/comments:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of report/comment in a task
+      parameters:
+      - description: enter task-id
+        in: path
+        name: task-id
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of records per page
+        in: query
+        name: psize
+        type: integer
+      - description: enter type for get report or comment
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Comment'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get report/comment in a task
+      tags:
+      - Comments
     post:
       consumes:
       - application/json

@@ -1974,6 +1974,86 @@
             }
         },
         "/tasks/{task-id}/comments": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a list of report/comment in a task",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Get report/comment in a task",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "enter task-id",
+                        "name": "task-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of records per page",
+                        "name": "psize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "enter type for get report or comment",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/utils.success_response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/model.Comment"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.error_response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -2708,6 +2788,32 @@
             ],
             "properties": {
                 "validate-field": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Comment": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "created-at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is-owner": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "user-name": {
                     "type": "string"
                 }
             }
