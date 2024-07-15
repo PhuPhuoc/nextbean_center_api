@@ -351,6 +351,27 @@ definitions:
     - est-start-time
     - name
     type: object
+  model.ProjectDetail:
+    properties:
+      description:
+        type: string
+      est-completion-time:
+        type: string
+      est-start-time:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      status:
+        type: string
+      total-member:
+        type: integer
+      total-task:
+        type: integer
+      total-task-conpleted:
+        type: integer
+    type: object
   model.StatusAbsent:
     properties:
       status:
@@ -1258,6 +1279,45 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: remove map project-member
+      tags:
+      - Projects
+  /projects/{project-id}/detail:
+    get:
+      consumes:
+      - application/json
+      description: Get project info and details (total member, total task, total task
+        have been done, total task in progress v.v)
+      parameters:
+      - description: enter project-id
+        in: path
+        name: project-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.ProjectDetail'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Project details
       tags:
       - Projects
   /projects/{project-id}/member:

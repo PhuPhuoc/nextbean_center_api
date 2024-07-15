@@ -11,17 +11,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// @Summary		Get Project details
-// @Description	Get project info and details (total member, total task, total task have been done, total task in progress v.v)
-// @Tags			Projects
-// @Accept			json
-// @Produce		json
-// @Param			project-id		path		string										true	"enter project-id"
-// @Success		200				{object}	utils.success_response{data=[]model.ProjectDetail}	"OK"
-// @Failure		400				{object}	utils.error_response						"Bad Request"
-// @Failure		404				{object}	utils.error_response						"Not Found"
-// @Router			/projects/{project-id}/detail [get]
-// @Security		ApiKeyAuth
+//	@Summary		Get Project details
+//	@Description	Get project info and details (total member, total task, total task have been done, total task in progress v.v)
+//	@Tags			Projects
+//	@Accept			json
+//	@Produce		json
+//	@Param			project-id	path		string												true	"enter project-id"
+//	@Success		200			{object}	utils.success_response{data=[]model.ProjectDetail}	"OK"
+//	@Failure		400			{object}	utils.error_response								"Bad Request"
+//	@Failure		404			{object}	utils.error_response								"Not Found"
+//	@Router			/projects/{project-id}/detail [get]
+//	@Security		ApiKeyAuth
 func handleGetProjectDetail(db *sql.DB) func(rw http.ResponseWriter, req *http.Request) {
 	return func(rw http.ResponseWriter, req *http.Request) {
 		proid := mux.Vars(req)["project-id"]
@@ -35,7 +35,7 @@ func handleGetProjectDetail(db *sql.DB) func(rw http.ResponseWriter, req *http.R
 		data, err := biz.GetProDetailBiz(proid)
 		if err != nil {
 
-			utils.WriteJSON(rw, utils.ErrorResponse_CannotGetEntity("pm", err))
+			utils.WriteJSON(rw, utils.ErrorResponse_CannotGetEntity("project's detail", err))
 
 			return
 		}
