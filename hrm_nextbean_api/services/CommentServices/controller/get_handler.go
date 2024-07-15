@@ -44,7 +44,8 @@ func handleGetCommentInTask(db *sql.DB) func(rw http.ResponseWriter, req *http.R
 		pagin := new(common.Pagination)
 		filter := new(model.CommentFilter)
 		getRequestQuery_comment(req, pagin, filter)
-		filter.AccID = accID
+		filter.AccId = accID
+		filter.TaskId = taskid
 
 		store := repository.NewCommentStore(db)
 		biz := business.NewGetCommentBiz(store)

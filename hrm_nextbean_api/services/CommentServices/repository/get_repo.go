@@ -73,6 +73,9 @@ func whereClause(filter *model.CommentFilter) (string, []interface{}) {
 	var query strings.Builder
 	query.WriteString(` where `)
 
+	query.WriteString(`r.task_id = ? and `)
+	param = append(param, filter.TaskId)
+
 	if filter.Type != "" {
 		query.WriteString(`r.type = ? and `)
 		param = append(param, filter.Type)

@@ -27,19 +27,21 @@ func ProjectAccessMiddleware(db *sql.DB, acceptManager, acceptPM, skipCheckPMInP
 					return
 				}
 			case "pm":
-				if skipCheckPMInPro {
-					next.ServeHTTP(w, r.WithContext(ctx))
-				} else if acceptPM {
-					proid := mux.Vars(r)["project-id"]
-					if proid == "" {
-						utils.WriteJSON(w, utils.ErrorResponse_BadRequest("Missing project ID", fmt.Errorf("missing project ID")))
-						return
+				if acceptPM {
+					if skipCheckPMInPro {
+						next.ServeHTTP(w, r.WithContext(ctx))
+					} else {
+						proid := mux.Vars(r)["project-id"]
+						if proid == "" {
+							utils.WriteJSON(w, utils.ErrorResponse_BadRequest("Missing project ID", fmt.Errorf("missing project ID")))
+							return
+						}
+						if err_pm := checkPMInProject(db, proid, accID); err_pm != nil {
+							utils.WriteJSON(w, utils.ErrorResponse_NoPermission(err_pm.Error()))
+							return
+						}
+						next.ServeHTTP(w, r.WithContext(ctx))
 					}
-					if err_pm := checkPMInProject(db, proid, accID); err_pm != nil {
-						utils.WriteJSON(w, utils.ErrorResponse_NoPermission(err_pm.Error()))
-						return
-					}
-					next.ServeHTTP(w, r.WithContext(ctx))
 				} else {
 					utils.WriteJSON(w, utils.ErrorResponse_NoPermission("account's role (pm) is not allowed to access this api"))
 					return
