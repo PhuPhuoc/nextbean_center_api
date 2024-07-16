@@ -79,7 +79,7 @@ func whereClause(filter *model.FilterOJT) (string, []interface{}) {
 
 func mainClause(where, order string, pagin *common.Pagination) string {
 	if order == "" {
-		order = "created_at desc"
+		order = "start_at desc"
 	}
 	var query strings.Builder
 	query.WriteString(`with cte as ( select count(*) as total_record from ojt` + where + `) `)

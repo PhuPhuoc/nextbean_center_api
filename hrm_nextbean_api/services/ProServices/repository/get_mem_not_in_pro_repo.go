@@ -106,7 +106,7 @@ func sel(where string, pagin *common.Pagination) string {
 func queryWhere(proid string, filter *model.MemberFilter) (string, []interface{}) {
 	param := []interface{}{}
 	var query strings.Builder
-	query.WriteString(` where i.id not in (select intern_id from project_intern where project_id=?) and `)
+	query.WriteString(` where i.id not in (select intern_id from project_intern where project_id=? and status='in_progress') and `)
 	param = append(param, proid)
 
 	if filter.UserName != "" {

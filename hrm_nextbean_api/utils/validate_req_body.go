@@ -240,14 +240,14 @@ func (vrb *ValidateRequestBody) checkType(key string, value interface{}, rule_va
 		}
 	case "number":
 		if ok := isNumber(value); !ok {
-			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a string", key)}
+			err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("field '%v' must be a number", key)}
 			vrb.list_error = append(vrb.list_error, err_field)
 		}
 	case "int_array":
 		if arr, ok := value.([]interface{}); ok {
 			for _, v := range arr {
 				if ok := isNumber(v); !ok {
-					err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("all elements of field '%v' must be integers", key)}
+					err_field := ErrorField{ErrType: "valid-field", Field: key, ErrMessage: fmt.Sprintf("all elements of field '%v' must be integers(number)", key)}
 					vrb.list_error = append(vrb.list_error, err_field)
 					break
 				}
