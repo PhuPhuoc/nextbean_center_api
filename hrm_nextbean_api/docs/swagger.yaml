@@ -80,6 +80,26 @@ definitions:
     - content
     - type
     type: object
+  model.DashboardOJTInProgress:
+    properties:
+      id:
+        type: integer
+      semester:
+        type: string
+      status:
+        type: string
+      total-intern:
+        type: integer
+      university:
+        type: string
+    type: object
+  model.DashboardTotalNumber:
+    properties:
+      total-intern-in-progress:
+        type: integer
+      total-project-in-progress:
+        type: integer
+    type: object
   model.DetailProject:
     properties:
       join-at:
@@ -754,6 +774,68 @@ paths:
       summary: login by google email account
       tags:
       - Authentication
+  /dashboards/inprogress-ojt:
+    get:
+      consumes:
+      - application/json
+      description: Get a ojt info in dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.DashboardOJTInProgress'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get ojt model - Dashboard
+      tags:
+      - Dashboards
+  /dashboards/total-number:
+    get:
+      consumes:
+      - application/json
+      description: Get a total number of project vs intern current in progress
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.success_response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.DashboardTotalNumber'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.error_response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.error_response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Total Project vs Total intern still in progress - Dashboard
+      tags:
+      - Dashboards
   /interns:
     get:
       consumes:
