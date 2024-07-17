@@ -22,7 +22,7 @@ func (store *taskStore) StartTask(proid, taskid, assigneeid string) error {
 		return err_status
 	}
 
-	rawsql := `update task set status='inprogress', start_date=? where id=?`
+	rawsql := `update task set status='in_progress', start_date=? where id=?`
 	result, err := store.db.Exec(rawsql, utils.CreateDateTimeCurrentFormated(), taskid)
 	if err != nil {
 		return fmt.Errorf("error when StartTask in store: %v", err)
