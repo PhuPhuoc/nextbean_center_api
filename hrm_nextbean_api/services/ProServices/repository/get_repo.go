@@ -14,8 +14,6 @@ func (store *projectStore) GetProject(pagin *common.Pagination, filter *model.Pr
 	data := []model.Project{}
 	rawsql, param := rawSqlGetProject(pagin, filter)
 
-	fmt.Println("rawsql: ", rawsql)
-
 	rows, err_query := store.db.Query(rawsql, param...)
 	if err_query != nil {
 		return data, err_query

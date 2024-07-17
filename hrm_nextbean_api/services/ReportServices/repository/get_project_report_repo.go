@@ -2,7 +2,9 @@ package repository
 
 import (
 	"bytes"
+	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/PhuPhuoc/hrm_nextbean_api/services/ReportServices/model"
@@ -43,7 +45,7 @@ func getOJTDetails(store *reportStore, oid string) (*model.ReportOJT, error) {
 }
 
 func SetupExcel(store *reportStore, oid string, f *excelize.File, sheetName string) error {
-	interns, count, err_get_intern := getInternInfo(oid)
+	interns, count, err_get_intern := getInternInfo(store, oid)
 	if err_get_intern != nil {
 		return err_get_intern
 	}
@@ -71,7 +73,7 @@ func SetupExcel(store *reportStore, oid string, f *excelize.File, sheetName stri
 	return nil
 }
 
-func getInternInfo(oid string) ([]model.ReportIntern, int, error) {
+func getInternInfoDuumyData(oid string) ([]model.ReportIntern, int, error) {
 	data := []model.ReportIntern{
 		{Name: "Tran Phu Phuoc", Code: "SE173438", ProjectsParticipated: 3, TotalTasks: 20, EstimatedTime: 150, ActualTime: 160, TotalDaysWorkOffline: 30, TotalTimesWorkOffline: 150},
 		{Name: "Nguyen Bao Ngoc Anh Thu", Code: "SE173438", ProjectsParticipated: 3, TotalTasks: 20, EstimatedTime: 150, ActualTime: 100, TotalDaysWorkOffline: 29, TotalTimesWorkOffline: 160},
@@ -84,6 +86,62 @@ func getInternInfo(oid string) ([]model.ReportIntern, int, error) {
 		{Name: "Pham Tien Dat", Code: "SE173430", ProjectsParticipated: 3, TotalTasks: 29, EstimatedTime: 190, ActualTime: 160, TotalDaysWorkOffline: 35, TotalTimesWorkOffline: 120},
 		{Name: "Pham Phuc Nghi", Code: "SE173431", ProjectsParticipated: 3, TotalTasks: 20, EstimatedTime: 150, ActualTime: 140, TotalDaysWorkOffline: 25, TotalTimesWorkOffline: 140},
 	}
+	return data, len(data), nil
+}
+
+func rawsqlGetIntern() string {
+	var query strings.Builder
+	query.WriteString(`select acc.user_name, i.student_code,`)
+	query.WriteString(`(select count(*) from project_intern pri where pri.intern_id=i.id and pri.status='in_progress') as total_project,`)
+	query.WriteString(`(select count(*) from task t where t.assigned_to=i.id and t.status='completed') as total_task,`)
+	query.WriteString(`(select sum(t.estimated_effort) from task t where t.assigned_to=i.id and t.status='completed') as total_est_time,`)
+	query.WriteString(`(select sum(t.actual_effort) from task t where t.assigned_to=i.id and t.status='completed') as total_act_time,`)
+	query.WriteString(`(select count(*) from timetable ti where ti.intern_id=i.id and ti.status_attendance='present') as total_day_work_offline,`)
+	query.WriteString(`(select sum(TIMESTAMPDIFF(hour, ti.act_clockin, ti.act_clockout)) from timetable ti where ti.intern_id = i.id and ti.act_clockin is not null and ti.act_clockout is not null and ti.status_attendance='present') AS total_working_time`)
+	query.WriteString(` `)
+	query.WriteString(`from intern i join account acc on i.account_id=acc.id where i.ojt_id=?`)
+	return query.String()
+}
+
+func getInternInfo(store *reportStore, oid string) ([]model.ReportIntern, int, error) {
+	data := []model.ReportIntern{}
+	rawsql := rawsqlGetIntern()
+	rows, err_query := store.db.Query(rawsql, oid)
+	if err_query != nil {
+		return data, 0, err_query
+	}
+	defer rows.Close()
+
+	var (
+		est_time  sql.NullInt64
+		act_time  sql.NullInt64
+		work_time sql.NullInt64
+	)
+
+	for rows.Next() {
+		intern := new(model.ReportIntern)
+		if err_scan := rows.Scan(&intern.Name, &intern.Code, &intern.ProjectsParticipated, &intern.TotalTasks, &est_time, &act_time, &intern.TotalDaysWorkOffline, &work_time); err_scan != nil {
+			return data, 0, err_scan
+		}
+
+		if est_time.Valid {
+			intern.EstimatedTime = int(est_time.Int64)
+		} else {
+			intern.EstimatedTime = 0
+		}
+		if act_time.Valid {
+			intern.ActualTime = int(act_time.Int64)
+		} else {
+			intern.ActualTime = 0
+		}
+		if work_time.Valid {
+			intern.TotalTimesWorkOffline = int(work_time.Int64)
+		} else {
+			intern.TotalTimesWorkOffline = 0
+		}
+		data = append(data, *intern)
+	}
+
 	return data, len(data), nil
 }
 
@@ -224,10 +282,10 @@ func addConditionalFormatting(f *excelize.File, sheetName string, internCount in
 		rangeStr string
 		value    string
 	}{
-		{"9A0511", "FEC7CE", 1, "<", "G4:G", "30"},
+		{"9A0511", "FEC7CE", 1, "<", "G4:G", "7"},
 		{"09600B", "C7EECF", 1, "<=", "F4:F", "E4:E1"},
-		{"9A0511", "FFFFE0", 1, ">", "H4:H", "150"},
-		{"9A0511", "FFDAB9", 1, ">=", "D4:D", "20"},
+		{"9A0511", "FFFFE0", 1, ">", "H4:H", "60"},
+		{"9A0511", "FFDAB9", 1, ">=", "D4:D", "7"},
 	}
 
 	for _, s := range styles {
@@ -256,10 +314,10 @@ func addConditionalFormatting(f *excelize.File, sheetName string, internCount in
 func addNotes(f *excelize.File, sheetName string, internCount int) error {
 	notes := [][]interface{}{
 		{"Note:"},
-		{"", "Total Task >= 20 tasks"},
+		{"", "Total Task >= 7 tasks"},
 		{"", "Total Actual Time <= Total Estimated Time"},
-		{"", "Total Days In Office < 30 days"},
-		{"", "Total working time in Office > 150 hours"},
+		{"", "Total Days In Office < 7 days"},
+		{"", "Total working time in Office > 60 hours"},
 	}
 
 	startRow := internCount + 3 // Assuming data rows end at row 10

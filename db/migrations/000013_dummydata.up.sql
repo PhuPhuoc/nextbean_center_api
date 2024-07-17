@@ -6,10 +6,10 @@ VALUES
 ('4', 'danh', 'danh@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'pm', '2024-05-01 00:00:00'),
 ('5', 'dat', 'dat@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'pm', '2024-04-01 00:00:00'),
 ('6', 'nghi', 'nghi@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'pm', '2024-03-01 00:00:00'),
-('7', 'tien', 'tien@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-03-01 00:00:00'),
-('8', 'duy', 'duy@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-04-02 00:00:00'),
-('9', 'quan', 'quan@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-05-03 00:00:00'),
-('10', 'nhan', 'nhan@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-09-03 00:00:00'),
+('7', 'Bui Van Tien', 'tien@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-03-01 00:00:00'),
+('8', 'Nguyen Tran Anh Duy', 'duy@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-04-02 00:00:00'),
+('9', 'Le Hong Quan', 'quan@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-05-03 00:00:00'),
+('10', 'Quynh Quang Nhan', 'nhan@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-09-03 00:00:00'),
 ('11', 'minh', 'minh@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-02-03 00:00:00'),
 ('12', 'tuan', 'tuan@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-07-03 00:00:00'),
 ('13', 'hoang', 'hoangn@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'user', '2024-03-03 00:00:00'),
@@ -119,6 +119,50 @@ values
 ("intern5", "2024-07-13", "8:00", "17:00");
 
 
+insert into timetable(intern_id, office_time, est_start_time, est_end_time, act_clockin, act_clockout, status_attendance)
+values
+("intern1", "2024-07-10", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-11", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-12", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-13", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-14", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-15", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-16", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-17", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-18", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern1", "2024-07-19", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-10", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-11", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-12", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-13", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-14", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-15", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-16", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-17", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern2", "2024-07-18", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern3", "2024-07-10", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern3", "2024-07-11", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern3", "2024-07-12", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern3", "2024-07-13", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern3", "2024-07-14", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern3", "2024-07-15", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern4", "2024-07-10", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern4", "2024-07-11", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern4", "2024-07-12", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern4", "2024-07-13", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern4", "2024-07-14", "8:00", "17:00",  "8:00", "17:00", "present"),
+("intern4", "2024-07-15", "8:00", "17:00",  "8:00", "17:00", "present");
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO `project` (`id`, `name`, `status`, `description`, `est_start_time`, `est_completion_time`)
 VALUES 
 ('proj1', 'Project Alpha', 'not_started', 'This is the first project', '2024-07-15', '2024-012-15'),
@@ -138,6 +182,7 @@ values
 ('proj1', 'intern1', '2024-06-15 08:00:00', 'in_progress'),
 ('proj1', 'intern2', '2024-06-15 08:00:00', 'in_progress'),
 ('proj1', 'intern3', '2024-06-15 08:00:00', 'in_progress'),
+('proj1', 'intern4', '2024-06-15 08:00:00', 'in_progress'),
 ('proj2', 'intern3', '2024-06-15 08:00:00', 'in_progress'),
 ('proj2', 'intern4', '2024-06-15 08:00:00', 'in_progress'),
 ('proj2', 'intern5', '2024-06-15 08:00:00', 'in_progress'),
@@ -158,5 +203,42 @@ values
 ('task7', 'proj3' , 'intern3', 1, 'task 7', "description task 7", 10, '2024-06-16 00:00:00'),
 ('task8', 'proj3' , 'intern6', 1, 'task 8', "description task 8", 7, '2024-06-16 00:00:00'),
 ('task9', 'proj3' , 'intern7', 1, 'task 9', "description task 9", 9, '2024-06-16 00:00:00');
+
+
+insert into task(id, project_id, assigned_to, is_approved, name, description, estimated_effort, actual_effort, created_at, status)
+values
+('task10', 'proj1' , 'intern1', 1, 'task 10', "description task 10", 10, 6, '2024-06-16 00:00:00', 'completed'),
+('task11', 'proj1' , 'intern2', 1, 'task 11', "description task 10", 10, 6, '2024-06-16 00:00:00', 'completed'),
+('task12', 'proj1' , 'intern3', 1, 'task 12', "description task 10", 4, 6, '2024-06-16 00:00:00', 'completed'),
+('task13', 'proj1' , 'intern1', 1, 'task 13', "description task 10", 9, 6, '2024-06-16 00:00:00', 'completed'),
+('task14', 'proj1' , 'intern1', 1, 'task 14', "description task 10", 10, 6, '2024-06-16 00:00:00', 'completed'),
+('task15', 'proj1' , 'intern2', 1, 'task 15', "description task 10", 12, 6, '2024-06-16 00:00:00', 'completed'),
+('task16', 'proj1' , 'intern2', 1, 'task 16', "description task 10", 13, 6, '2024-06-16 00:00:00', 'completed'),
+('task17', 'proj1' , 'intern1', 1, 'task 17', "description task 10", 6, 9, '2024-06-16 00:00:00', 'completed'),
+('task18', 'proj1' , 'intern3', 1, 'task 18', "description task 10", 7, 9, '2024-06-16 00:00:00', 'completed'),
+('task19', 'proj1' , 'intern3', 1, 'task 19', "description task 10", 8, 9, '2024-06-16 00:00:00', 'completed'),
+('task20', 'proj1' , 'intern3', 1, 'task 20', "description task 10", 4, 9, '2024-06-16 00:00:00', 'completed'),
+('task21', 'proj1' , 'intern3', 1, 'task 21', "description task 10", 6, 9, '2024-06-16 00:00:00', 'completed'),
+('task22', 'proj1' , 'intern4', 1, 'task 22', "description task 10", 4, 9, '2024-06-16 00:00:00', 'completed'),
+('task23', 'proj1' , 'intern4', 1, 'task 23', "description task 10", 7, 6, '2024-06-16 00:00:00', 'completed'),
+('task24', 'proj1' , 'intern4', 1, 'task 24', "description task 10", 5, 6, '2024-06-16 00:00:00', 'completed'),
+('task25', 'proj1' , 'intern4', 1, 'task 25', "description task 10", 2, 9, '2024-06-16 00:00:00', 'completed'),
+('task26', 'proj1' , 'intern4', 1, 'task 26', "description task 10", 4, 6, '2024-06-16 00:00:00', 'completed'),
+('task27', 'proj1' , 'intern4', 1, 'task 27', "description task 10", 7, 6, '2024-06-16 00:00:00', 'completed'),
+('task28', 'proj1' , 'intern4', 1, 'task 28', "description task 10", 6, 6, '2024-06-16 00:00:00', 'completed'),
+('task29', 'proj1' , 'intern4', 1, 'task 29', "description task 10", 7, 6, '2024-06-16 00:00:00', 'completed'),
+('task30', 'proj1' , 'intern1', 1, 'task 30', "description task 10", 4, 6, '2024-06-16 00:00:00', 'completed'),
+('task31', 'proj1' , 'intern1', 1, 'task 31', "description task 10", 7, 6, '2024-06-16 00:00:00', 'completed'),
+('task32', 'proj1' , 'intern1', 1, 'task 32', "description task 10", 3, 6, '2024-06-16 00:00:00', 'completed'),
+('task33', 'proj1' , 'intern2', 1, 'task 33', "description task 10", 7, 6, '2024-06-16 00:00:00', 'completed'),
+('task34', 'proj1' , 'intern2', 1, 'task 34', "description task 10", 6, 6, '2024-06-16 00:00:00', 'completed'),
+('task35', 'proj1' , 'intern2', 1, 'task 35', "description task 10", 7, 6, '2024-06-16 00:00:00', 'completed'),
+('task36', 'proj1' , 'intern2', 1, 'task 36', "description task 10", 4, 6, '2024-06-16 00:00:00', 'completed'),
+('task37', 'proj1' , 'intern3', 1, 'task 37', "description task 10", 7, 9, '2024-06-16 00:00:00', 'completed'),
+('task38', 'proj1' , 'intern3', 1, 'task 38', "description task 10", 4, 9, '2024-06-16 00:00:00', 'completed'),
+('task39', 'proj1' , 'intern3', 1, 'task 39', "description task 10", 6, 9, '2024-06-16 00:00:00', 'completed'),
+('task40', 'proj1' , 'intern3', 1, 'task 40', "description task 10", 7, 9, '2024-06-16 00:00:00', 'completed');
+
+
 
 
