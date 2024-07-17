@@ -195,6 +195,9 @@ values
 insert into task(id, project_id, assigned_to, is_approved, name, description, estimated_effort, created_at)
 values
 ('task1', 'proj1' , 'intern1', 1, 'task 1', "description task 1", 3, '2024-06-16 00:00:00'),
+('task111', 'proj1' , 'intern1', 1, 'task 111', "description task 111", 3, '2024-06-16 00:00:00'),
+('task112', 'proj1' , 'intern1', 1, 'task 112', "description task 122", 3, '2024-06-16 00:00:00'),
+('task113', 'proj1' , 'intern1', 1, 'task 113', "description task 133", 3, '2024-06-16 00:00:00'),
 ('task2', 'proj1' , 'intern2', 1, 'task 2', "description task 2", 4, '2024-06-16 00:00:00'),
 ('task3', 'proj1' , 'intern3', 1, 'task 3', "description task 3", 6, '2024-06-16 00:00:00'),
 ('task4', 'proj2' , 'intern3', 1, 'task 4', "description task 4", 5, '2024-06-16 00:00:00'),

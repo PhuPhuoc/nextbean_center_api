@@ -66,7 +66,7 @@ func isTaskHasBeenApproved(store *taskStore, taskid string) error {
 
 func isTaskHasBeenStartedOrDone(store *taskStore, taskid string) error {
 	var flag bool = false
-	rawsql := `select exists(select 1 from task where (status='inprogress' or status='done') and id=? and deleted_at is null)`
+	rawsql := `select exists(select 1 from task where (status='in_progress' or status='completed') and id=? and deleted_at is null)`
 	if err_query := store.db.QueryRow(rawsql, taskid).Scan(&flag); err_query != nil {
 		return fmt.Errorf("error in isTaskHasBeenApproved: %v", err_query)
 	}
@@ -78,7 +78,7 @@ func isTaskHasBeenStartedOrDone(store *taskStore, taskid string) error {
 
 func isTaskHasBeenDone(store *taskStore, taskid string) error {
 	var flag bool = false
-	rawsql := `select exists(select 1 from task where status='done' and id=? and deleted_at is null)`
+	rawsql := `select exists(select 1 from task where status='completed' and id=? and deleted_at is null)`
 	if err_query := store.db.QueryRow(rawsql, taskid).Scan(&flag); err_query != nil {
 		return fmt.Errorf("error in isTaskHasBeenDone: %v", err_query)
 	}
@@ -90,7 +90,7 @@ func isTaskHasBeenDone(store *taskStore, taskid string) error {
 
 func isTaskHasBeenStart(store *taskStore, taskid string) error {
 	var flag bool = false
-	rawsql := `select exists(select 1 from task where status='inprogress' and id=? and deleted_at is null)`
+	rawsql := `select exists(select 1 from task where status='in_progress' and id=? and deleted_at is null)`
 	if err_query := store.db.QueryRow(rawsql, taskid).Scan(&flag); err_query != nil {
 		return fmt.Errorf("error in isTaskHasBeenDone: %v", err_query)
 	}

@@ -30,7 +30,7 @@ func (store *taskStore) EndTask(proid, taskid, assigneeid string, info *model.Do
 		return fmt.Errorf("you need to fill in the number of hours the task was performed")
 	}
 
-	rawsql := `update task set status='done', end_date=?, actual_effort=? where id=?`
+	rawsql := `update task set status='completed', end_date=?, actual_effort=? where id=?`
 	result, err := store.db.Exec(rawsql, utils.CreateDateTimeCurrentFormated(), info.ActualEffort, taskid)
 	if err != nil {
 		return fmt.Errorf("error when EndTask in store: %v", err)
